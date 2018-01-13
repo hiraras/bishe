@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录</title>
+		<script src="../js/jquery/jquery-1.8.3.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../common/css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/login.css"/>
+	</head>
+	<body>
+		<div class="header">
+			<ul class="have_login" id="haveLogin">
+				<li>个人中心</li>
+				<li>消息</li>
+				<li>首页</li>
+				<li>
+					<img src="../img/defaultHeadImg.jpg"/>
+				</li>
+			</ul>
+			<ul class="not_login" id="notLogin">
+				<li id="headerRegister">注册</li>
+				<li id="headerLogin">登录</li>
+			</ul>
+		</div>
+		<div class="container">
+			<div class="title">登录</div>
+			<input type="text" placeholder="请输入用户名" id="username" value="17826877713" class="login" />
+			<span id="remind" class="remind">&nbsp;</span>
+			<input type="password" placeholder="请输入密码" id="psw" value="123456" class="psw" />
+			<input type="text" placeholder="请输入验证码" id="checkCode" class="check_code" />
+			<canvas id="checkCodeImg" width="80px" height="35px"></canvas>
+			<button id="loginBtn" onclick="testLogin()" class="login_btn">登录</button>
+		</div>
+	</body>
+	<script src="../common/js/common.js"></script>
+	<script src="../js/login.js"></script>
+</html>

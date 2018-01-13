@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../js/jquery/jquery-1.8.3.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../common/css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/register.css"/>
+	</head>
+	<body>
+		<div class="header">
+			<ul class="have_login" id="haveLogin">
+				<li>个人中心</li>
+				<li>消息</li>
+				<li>首页</li>
+				<li>
+					<img src="../img/defaultHeadImg.jpg"/>
+				</li>
+			</ul>
+			<ul class="not_login" id="notLogin">
+				<li id="headerRegister">注册</li>
+				<li id="headerLogin">登录</li>
+			</ul>
+		</div>
+		<div class="container">
+			<div class="title">注册</div>
+			<input type="text" id="username" class="username" value="17826877713" placeholder="请输入手机号" />
+			<input type="password" id="psw" value="123456" placeholder="请输入密码" />
+			<p class="psw_remind">密码包括数字、字母和下划线，长度为6-16位</p>
+			<input type="password" id="checkPsw" value="123456" placeholder="确认密码" />
+			<input type="text" id="nickname" placeholder="请输入昵称" />
+			<p class="nickname_remind">请输入4-8个字符的昵称</p>
+			<input type="text" id="phoneMsg" class="phone_msg" placeholder="请输入验证码" />
+			<button id="checkCode" class="send_check_code">发送验证码</button>
+			<p class="remind" id="remind">&nbsp;</p>
+			<button id="submitBtn" class="submit">提交</button>
+		</div>
+	</body>
+	<script src="../common/js/common.js"></script>
+	<script src="../js/register.js"></script>
+</html>
