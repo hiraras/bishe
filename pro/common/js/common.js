@@ -143,3 +143,12 @@ $("#headerLogin").on("click",function(){
 $("#headerRegister").on("click",function(){
 	window.location.href = "register.html";
 });
+$("#toIndex").on("click",function(){
+	window.location.href = "../index.html";
+});
+$("#myMsg").on("click",function(){
+	window.location.href = "";
+});
+$("#myRoom").on("click",function(){
+	window.location.href = "";
+});

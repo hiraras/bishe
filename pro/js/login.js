@@ -29,7 +29,7 @@ function testLogin(){
 //								console.log(result);
 								sessionStorage.setItem("user",result.username);
 								sessionStorage.setItem("userLevel",result.level);
-								window.location.href = "index.html";
+								window.location.href = "../index.html";
 							}catch(e){
 								$("#remind").html("发生未知错误，请稍后再试!");
 							}
@@ -42,6 +42,7 @@ function testLogin(){
 			}else{
 				$("#remind").html("验证码错误");
 				$("#checkCode").val("");
+				checkCodeStr = createCheckCode();
 			}
 		}else{
 			$("#remind").html("用户名格式不正确");

@@ -8,15 +8,16 @@ html,body{
 	font-family: "microsoft yahei";
 }
 
-ul{
+ul,li{
 	list-style: none;
 }
 .header{
 	height: 54px;
 	width: 100%;
 	background: rgba(0,0,0,0.6);
-	position: fixed;
+	position: absolute;
 	top: 0;
+	left: 0;
 	z-index: 1000;
 }
 .header .have_login{
@@ -31,6 +32,7 @@ ul{
 	text-align: center;
 	line-height: 54px;
 	cursor: pointer;
+	height: 54px;
 }
 .header .have_login li:hover{
 	background: rgba(255,255,255,0.4);
@@ -54,8 +56,12 @@ ul{
 	text-align: center;
 	line-height: 54px;
 	cursor: pointer;
+	height: 54px;
 }
 .header .not_login li:hover{
 	background: rgba(255,255,255,0.4);
 }
 
+.clear_float{
+	clear: both;
+}

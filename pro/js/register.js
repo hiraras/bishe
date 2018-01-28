@@ -21,6 +21,7 @@ var sendPhoneMsg = function(){
 				timeNum --;
 				if(timeNum <= 0){
 					randomNum = -11111111;
+					timeNum = 60;
 					clearInterval(timer);
 					$("#checkCode").on("click",sendPhoneMsg);
 					$("#checkCode").css("background","#0377f9");
@@ -87,7 +88,7 @@ var testRegister = function(){
 													$("#remind").html("注册成功");
 													sessionStorage.setItem("user",username);
 													sessionStorage.setItem("userLevel",1);
-													window.location.href = "index.html";
+													window.location.href = "../index.html";
 												}else if(num == 102){
 													$("#remind").html("注册失败");
 												}
