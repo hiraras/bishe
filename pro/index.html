@@ -3,11 +3,12 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>首页</title>
-		<script src="./js/jquery/jquery-1.8.3.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="./common/css/common.css"/>
 		<link rel="stylesheet" type="text/css" href="./css/index.css"/>
 	</head>
 	<body>
+		<!--左边是信息和分类，分类为健身的大分类，如有氧运动，鼠标上移出现该分类的推荐吧；
+		右边是活动、推荐贴吧等-->
 		<div class="header">
 			<ul class="have_login" id="haveLogin">
 				<li id="myRoom">个人中心</li>
@@ -25,9 +26,9 @@
 		<div class="container">
 			<div class="banner">
 				<div class="banner_wrapper" id="bannerWrapper">
-					<img src="img/banner1.jpg"/>
-					<img src="img/login_bg2.jpg"/>
-					<img src="img/defaultHeadImg.jpg"/>
+					<img src="./img/banner1.jpg"/>
+					<img src="./img/login_bg2.jpg"/>
+					<img src="./img/defaultHeadImg.jpg"/>
 				</div>
 				<ul class="banner_point" id="bannerPoint">
 					<li class="to_blue"></li>
@@ -39,12 +40,12 @@
 				<div class="search">
 					<input type="text" id="search" />
 					<div class="btn_search">
-						<img src="img/search.png"/>
+						<img src="./img/search.png"/>
 					</div>
 				</div>
 				<div class="left">
 					<div class="user_msg" id="userMsg">
-						<img src="img/defaultHeadImg.jpg" alt="" />
+						<img src="./img/defaultHeadImg.jpg" alt="" />
 						<p class="user_name">hirara</p>
 					</div>
 					<div class="themes" id="themes">
@@ -391,6 +392,7 @@
 			</div>
 		</div>
 	</body>
+	<script src="./js/jquery/jquery-1.8.3.min.js"></script>
 	<script src="./common/js/common.js"></script>
 	<script src="./js/index.js"></script>
 </html>
