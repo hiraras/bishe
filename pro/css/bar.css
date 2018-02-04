@@ -1,12 +1,170 @@
 .index{
 	position: relative;
+	margin: 20px auto 10px;
 }
 .content{
 	width: 100%;
+	padding-bottom: 60px;
 }
 .main{
 	width: 100%;
+	border-radius: 8px;
+	box-shadow: 0 0 3px #000000;
+	overflow: hidden;
+	border: 1px solid #000000;
 }
 .main .intro{
-	
+	height: 150px;
 }
+.main .intro>div{
+	float: left;
+}
+.main .intro img{
+	height: 150px;
+	width: 150px;
+	float: left;
+}
+.main .intro h2{
+	vertical-align: top;
+	margin-top: 10px;
+	margin-left: 20px;
+}
+.main .intro .post_status{
+	color: #fb7000;
+	vertical-align: top;
+	margin-top: 10px;
+	margin-left: 20px;
+}
+.post_status_item{
+	display: inline-block;
+}
+
+.intro .intro_content{
+	margin-left: 20px;
+	margin-top: 10px;
+	width: 300px;
+}
+
+.intro .btn_attention{
+	background: #00a9cd;
+	color: #FFFFFF;
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+	border: none;
+	font-size: 24px;
+	border-radius: 5px;
+	float: right;
+	margin-right: 50px;
+	margin-top: 50px;
+	padding: 0 20px;
+}
+.intro .btn_public{
+	background: #00a9cd;
+	color: #FFFFFF;
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+	border: none;
+	font-size: 24px;
+	border-radius: 5px;
+	float: right;
+	margin-right: 50px;
+	margin-top: 50px;
+	padding: 0 20px;
+}
+.posts{
+	width: 100%;
+	border-top: 2px solid #000000;
+}
+.posts .post{
+	width: 100%;
+	height: 50px;
+	border-bottom: 1px solid #000000;
+}
+.post .post_title{
+	width: 60%;
+	display: inline-block;
+	height: 100%;
+	margin-left: 2%;
+}
+.post .poster{
+	width: 15%;
+	display: inline-block;
+	height: 100%;
+	line-height: 50px;
+	text-align: center;
+}
+.post .post_time{
+	width: 10%;
+	display: inline-block;
+	height: 100%;
+	line-height: 50px;
+}
+.post .reply_num{
+	width: 10%;
+	display: inline-block;
+	height: 100%;
+	line-height: 50px;
+}
+.post .top_post{
+	color: #FFFFFF;
+	background: #00a9cd;
+	padding: 5px;
+	border-radius: 4px;
+}
+.post .competitive{
+	color: #FFFFFF;
+	background: #FF0000;
+	padding: 5px;
+	border-radius: 4px;
+	margin-left: 10px;
+}
+
+.posts .post_msg{
+	width: 100%;
+	height: 50px;
+	border-bottom: 1px solid #000000;
+	background: #00A9CD;
+	font-size: 18px;
+	font-weight: bold;
+}
+.post_msg .post_title{
+	width: 60%;
+	display: inline-block;
+	height: 100%;
+	margin-left: 2%;
+}
+.post_msg .poster{
+	width: 15%;
+	display: inline-block;
+	height: 100%;
+	line-height: 50px;
+	text-align: center;
+}
+.post_msg .post_time{
+	width: 10%;
+	display: inline-block;
+	height: 100%;
+	line-height: 50px;
+}
+.post_msg .reply_num{
+	width: 10%;
+	display: inline-block;
+	height: 100%;
+	line-height: 50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
