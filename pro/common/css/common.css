@@ -73,7 +73,7 @@ ul,li{
 	margin: 0 auto;
 }
 /*搜索框*/
-.content .search{
+.search{
 	width: 100%;
 	margin-top: 10px;
 	height: 50px;
@@ -83,7 +83,7 @@ ul,li{
 	padding-top: 25px;
 	padding-bottom: 25px;
 }
-.content .btn_search{
+.btn_search{
 	display: inline-block;
 	background: #00a9cd;
 	width: 80px;
@@ -92,7 +92,7 @@ ul,li{
 	border-radius: 8px;
 	cursor: pointer;
 }
-.content .search input{
+.search input{
 	display: inline-block;
 	width: 600px;
 	height: 42px;

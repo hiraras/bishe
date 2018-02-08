@@ -1,0 +1,72 @@
+.main{
+	border: 1px solid #000000;
+	border-radius: 8px;
+	box-shadow: 0 0 5px #000000;
+	overflow: hidden;
+}
+
+.comment{
+	width: 100%;
+	position: relative;
+	display: flex;
+	border-bottom: 1px solid #000000;
+	min-height: 150px;
+}
+.comment .user_msg{
+	flex: 1;
+	text-align: center;
+	border-right: 1px solid #000000;
+}
+.comment .user_msg img{
+	width: 80px;
+	height: 80px;
+	margin-top: 20px;
+}
+.comment .user_msg .user_name{
+	margin-top: 20px;
+}
+.comment .comment_content{
+	flex: 5;
+}
+.comment .comment_content .comment_text{
+	padding: 5px;
+}
+.comment .comment_msg{
+	position: relative;
+	text-align: right;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 20px;
+}
+.comment .comment_msg button{
+	background: none;
+	border: 1px solid #000000;
+	border-radius: 4px;
+	padding: 5px 10px;
+}
+.comment .comment_msg span{
+	margin-left: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
