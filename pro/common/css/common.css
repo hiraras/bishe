@@ -71,6 +71,7 @@ ul,li{
 	padding-top: 54px;
 	width: 1100px;
 	margin: 0 auto;
+	margin-bottom: 200px;
 }
 /*搜索框*/
 .search{
@@ -124,4 +125,46 @@ ul,li{
 .index .index_item:hover{
 	border-color: #00a9cd;
 	color: #00a9cd;
+}
+/*发送区域*/
+.send_area{
+	width: 100%;
+	height: auto;
+	border-top: 1px solid #000000;
+	border-radius: 6px;
+	margin-top: 20px;
+	overflow: hidden;
+}
+.send_area .menu{
+	display: flex;
+	height: 50px;
+	line-height: 50px;
+	overflow: hidden;
+}
+.send_area .menu li{
+	flex: 1;
+	text-align: center;
+	height: 100%;
+	border-right: 1px solid #000000;
+	border-bottom: 1px solid #000000;
+}
+.send_area .menu li:last-child{
+	border-right: none;
+}
+.send_area .editor_area{
+	width: 100%;
+	min-height: 300px;
+	max-height: 400px;
+	overflow-y: scroll;
+	border: 1px solid #000000;
+	padding: 10px;
+	box-sizing: border-box;
+	border-top: 1px solid #00a9cd;
+}
+.send_area .send_area_title{
+	font-weight: 600;
+	height: 40px;
+	line-height: 40px;
+	padding-left: 20px;
+	border-bottom: 1px solid #000000;
 }

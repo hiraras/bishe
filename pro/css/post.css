@@ -4,7 +4,6 @@
 	box-shadow: 0 0 5px #000000;
 	overflow: hidden;
 }
-
 .comment{
 	width: 100%;
 	position: relative;
@@ -43,21 +42,51 @@
 	border: 1px solid #000000;
 	border-radius: 4px;
 	padding: 5px 10px;
+	margin-left: 15px;
 }
 .comment .comment_msg span{
 	margin-left: 10px;
 }
-
-
-
-
-
-
-
-
-
-
-
+.comment .comment_text img{
+	max-width: 900px;
+	height: auto;
+}
+.main .content .post_msg{
+	border-bottom: 1px solid #000000;
+	font-size: 24px;
+	padding: 10px;
+}
+.comment .comment_content .reply_item{
+	border-radius: 6px;
+	background: #82bdcc;
+	width: 94%;
+	margin: 0 auto;
+	height: auto;
+	padding: 5px 10px;
+	border-bottom: 1px solid #FFFFFF;
+}
+.comment .comment_content .reply_item:last-child{
+	margin-bottom: 20px;
+}
+.comment_content .reply_item img{
+	height: 50px;
+	width: 50px;
+	float: left;
+	border-radius: 3px;
+}
+.comment_content .reply_item .reply_content{
+	float: left;
+	width: 800px;
+	/*margin-left: 10px;*/
+	padding-left: 15px;
+	box-sizing: border-box;
+}
+.comment_content .reply_item .reply_text{
+	display: inline-block;
+}
+.comment_content .reply_item .reply_time{
+	text-align: right;
+}
 
 
 

@@ -2,38 +2,30 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
-		<script src="../js/jquery/jquery-1.8.3.min.js"></script>
-		<script src="../common/js/common.js"></script>
+		<title>个人中心</title>
+		<link rel="stylesheet" type="text/css" href="../common/css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/personal_space.css"/>
 	</head>
 	<body>
+		<div class="header">
+			<ul class="have_login" id="haveLogin">
+				<li id="myRoom">个人中心</li>
+				<li id="myMsg">消息</li>
+				<li id="toIndex">首页</li>
+				<li>
+					<img src="../img/defaultHeadImg.jpg"/>
+				</li>
+			</ul>
+			<ul class="not_login" id="notLogin">
+				<li id="headerRegister">注册</li>
+				<li id="headerLogin">登录</li>
+			</ul>
+		</div>
 		<div class="container">
-			<input type="text" id="nickname" />
-			<img src="" id="headImg"/>
-			<input type="text" id="username" />
-			<input type="text" id="username" />
-			<input type="text" id="username" />
-			<input type="text" id="username" />
-			<input type="text" id="username" />
-			<input type="text" id="username" />
-			<input type="text" id="username" />
+			
 		</div>
 	</body>
-	<script>
-		(function(){
-			var domain = "http://localhost";
-			var username = "17826877713";
-			$.ajax({
-				type: "get",
-				data: {username:username},
-				url: domain+"/pro/php/getUserMsg.php",
-				async: true,
-				success:function(result){
-					result = JSON.parse(result);
-					console.log(result);
-				}
-			});
-		}());
-	</script>
-	
+	<script src="../js/jquery/jquery-1.8.3.min.js"></script>
+	<script src="../common/js/common.js"></script>
+	<script src="../js/personal_space.js"></script>
 </html>
