@@ -1,0 +1,65 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input type="text" placeholder="data1" id="data1" />
+		<input type="text" placeholder="data2" id="data2" />
+		<input type="text" placeholder="data3" id="data3" />
+		<input type="text" placeholder="data4" id="data4" />
+		<input type="text" placeholder="data5" id="data5" />
+		<input type="text" placeholder="data6" id="data6" />
+		<input type="text" placeholder="data7" id="data7" />
+		<input type="text" placeholder="data8" id="data8" />
+		<input type="text" placeholder="data9" id="data9" />
+		<input type="text" placeholder="data10" id="data10" />
+		<button id='submit'>发送</button>
+	</body>
+	<script src="../js/jquery/jquery-1.8.3.min.js"></script>
+	<script>
+		var data1,data2,data3,data4,data5,data6,data7,data8,data9,data10;
+		$("#submit").click(function(){
+			data1 = $("#data1").val();
+			data2 = $("#data2").val();
+			data3 = $("#data3").val();
+			data4 = $("#data4").val();
+			data5 = $("#data5").val();
+			data6 = $("#data6").val();
+			data7 = $("#data7").val();
+			data8 = $("#data8").val();
+			data9 = $("#data9").val();
+			data10 = $("#data10").val();
+			/*
+			var requestNum = 10;
+			for(var i=0;i<requestNum;i++){
+				phpRequest();
+			}
+			*/
+			phpRequest();
+		});
+		function phpRequest(){
+			$.ajax({
+				type:"post",
+				url:"../php/insertData.php",
+				async:false,
+				data: {
+					data1:data1,
+					data2:data2,
+					data3:data3,
+					data4:data4,
+					data5:data5,
+					data6:data6
+				},
+				success:function(data){
+					console.log(data);
+				},
+				error: function(e){
+					console.log(e);
+				}
+			});
+		}
+		
+	</script>
+</html>

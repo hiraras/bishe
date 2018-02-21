@@ -103,6 +103,7 @@ li.to_blue{
 	left: 250px;
 	display: none;
 	background: #FFFFFF;
+	overflow: hidden;
 }
 .left .theme_content{
 	border-radius: 5px;
@@ -174,6 +175,5 @@ li.to_blue{
 .bar .bar_descript{
 	width: 96%;
 	margin: 0 auto;
-	text-indent: 2em;
 	font-size: 14px;
 }
