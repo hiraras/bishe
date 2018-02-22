@@ -56,7 +56,7 @@ li.to_blue{
 	float: left;
 	background: #FFFFFF;
 	margin-right: 10px;
-	height: 1000px;
+	/*height: 1000px;*/
 	border-radius: 5px;
 	box-shadow: 0px 0px 5px #000000;
 	position: relative;
@@ -90,6 +90,7 @@ li.to_blue{
 	height: 50px;
 	line-height: 50px;
 	border-bottom: 1px solid #818181;
+	cursor: pointer;
 }
 .left .themes .theme:hover{
 	background: #00a9cd;
@@ -118,6 +119,7 @@ li.to_blue{
 	margin-bottom: 10px;
 	padding-left: 5px;
 	padding-right: 5px;
+	cursor: pointer;
 }
 .left .theme_content:hover{
 	color: #00a9cd;
@@ -140,10 +142,11 @@ li.to_blue{
 .content .right{
 	width: 840px;
 	float: left;
-	height: 1000px;
+	/*height: 1000px;*/
 	background: #FFFFFF;
 	border-radius: 5px;
 	box-shadow: 0px 0px 5px #000000;
+	padding-bottom: 20px;
 }
 .right .row_bar{
 	width: 100%;
@@ -159,6 +162,7 @@ li.to_blue{
 	position: relative;
 	overflow: hidden;
 	cursor: pointer;
+	max-width: 240px;
 }
 .row_bar .bar .bar_title img{
 	height: 80px;
@@ -171,6 +175,15 @@ li.to_blue{
 	float: left;
 	width: 150px;
 	margin-left: 5px;
+	height: 32px;
+	overflow: hidden;
+}
+.row_bar .bar .bar_title .bar_hot{
+	font-size: 14px;
+	height: auto;
+	color: #fb7000;
+	overflow: hidden;
+	line-height: 22px;
 }
 .bar .bar_descript{
 	width: 96%;

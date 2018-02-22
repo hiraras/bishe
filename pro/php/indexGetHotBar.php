@@ -1,9 +1,8 @@
 <?php
 require "connect.php";
-$sortName = $_POST['sortName'];
 $hotStandrad = 50000;
-$limitNum = 40;
-$sql = "select * from bars where themeBelong='$sortName' and concernNum>'$hotStandrad' ORDER BY concernNum DESC limit $limitNum";
+$barNum = 21;
+$sql = "select * from bars where concernNum>'$hotStandrad' ORDER BY concernNum DESC limit $barNum";
 $result = mysql_query($sql);
 //获得的结果数组只能用数字索引，不能用key值
 //$arr = mysql_fetch_row($result);
