@@ -152,3 +152,16 @@ $("#myMsg").on("click",function(){
 $("#myRoom").on("click",function(){
 	window.location.href = "";
 });
+
+$('.btn_search').click(function(){
+	var value = $('#search').val();
+	if(value != ''){
+		searchBar(value);
+	}else{
+		window.location.href = 'http://localhost/pro/index.html';
+	}
+});
+
+function searchBar(value){
+	window.location.href = 'http://localhost/pro/page/bar.html?'+'barName='+value;
+}
