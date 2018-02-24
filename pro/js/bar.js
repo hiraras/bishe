@@ -9,4 +9,5 @@
 		}
 	}
 	$('#search').val(barName);
+	$('#search').attr('maxlength',80);
 }());

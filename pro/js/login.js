@@ -27,6 +27,7 @@ function testLogin(){
 							try{
 								result = JSON.parse(result)[0];
 //								console.log(result);
+								getUserMsg(result.username);
 								sessionStorage.setItem("user",result.username);
 								sessionStorage.setItem("userLevel",result.level);
 								window.location.href = "../index.html";
@@ -84,3 +85,19 @@ $("#username").on("blur",function(){
 		$("#remind").html("请输入正确的账号");
 	}
 });
+
+function getUserMsg(userName){
+	var domain = "http://localhost";
+	$.ajax({
+		url: domain + "/pro/php/getUserMsg.php",
+		type: 'get',
+		async: true,
+		data: {
+			username: userName
+		},
+		success: function(result){
+			var data = JSON.parse(result);
+			sessionStorage.setItem('userNickName',data.nickname);
+		}
+	});
+}
