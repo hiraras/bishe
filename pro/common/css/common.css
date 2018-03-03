@@ -111,8 +111,11 @@ ul,li{
 }
 /*页码*/
 .index{
-	height: 46px;
 	text-align: center;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
 }
 .index .index_item{
 	border: 1px solid #000000;
@@ -120,12 +123,34 @@ ul,li{
 	text-align: center;
 	padding: 5px 10px;
 	cursor: pointer;
-	position: relative;
-	top: 12px;
+	display: inline-block;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
 }
 .index .index_item:hover{
 	border-color: #00a9cd;
 	color: #00a9cd;
+}
+.index .paging_btn{
+	border: 1px solid #000000;
+	border-radius: 4px;
+	text-align: center;
+	padding: 5px 10px;
+	cursor: pointer;
+	display: inline-block;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+}
+.index .paging_btn:hover{
+	border-color: #00a9cd;
+	color: #00a9cd;
+}
+.index .index_item.currIndex{
+	border: none;
 }
 /*发送区域*/
 .send_area{

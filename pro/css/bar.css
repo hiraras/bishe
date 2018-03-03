@@ -37,12 +37,15 @@
 }
 .post_status_item{
 	display: inline-block;
+	margin-right: 10px;
 }
 
 .intro .intro_content{
 	margin-left: 20px;
-	margin-top: 10px;
+	margin-top: 8px;
 	width: 300px;
+	height: 62px;
+	overflow: hidden;
 }
 
 .intro .btn_attention{
@@ -87,6 +90,7 @@
 	display: inline-block;
 	height: 100%;
 	margin-left: 2%;
+	line-height: 50px;
 }
 .post .poster{
 	width: 15%;

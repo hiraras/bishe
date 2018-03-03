@@ -18,6 +18,8 @@ var domain = "http://localhost";
 	showThemeBar();
 	//获得右边部分的人气高的吧
 	getHotBar();
+	//设置点击左边的主题分类跳转到theme页面
+	toThemes();
 	//去掉common.js内绑定的事件，因为index页面在page外面
 	$("#headerLogin").off('click');
 	$("#headerRegister").off('click');
@@ -104,7 +106,7 @@ function showThemeBar(){
 
 function recommendBar(sortName){
 	$.ajax({
-		type:"post",
+		type:"get",
 		url: domain + "/pro/php/getRecommendBar.php",
 		async: true,
 		data: {
@@ -115,7 +117,11 @@ function recommendBar(sortName){
 			for(var i=0;i<data.length;i++){
 				var $div = $('<div></div>');
 				$div.addClass('theme_content');
+				$div.attr('barId',data[i].id);
 				$div.html(data[i].barName);
+				$div.click(function(){
+					window.location.href = 'http://localhost/pro/page/bar.html?'+'barName='+$(this).html();
+				});
 				$('#themeContainer').append($div);
 			}
 		}
@@ -156,6 +162,8 @@ function getHotBar(){
 				}
 				var $barDiv = $('<div></div>');
 				$barDiv.addClass('bar');
+				$barDiv.attr('barName',data[i].barName);
+				$barDiv.attr('barId',data[i].id);
 				var $barTitleDiv = $('<div></div>');
 				$barTitleDiv.addClass('bar_title');
 				var $barImg = $('<img />');
@@ -168,7 +176,7 @@ function getHotBar(){
 				var $span1 = $('<span></span>');
 				$span1.html('关注数:'+data[i].concernNum);
 				var $span2 = $('<span></span>');
-				$span2.html('帖子数:'+data[i].concernNum);
+				$span2.html('帖子数:'+data[i].postNum);
 				var $br = $('<br />');
 				var $clearFloatDiv = $('<div></div>');
 				$clearFloatDiv.addClass('clear_float');
@@ -188,12 +196,24 @@ function getHotBar(){
 			}
 			//使left和right相同高度，加20是加上right最下面的padding-bottom的高度20px
 			$('#leftContainer').css('height',$('#rightContainer').height()+20);
-		}
+			//点击吧时跳转到对应吧
+			addRightBarJump();
+		}	
 	});
 }
 
+function addRightBarJump(){
+	$('.bar').click(function(){
+		window.location.href = 'http://localhost/pro/page/bar.html?'+'barName='+$(this).attr('barName');
+	});
+}
 
-
+function toThemes(){
+	$('.theme').click(function(){
+		var themeName = $(this).html();
+		window.location.href = 'http://localhost/pro/page/themes.html?' + 'themeName=' + themeName;
+	});
+}
 
 
 

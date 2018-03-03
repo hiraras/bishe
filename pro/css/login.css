@@ -25,9 +25,10 @@ html{
 }
 canvas{
 	/*background: deepskyblue;*/
-	background: dodgerblue;
+	/*background: dodgerblue;*/
 	position: relative;
 	top: 8px;
+	border: 1px solid #000000;
 }
 .container input{
 	width: 200px;

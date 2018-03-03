@@ -4,23 +4,30 @@ function getRandom(min,max){
 }
 //存储分页公共函数的对象
 var dataPaging = {
-	//添加子元素
+	//数据、默认一页item数,页码数
+	data: [],
+	msgNum: 10,
+	index: 0,
+	totalPageNum: 0,
+	//添加子元素,ele为需要添加子元素的父元素
 	addChild: function(ele){
-		var $div;
 		var n;
+		this.removeChild(ele);
 		//是否有不完整的页面
-		if(arr.length % msgNum != 0){
-			if(index == Math.floor(arr.length / msgNum)){
-				n = arr.length % msgNum;
+		if(this.data.length % this.msgNum != 0){
+			if(this.index == Math.floor(this.data.length / this.msgNum)){
+				n = this.data.length % this.msgNum;
 			}else{
-				n = msgNum;
+				n = this.msgNum;
 			}
+			this.totalPageNum = Math.floor(this.data.length / this.msgNum);
 		}else{
-			n = msgNum;
+			n = this.msgNum;
+			this.totalPageNum = this.data.length / this.msgNum;
 		}
 		for(var i=0;i<n;i++){
-			$div = this.createChild();
-			$(ele).append($div);
+			var arrData = this.data.slice(this.index*this.msgNum+i,this.index*this.msgNum+i+1);
+			$(ele).append(this.createChild(arrData[0]));
 		}
 	},
 	//页码改变时刷新页面数据
@@ -35,10 +42,11 @@ var dataPaging = {
 	removeChild: function(ele){
 		$(ele).children().remove();
 	},
+	//创建子item，需要重新赋值，因为每个页面的item代码生成方式不同
 	createChild: function(){
-		var $div = $("<div></div>");
-		$div.addClass("msg_child");
-		return $div;
+//		var $div = $("<div></div>");
+//		$div.addClass("msg_child");
+//		return $div;
 	}
 };
 //判断是否登录
@@ -58,6 +66,7 @@ function init(){
 	isLogin();
 }
 init();
+
 function bindEvent(){
 	$("#login").on("click",function(){
 		window.location.href = "login.html";
@@ -79,7 +88,7 @@ function createCheckCode(){
 	//验证码字符串
 	var str = "";
 	var myCanvas = document.getElementById("checkCodeImg");
-	myCanvas.style.background = getRandomColor();
+//	myCanvas.style.background = getRandomColor();
 	var ctx = myCanvas.getContext("2d");
 	ctx.clearRect(0,0,myCanvas.width,myCanvas.height);
 	for(var i=0;i<len;i++){

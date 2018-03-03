@@ -33,6 +33,7 @@ function testLogin(){
 								window.location.href = "../index.html";
 							}catch(e){
 								$("#remind").html("发生未知错误，请稍后再试!");
+								console.log(e);
 							}
 						}
 					},
