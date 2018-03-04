@@ -153,7 +153,7 @@ function initIndex(data){
 			});
 		}else{
 			$('.index_item').each(function(index){
-				$(this).html(dataPaging.index + 1 - (halfIndexNum - index));
+				$(this).html(dataPaging.index + 1 - (halfIndexNum - index - 1));
 			});
 		}
 		$('.index_item').each(function(index){
