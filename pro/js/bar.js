@@ -11,7 +11,7 @@ var domain = 'http://localhost';
 		}
 	}
 	$('#search').attr('maxlength',80);
-	$('#search').val(barName+'吧');
+	$('#search').val(barName);
 	getBarMsg(barName);
 	getPostsMsg(barName);
 }());
