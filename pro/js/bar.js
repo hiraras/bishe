@@ -14,6 +14,10 @@ var domain = 'http://localhost';
 	$('#search').val(barName);
 	getBarMsg(barName);
 	getPostsMsg(barName);
+	$('.face').click(function(){
+		var $img = $(this).removeClass();
+		$('#editorArea').append($img);
+	});
 }());
 
 function getBarMsg(barName){
