@@ -11,21 +11,26 @@ var domain = 'http://localhost';
 		}
 	}
 	$('#themeTitle').html(themeName);
-	initPagingIndexClick();
+	initPagingIndexClick(themeName);
 	getRecommand(themeName);
-	getBarMsg(themeName);
+	getBarMsg(themeName,0);
 }());
-function initPagingIndexClick(){
+function initPagingIndexClick(themeName){
 	$('#prevBtn').click(function(){
-		prevPage();
+		prevPage(themeName);
 	});
 	$('#nextBtn').click(function(){
-		nextPage();
+		nextPage(themeName);
+	});
+	$('#firstPageBtn').click(function(){
+		firstPage(themeName);
+	});
+	$('#lastPageBtn').click(function(){
+		lastPage(themeName);
 	});
 	$('.index_item').click(function(){
-		dataPaging.index = Number($(this).html()) - 1;
-		dataPaging.addChild($('#bars'));
-		initIndex();
+		var index = Number($(this).html()) - 1;
+		getBarMsg(themeName,index);
 	});
 }
 function getRecommand(themeName){
@@ -53,130 +58,166 @@ function getRecommand(themeName){
 	});
 }
 
-function getBarMsg(themeName){
+function initIndex(){
+	var maxShowIndex = 10;
+	var currIndex = Number($('#bars').attr('index'));
+	var totalNum = Number($('#bars').attr('totalpagenum'));
+	var halfIndexNum = Math.floor(maxShowIndex / 2) + 1;
+	if(currIndex == 0){
+		$('#prevBtn').css('display','none');
+		$('#firstPageBtn').css('display','none');
+	}else{
+		$('#prevBtn').css('display','inline-block');
+		$('#firstPageBtn').css('display','inline-block');
+	}
+	if(currIndex == totalNum){
+		$('#nextBtn').css('display','none');
+		$('#lastPageBtn').css('display','none');
+	}else{
+		$('#nextBtn').css('display','inline-block');
+		$('#lastPageBtn').css('display','inline-block');
+	}
+	$('.index_item').removeClass('currIndex');
+	
+	if(totalNum < maxShowIndex){
+		$('.index_item').each(function(index){
+			if(index > totalNum){
+				$(this).css('display','none');
+			}
+			if(index == currIndex){
+				$(this).addClass('currIndex');
+			}
+		});
+	}else{
+		if(currIndex < halfIndexNum){
+			$('.index_item').each(function(index){
+				$(this).html(index + 1);
+			});
+		}else if(currIndex > totalNum - halfIndexNum){
+			$('.index_item').each(function(index){
+				$(this).html(totalNum + 1 - (maxShowIndex - 1 - index));
+			});
+		}else{
+			$('.index_item').each(function(index){
+				$(this).html(currIndex + 1 - (halfIndexNum - index - 1));
+			});
+		}
+		$('.index_item').each(function(index){
+			if($(this).html() == currIndex + 1){
+				$(this).addClass('currIndex');
+			}
+		});
+	}
+}
+
+function getBarMsg(themeName,indexNum){
 	$.ajax({
 		url: domain + "/pro/php/getThemeBar.php",
 		type: 'get',
 		async: true,
 		data: {
-			sortName: themeName
+			themeName: themeName,
+			indexNum: indexNum
 		},
 		success: function(result){
 			var data = JSON.parse(result);
+			console.log(data);
 			if(data.length != 0){
-				dataPaging.data = data;
-				//一页我想给他显示的数量
-				dataPaging.msgNum = 14;
-				dataPaging.createChild = function(data){
-					var $barIntroDiv = $('<div></div>');
-					$barIntroDiv.addClass('bar_intro');
-					$barIntroDiv.attr('barId',data.id);
-					$barIntroDiv.attr('barName',data.barName);
-					var $barImg = $('<img />');
-					$barImg.attr('src',data.barImg);
-					var $barContentDiv = $('<div></div>');
-					$barContentDiv.addClass('bar_content');
-					var $barTitleDiv = $('<div></div>');
-					$barTitleDiv.addClass('bar_title');
-					$barTitleDiv.html(data.barName+'吧');
-					var $lineDiv = $('<div></div>');
-					$lineDiv.addClass('line');
-					var $postStatusDiv = $('<div></div>');
-					$postStatusDiv.addClass('post_status');
-					var $concernNumDiv = $('<div></div>');
-					$concernNumDiv.addClass('post_status_item');
-					$concernNumDiv.html('人数:'+data.concernNum);
-					var $postNumDiv = $('<div></div>');
-					$postNumDiv.addClass('post_status_item');
-					$postNumDiv.html('帖子:'+data.postNum);
-					var $introDiv = $('<div></div>');
-					$introDiv.addClass('intro');
-					$introDiv.html(data.barDescript);
-					$barIntroDiv.append($barImg);
-					$barIntroDiv.append($barContentDiv);
-					$barContentDiv.append($barTitleDiv);
-					$barContentDiv.append($lineDiv);
-					$barContentDiv.append($postStatusDiv);
-					$barContentDiv.append($introDiv);
-					$postStatusDiv.append($concernNumDiv);
-					$postStatusDiv.append($postNumDiv);
-					$barIntroDiv.click(function(){
-						window.location.href = 'http://localhost/pro/page/bar.html?'+'barName='+$(this).attr('barName');
-					});
-					return $barIntroDiv;
-				}
-				dataPaging.addChild($('#bars'));
-				if(data.length <= dataPaging.msgNum){
-					$('.index').css('display','none');
-				}else{
-					initIndex(data);
-				}
-				$('.left').css('height',$('.right').height()+20);
+				freshBarItems(data, indexNum);
+			}else{
+				//没有获得数据
 			}
 		}
 	});
 }
 
-function initIndex(data){
-	//页码最多的数量
-	var indexNum = 10;
-	var halfIndexNum = Math.floor(indexNum / 2) + 1;
-	if(dataPaging.index == 0){
-		$('#prevBtn').css('display','none');
-	}else{
-		$('#prevBtn').css('display','inline-block');
+function freshBarItems(data, indexNum){
+	var pageNum = data.totalNum / data.pageItemNum;
+	//是否有页面的内容是只有一部分的
+	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
+	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
+	$('#bars').find('.bar_intro').remove();
+	$('#bars').attr('index', indexNum);
+	$('#bars').attr('totalpagenum', --pageNum);
+	for(var i=0;i<data.value.length;i++){
+		var $item = createBarItem(data.value[i]);
+		$('#bars').find('.index').before($item);
 	}
-	if(dataPaging.index == dataPaging.totalPageNum){
-		$('#nextBtn').css('display','none');
-	}else{
-		$('#nextBtn').css('display','inline-block');
-	}
-	$('.index_item').removeClass('currIndex');
-	
-	if(dataPaging.totalPageNum < indexNum){
-		$('.index_item').each(function(index){
-			if(index > dataPaging.totalPageNum){
-				$(this).css('display','none');
-			}
-			if(index == dataPaging.index){
-				$(this).addClass('currIndex');
-			}
-		});
-	}else{
-		if(dataPaging.index < halfIndexNum){
-			$('.index_item').each(function(index){
-				$(this).html(index + 1);
-			});
-		}else if(dataPaging.index > dataPaging.totalPageNum - halfIndexNum){
-			$('.index_item').each(function(index){
-				$(this).html(dataPaging.totalPageNum + 1 - (indexNum - 1 - index));
-			});
-		}else{
-			$('.index_item').each(function(index){
-				$(this).html(dataPaging.index + 1 - (halfIndexNum - index - 1));
-			});
-		}
-		$('.index_item').each(function(index){
-			if($(this).html() == dataPaging.index + 1){
-				$(this).addClass('currIndex');
-			}
-		});
-	}
+	initIndex();
+	//使左边部分和右边部分高度一样
 	$('.left').css('height',$('.right').height()+20);
 }
-//分页中点击上一页执行的函数
-function prevPage(){
-	if(dataPaging.index != 0){
-		dataPaging.index --;
-		dataPaging.addChild($('#bars'));
-		initIndex();
+
+function prevPage(themeName){
+	var currIndex = Number($('#bars').attr('index'));
+	if(currIndex > 0){
+		getBarMsg(themeName, --currIndex);
 	}
 }
-//分页中点击下一页执行的函数
-function nextPage(){
-	if(dataPaging.index != dataPaging.totalPageNum){
-		dataPaging.index ++;
-		dataPaging.addChild($('#bars'));
-		initIndex();
+
+function nextPage(themeName){
+	var currIndex = Number($('#bars').attr('index'));
+	var totalNum = Number($('#bars').attr('totalpagenum'));
+	console.log(currIndex, totalNum);
+	if(currIndex < totalNum){
+		console.log(currIndex);
+		getBarMsg(themeName, ++currIndex);
 	}
 }
+
+function firstPage(themeName){
+	var currIndex = Number($('#bars').attr('index'));
+	if(currIndex != 0){
+		getBarMsg(themeName, 0);
+	}
+}
+
+function lastPage(themeName){
+	var currIndex = Number($('#bars').attr('index'));
+	var totalNum = Number($('#bars').attr('totalpagenum'));
+	if(currIndex != totalNum){
+		getBarMsg(themeName, totalNum);
+	}
+}
+
+//创建bar元素(组件)
+function createBarItem(data){
+	var $barIntroDiv = $('<div></div>');
+	$barIntroDiv.addClass('bar_intro');
+	$barIntroDiv.attr('barId',data.id);
+	$barIntroDiv.attr('barName',data.barName);
+	var $barImg = $('<img />');
+	$barImg.attr('src',data.barImg);
+	var $barContentDiv = $('<div></div>');
+	$barContentDiv.addClass('bar_content');
+	var $barTitleDiv = $('<div></div>');
+	$barTitleDiv.addClass('bar_title');
+	$barTitleDiv.html(data.barName+'吧');
+	var $lineDiv = $('<div></div>');
+	$lineDiv.addClass('line');
+	var $postStatusDiv = $('<div></div>');
+	$postStatusDiv.addClass('post_status');
+	var $concernNumDiv = $('<div></div>');
+	$concernNumDiv.addClass('post_status_item');
+	$concernNumDiv.html('人数:'+data.concernNum);
+	var $postNumDiv = $('<div></div>');
+	$postNumDiv.addClass('post_status_item');
+	$postNumDiv.html('帖子:'+data.postNum);
+	var $introDiv = $('<div></div>');
+	$introDiv.addClass('intro');
+	$introDiv.html(data.barDescript);
+	$barIntroDiv.append($barImg);
+	$barIntroDiv.append($barContentDiv);
+	$barContentDiv.append($barTitleDiv);
+	$barContentDiv.append($lineDiv);
+	$barContentDiv.append($postStatusDiv);
+	$barContentDiv.append($introDiv);
+	$postStatusDiv.append($concernNumDiv);
+	$postStatusDiv.append($postNumDiv);
+	$barIntroDiv.click(function(){
+		window.location.href = 'http://localhost/pro/page/bar.html?'+'barName='+$(this).attr('barName');
+	});
+	return $barIntroDiv;
+}
+
+

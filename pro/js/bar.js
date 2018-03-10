@@ -14,10 +14,7 @@ var domain = 'http://localhost';
 	$('#search').val(barName);
 	getBarMsg(barName);
 	getPostsMsg(barName);
-	$('.face').click(function(){
-		var $img = $(this).removeClass();
-		$('#editorArea').append($img);
-	});
+	initSendAreaBtnsPressEvent();
 }());
 
 function getBarMsg(barName){
@@ -41,7 +38,32 @@ function getPostsMsg(){
 		
 }
 
+function initSendAreaBtnsPressEvent(){
+	$('.face').click(function(){
+		var $img = $(this).clone();
+		$img.removeAttr('class');
+		$('#editorArea').append($img);
+		$('#faceContainer').css('display','none');
+	});
+	//头像框存在时，如果点击外面部分则消失
+	$('html').click(function(e){
+		e = e || window.event;
+		var target = e.target || window.srcElement;
+		if(!($(target).hasClass('face_container') || $(target).attr('id') === 'selectFace')){
+			if($('#faceContainer').css('display') === 'block'){
+				$('#faceContainer').css('display','none');
+			}
+		}
+	});
 
+	$('#selectFace').click(function(){
+		if($('#faceContainer').css('display') === 'block'){
+			$('#faceContainer').css('display','none');
+		}else{
+			$('#faceContainer').css('display','block');
+		}
+	});
+}
 
 
 

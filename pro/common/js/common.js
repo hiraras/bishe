@@ -9,6 +9,8 @@ var dataPaging = {
 	msgNum: 10,
 	index: 0,
 	totalPageNum: 0,
+	//页码最多的数量
+	indexNum: 10,
 	//添加子元素,ele为需要添加子元素的父元素
 	addChild: function(ele){
 		var n;
@@ -47,7 +49,7 @@ var dataPaging = {
 //		var $div = $("<div></div>");
 //		$div.addClass("msg_child");
 //		return $div;
-	}
+	},
 };
 //判断是否登录
 function isLogin(){
