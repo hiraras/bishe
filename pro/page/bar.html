@@ -34,7 +34,7 @@
 						<div>
 							<img src="../img/2.jpg" alt="" />
 						</div>
-						<div>
+						<div class="bar_intro_container">
 							<h2 id = 'barName'></h2>
 							<div class="post_status">
 								<div class="post_status_item" id = 'concernNum'></div>
@@ -47,9 +47,6 @@
 						<button class="btn_attention">
 							关注
 						</button>
-						<button class="btn_public">
-							发帖
-						</button>
 					</div>
 					<div class="posts">
 						<div class="post">
@@ -58,9 +55,7 @@
 									<p class="is_top">置顶</p>
 									<p class="is_great">精</p>
 									<p class="post_title_text">
-										阿娇诶of姐啊俄方i哦叫哦i均为阿凡i哦饿就无法
-										阿娇诶of姐啊俄方i哦叫哦i均为阿凡i哦饿就无法
-										v阿娇诶of姐啊俄方i哦叫哦i均为阿凡i哦饿就无法
+										一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十
 									</p>
 								</div>
 								<div class="post_img_container">
@@ -88,51 +83,75 @@
 								</div>
 							</div>
 						</div>
+						<ul class="index">
+							<li class="paging_btn" id="firstPageBtn">首页</li>
+							<li class="paging_btn" id="prevBtn">上一页</li>
+							<li class="index_item">1</li>
+							<li class="index_item">2</li>
+							<li class="index_item">3</li>
+							<li class="index_item">4</li>
+							<li class="index_item">5</li>
+							<li class="index_item">6</li>
+							<li class="index_item">7</li>
+							<li class="index_item">8</li>
+							<li class="index_item">9</li>
+							<li class="index_item">10</li>
+							<li class="paging_btn" id="nextBtn">下一页</li>
+							<li class="paging_btn" id="lastPageBtn">尾页</li>
+						</ul>
 					</div>
-					<ul class="index">
-						<li class="paging_btn" id="prevBtn">上一页</li>
-						<li class="index_item">1</li>
-						<li class="index_item">2</li>
-						<li class="index_item">3</li>
-						<li class="index_item">4</li>
-						<li class="index_item">5</li>
-						<li class="index_item">6</li>
-						<li class="index_item">7</li>
-						<li class="index_item">8</li>
-						<li class="index_item">9</li>
-						<li class="index_item">10</li>
-						<li class="paging_btn" id="nextBtn">下一页</li>
-					</ul>
 					<div class="send_area" id="sendArea">
 						<p class="send_area_title">发表帖子</p>
 						<div class="post_title">
 							<input type="text" placeholder="请输入帖子标题(最多80字)" maxlength="80" id="inputPostTitle" />
 						</div>
 						<ul class="menu">
-							<li id="selectImg" id="selectImg">图片</li>
+							<li id="selectImg">图片</li>
+							<form action="" method="post" enctype="multipart/form-data" name="upload_form" style="display: none" id="uploadImgForm">
+								<input type="file" id="inputSelectImg" accept="image/*" onchange="imgChange(event)" />
+							</form>
 							<li id="selectFace">表情</li>
 						</ul>
 						<div class="editor_area" contenteditable="true" id="editorArea">
 							
 						</div>
-						<div class="face_container" id="faceContainer">
-							<img src="../img/proImg/face1.png" alt="" class = "face" />
-							<img src="../img/proImg/face2.png" alt="" class = "face" />
-							<img src="../img/proImg/face3.png" alt="" class = "face" />
-							<img src="../img/proImg/face4.png" alt="" class = "face" />
-							<img src="../img/proImg/face1.png" alt="" class = "face" />
-							<img src="../img/proImg/face2.png" alt="" class = "face" />
-							<img src="../img/proImg/face3.png" alt="" class = "face" />
-							<img src="../img/proImg/face4.png" alt="" class = "face" />
-							<img src="../img/proImg/face1.png" alt="" class = "face" />
-							<img src="../img/proImg/face2.png" alt="" class = "face" />
-							<img src="../img/proImg/face3.png" alt="" class = "face" />
-							<img src="../img/proImg/face4.png" alt="" class = "face" />
-							<img src="../img/proImg/face1.png" alt="" class = "face" />
-							<img src="../img/proImg/face2.png" alt="" class = "face" />
-							<img src="../img/proImg/face3.png" alt="" class = "face" />
-							<img src="../img/proImg/face4.png" alt="" class = "face" />
+						<div class="not_login_tip" id="notLoginTip">
+							<a href="http://localhost/pro/page/login.html">请先登录</a>
 						</div>
+						<div class="face_container" id="faceContainer">
+							<img src="../img/proImg/face1.png" class = "face" />
+							<img src="../img/proImg/face2.png" class = "face" />
+							<img src="../img/proImg/face3.png" class = "face" />
+							<img src="../img/proImg/face4.png" class = "face" />
+							<img src="../img/proImg/face5.png" class = "face" />
+							<img src="../img/proImg/face6.png" class = "face" />
+							<img src="../img/proImg/face7.png" class = "face" />
+							<img src="../img/proImg/face8.png" class = "face" />
+							<img src="../img/proImg/face9.png" class = "face" />
+							<img src="../img/proImg/face10.png" class = "face" />
+							<img src="../img/proImg/face11.png" class = "face" />
+							<img src="../img/proImg/face12.png" class = "face" />
+							<img src="../img/proImg/face13.png" class = "face" />
+							<img src="../img/proImg/face14.png" class = "face" />
+							<img src="../img/proImg/face15.png" class = "face" />
+							<img src="../img/proImg/face16.png" class = "face" />
+							<img src="../img/proImg/face17.png" class = "face" />
+							<img src="../img/proImg/face18.png" class = "face" />
+							<img src="../img/proImg/face19.png" class = "face" />
+							<img src="../img/proImg/face20.png" class = "face" />
+							<img src="../img/proImg/face21.png" class = "face" />
+							<img src="../img/proImg/face22.png" class = "face" />
+							<img src="../img/proImg/face23.png" class = "face" />
+							<img src="../img/proImg/face24.png" class = "face" />
+							<img src="../img/proImg/face25.png" class = "face" />
+							<img src="../img/proImg/face26.png" class = "face" />
+							<img src="../img/proImg/face27.png" class = "face" />
+							<img src="../img/proImg/face28.png" class = "face" />
+							<img src="../img/proImg/face29.png" class = "face" />
+							<img src="../img/proImg/face30.png" class = "face" />
+						</div>
+						<button class="submit" id="submit">发布</button>
+						<span class="send_tip" id="sendTip">标题不能为空</span>
 					</div>
 				</div>
 			</div>

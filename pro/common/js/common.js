@@ -2,7 +2,7 @@
 function getRandom(min,max){
 	return Math.floor(Math.random()*(max-min+1)+min);
 }
-//存储分页公共函数的对象
+//存储分页公共函数的对象(已废弃留作一种思路备份)
 var dataPaging = {
 	//数据、默认一页item数,页码数
 	data: [],

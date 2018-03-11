@@ -14,8 +14,39 @@ var domain = 'http://localhost';
 	$('#search').val(barName);
 	getBarMsg(barName);
 	getPostsMsg(barName);
-	initSendAreaBtnsPressEvent();
+	init();
 }());
+
+function init(){
+	//设置帖子中图片点击放大
+	$('.post_img').click(resizeImg);
+	//初始化发表部分按钮点击事件
+	initSendAreaBtnsPressEvent();
+
+	$('#submit').click(function(){
+		onSubmitPostMsg();
+	});
+	//如果未登录不允许发帖
+	if(!!sessionStorage.getItem('user')){
+		$('#editorArea').attr('contenteditable','true');
+		$('#notLoginTip').css('display', 'none');
+		$('#submit').attr('disabled',false);
+	}else{
+		$('#editorArea').attr('contenteditable','false');
+		$('#notLoginTip').css('display', 'block');
+		$('#submit').attr('disabled',true);
+	}
+}
+
+function resizeImg(){
+	if($(this).css('height') == '100px'){
+		$(this).css('height','400px');
+		$(this).css('max-width','900px');
+	}else{
+		$(this).css('height','100px');
+		$(this).css('max-width','134px');
+	}
+}
 
 function getBarMsg(barName){
 	$.ajax({
@@ -27,15 +58,21 @@ function getBarMsg(barName){
 		},
 		success: function(result){
 			var data = JSON.parse(result);
+			var barDescript = data[0].barDescript;
+			if(data.length === 0){
+				window.location.href = domain + '/pro/page/notExistBar.html?'+'barName='+$('#search').val();
+				return ;
+			}
 			$('#barName').html(data[0].barName + '吧');
+			$('#barName').attr('barname',data[0].barName);
 			$('#concernNum').html('人数:'+data[0].concernNum);
-			$('#barIntroduce').html(data[0].barDescript);
+			$('#barIntroduce').html(barDescript);
 		}
 	});
 }
 
 function getPostsMsg(){
-		
+	
 }
 
 function initSendAreaBtnsPressEvent(){
@@ -63,7 +100,102 @@ function initSendAreaBtnsPressEvent(){
 			$('#faceContainer').css('display','block');
 		}
 	});
+	$('#selectImg').click(function(){
+		if(!!sessionStorage.getItem('user')){
+			$('#inputSelectImg').click();
+		}else{
+			alert('请先登录');
+		}
+	});
+}
+function imgChange(e){
+	var fileType = e.target.files[0].type;
+	if(fileType.indexOf('image') != -1){
+		var reader = new FileReader();
+		var file = document.getElementById('inputSelectImg').files[0];
+		reader.readAsDataURL(file);
+		reader.onload = function(e){
+			var fileData = e.target.result;
+			$.ajax({
+				url: domain + "/pro/php/getImgFile.php",
+				type: 'post',
+				async: true,
+				data: {
+					fileData: fileData
+				},
+				success: function(result){
+					var data = JSON.parse(result);
+					if(data.result == 'success'){
+						var $img = $('<img />');
+						$img.attr('src',data.filePath);
+						$('#editorArea').append($img);
+						$img.bind('DOMNodeRemoved',function(){
+							removeNotNeedImg(data.filePath);
+						});
+					}else{
+						alert('选择图片失败');
+					}
+				},
+				error: function(e){
+					console.log(e);
+				}
+			});
+		}
+	}else{
+		alert('只能上传图片');
+	}
 }
 
+function removeNotNeedImg(imgPath){
+	$.ajax({
+		type: 'get',
+		url: domain + "/pro/php/removeImg.php",
+		async: true,
+		data: {
+			imgPath: imgPath
+		},
+		success: function(result){
+			console.log(result);
+		}
+	});
+}
+
+function onSubmitPostMsg(){
+	var postTitle = $('#inputPostTitle').val();
+	var barBelong = $('#barName').attr('barName');
+	var creatorId = sessionStorage.getItem('user');
+	var nickName = sessionStorage.getItem('userNickName');
+	var postContent = $('#editorArea').html();
+	if(postTitle.trim() != ''){
+		$('#sendTip').css('display','none');
+		$.ajax({
+			url: domain + "/pro/php/sendPostMsg.php",
+			type: 'post',
+			async: true,
+			data: {
+				postTitle: postTitle,
+				barBelong: barBelong,
+				creatorId: creatorId,
+				nickName: nickName,
+				postContent: postContent
+			},
+			success: function(result){
+				if(result == 'success'){
+					$('#sendTip').css('display','inline').html('发布成功');
+					setTimeout(function(){
+						window.location.reload();
+					},500);
+				}else{
+					alert('未知错误,发布失败!');
+				}
+			},
+			error: function(e){
+				console.log(e);
+			}
+		});
+	}else{
+		$('#sendTip').css('display','inline');
+	}
+}
 
 

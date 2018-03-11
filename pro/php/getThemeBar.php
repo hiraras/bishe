@@ -2,7 +2,7 @@
 require "connect.php";
 $themeName = $_GET['themeName'];
 $indexNum = $_GET['indexNum'];
-$everyPageItemNum = 2;
+$everyPageItemNum = 14;
 $dataIndex = $indexNum*$everyPageItemNum;
 $sql = "select * from bars where themeBelong='$themeName' ORDER BY concernNum DESC limit $dataIndex,$everyPageItemNum";
 $sql2 = "select * from bars where themeBelong='$themeName'";
