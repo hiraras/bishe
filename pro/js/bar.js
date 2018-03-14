@@ -128,7 +128,8 @@ function imgChange(e){
 					if(data.result == 'success'){
 						var $img = $('<img />');
 						$img.attr('src',data.filePath);
-						$('#editorArea').append($img);
+						insertHTML($img,$('#editorArea'));
+						$('#editorArea').focus();
 						$img.bind('DOMNodeRemoved',function(){
 							removeNotNeedImg(data.filePath);
 						});
@@ -197,5 +198,35 @@ function onSubmitPostMsg(){
 		$('#sendTip').css('display','inline');
 	}
 }
-
-
+//在可编辑div中光标处插入对象(图片)
+function insertHTML(eleContent,eleContainer){
+	var sel, range;  
+	if (window.getSelection){  
+		// IE9 and non-IE  
+		sel = window.getSelection();  
+		if (sel.getRangeAt && sel.rangeCount){  
+			range = sel.getRangeAt(0);  
+			range.deleteContents();  
+			var el = document.createElement('div');  
+			var $el = $(el);
+			$el.append(eleContent);
+			var frag = document.createDocumentFragment(), node, lastNode;  
+			while ((node = el.firstChild)){  
+				lastNode = frag.appendChild(node);  
+			}  
+			range.insertNode(frag);
+			if(lastNode){
+				range = range.cloneRange();  
+				range.setStartAfter(lastNode);  
+				range.collapse(true);  
+				sel.removeAllRanges();  
+				sel.addRange(range);  
+			}  
+		}  
+	}else if(document.selection && document.selection.type !='Control'){  
+		eleContainer.focus(); //在非标准浏览器中 要先让你需要插入html的div 获得焦点  
+		ierange= document.selection.createRange();//获取光标位置  
+		ierange.pasteHTML(eleContent);    //在光标位置插入html 如果只是插入text 则就是fus.text="..."  
+		eleContainer.focus();      
+	}  
+}  
