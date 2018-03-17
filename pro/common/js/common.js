@@ -174,5 +174,21 @@ $('.btn_search').click(function(){
 });
 
 function searchBar(value){
-	window.location.href = 'http://localhost/pro/page/bar.html?'+'barName='+value;
+	var searchType = Number($('#searchMethodContainer').attr('searchType'));
+	if(searchType == 0){
+		window.location.href = 'http://localhost/pro/page/bar.html?'+'barName='+value;
+	}else{
+		window.location.href = 'http://localhost/pro/page/searchPost.html?'+'postTitle='+value;
+	}
 }
+
+$("#searchMethodContainer").on("click",function(){
+	$(this).children().removeClass('unselect_btn');
+	if($(this).attr('searchType') == '0'){
+		$('#searchMethodBar').addClass('unselect_btn');
+		$(this).attr('searchType','1');
+	}else{
+		$('#searchMethodPost').addClass('unselect_btn');
+		$(this).attr('searchType','0');
+	}
+});

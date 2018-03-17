@@ -12,7 +12,7 @@ $con = mysql_connect($host,$dataBaseUser,$dataBasePsw)or die("fail to link the d
 mysql_select_db("graduation");
 mysql_query("set names utf8");
 $now = date("Y-m-d H:i:s");
-$sql = "insert into bars (barName,master,createTime,themeBelong,concernNum,createorId) values ('$data1','$data2','$now','$data4','$data5','$data6')";
+$sql = "insert into bars (barName,master,createTime,themeBelong,createorId) values ('$data1','$data2','$now','$data4','$data6')";
 $result = mysql_query($sql);
 $num = mysql_affected_rows();
 echo $num;

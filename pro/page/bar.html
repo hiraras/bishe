@@ -26,10 +26,14 @@
 		<div class="container">
 			<div class="content">
 				<div class="search">
-					<input type="text" id="search" />
+					<input type="text" id="search" class="search_text_insert" />
 					<button class="btn_search">
 						<img src="../img/search.png"/>
 					</button>
+					<div class="search_method_container" id="searchMethodContainer" searchType='0'>
+						<button class="select_bar_btn" id="searchMethodBar">吧</button>
+						<button class="select_post_btn unselect_btn" id="searchMethodPost">贴</button>
+					</div>
 				</div>
 				<div class="main">
 					<div class="intro">
@@ -40,7 +44,7 @@
 							<h2 id = 'barName'></h2>
 							<div class="post_status">
 								<div class="post_status_item" id = 'concernNum'></div>
-								<div class="post_status_item">帖子:15651</div>
+								<div class="post_status_item"></div>
 							</div>
 							<p class="intro_content" id = 'barIntroduce'>
 								

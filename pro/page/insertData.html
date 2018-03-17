@@ -20,7 +20,7 @@
 	<script src="../js/jquery/jquery-1.8.3.min.js"></script>
 	<script>
 		var data1,data2,data3,data4,data5,data6,data7,data8,data9,data10;
-		$("#submit").click(function(){
+		function send(){
 			data1 = $("#data1").val();
 			data2 = $("#data2").val();
 			data3 = $("#data3").val();
@@ -31,19 +31,23 @@
 			data8 = $("#data8").val();
 			data9 = $("#data9").val();
 			data10 = $("#data10").val();
-			/*
-			var requestNum = 10;
-			for(var i=0;i<requestNum;i++){
-				phpRequest();
-			}
-			*/
 			phpRequest();
+		}
+		$("body").on("keydown",function(e){
+			e = e || event;
+			var keyCode = e.keyCode || e.which || e.charCode;
+			if(keyCode == 13){
+				send();
+			}
+		});
+		$("#submit").click(function(){
+			send();
 		});
 		function phpRequest(){
 			$.ajax({
 				type:"post",
 				url:"../php/insertData.php",
-				async:false,
+				async:true,
 				data: {
 					data1:data1,
 					data2:data2,

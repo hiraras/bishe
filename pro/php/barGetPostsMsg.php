@@ -3,13 +3,32 @@ require "connect.php";
 $barName = $_GET['barName'];
 $sql = "select * from bars where barName = '$barName'";
 $result = mysql_query($sql);
-//获得的结果数组只能用数字索引，不能用key值
-//$arr = mysql_fetch_row($result);
-//获得的结果数组只能用key值，不能用数字索引
+$num = mysql_num_rows($result);
+
 $arr = array();
-while($row = mysql_fetch_assoc($result)){
-	array_push($arr,$row);
+
+class ResultData{
+	var $code;
+	var $data;
 }
-echo json_encode($arr);
+$data = new ResultData();
+if($num == 0){
+	//没有该吧，进行模糊查询
+	$sql2 = "select * from bars where barName LIKE '%$barName%'";
+	$result2 = mysql_query($sql2);
+	$num2 = mysql_num_rows($result2);
+	if($num2 == 0){
+		//即便是模糊查询也没有
+		$data->code = 2;
+		$data->data = null;
+	}else{
+		$data->code = 1;
+		$data->data = null;
+	}
+}else{
+	$data->code = 0;
+	$data->data = mysql_fetch_assoc($result);
+}
+echo json_encode($data);
 mysql_close($con);
 ?>

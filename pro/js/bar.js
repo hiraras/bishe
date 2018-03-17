@@ -4,6 +4,10 @@ var fileDataArr = [];
 	var pageUrl = window.location.href;
 	var barName = '';
 	var urlParams = pageUrl.substr(pageUrl.indexOf('?')+1).split('&');
+	if(pageUrl.indexOf('barName') == -1){
+		window.location.href = domain + '/pro/index.html';
+		return ;
+	}
 	for(var i=0;i<urlParams.length;i++){
 		if(urlParams[i].indexOf('barName') !== -1){
 			barName = urlParams[i].substr(urlParams[i].indexOf('=')+1);
@@ -13,9 +17,7 @@ var fileDataArr = [];
 	}
 	$('#search').attr('maxlength',80);
 	$('#search').val(barName);
-	getBarMsg(barName);
 	getPostsMsg(barName);
-	init();
 }());
 
 function init(){
@@ -67,10 +69,9 @@ function getBarMsg(barName){
 		},
 		success: function(result){
 			var data = JSON.parse(result);
-			console.log(data);
 			var barDescript = data[0].barDescript;
 			if(data.length === 0){
-				window.location.href = domain + '/pro/page/notExistBar.html?'+'barName='+$('#search').val();
+				
 				return ;
 			}
 			$('#barName').html(data[0].barName + '吧');
@@ -89,8 +90,16 @@ function getPostsMsg(barName){
 		data: {
 			barName: barName
 		},
-		success: function(e){
-
+		success: function(result){
+			var data = JSON.parse(result);
+			if(data.code == 0){
+				getBarMsg(barName);
+				init();
+			}else if(data.code == 1){
+				window.location.href = domain + '/pro/page/blurBar.html?'+'barName='+$('#search').val();
+			}else{
+				window.location.href = domain + '/pro/page/notExistBar.html?'+'barName='+$('#search').val();
+			}
 		}
 	});
 }

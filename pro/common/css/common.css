@@ -65,7 +65,6 @@ ul,li{
 }
 /*内容*/
 .container{
-	padding-top: 54px;
 	width: 1100px;
 	margin: 0 auto;
 	margin-bottom: 200px;
@@ -91,7 +90,7 @@ ul,li{
 	cursor: pointer;
 	border: 0px solid black;
 }
-.search input{
+.search .search_text_insert{
 	display: inline-block;
 	width: 600px;
 	height: 42px;
@@ -105,6 +104,31 @@ ul,li{
 	width: 36px;
 	height: 36px;
 	margin-top: 4px;
+}
+.search .search_method_container{
+	display: inline-block;
+	height: 44px;
+	vertical-align: top;
+	margin-left: 10px;
+	cursor: pointer;
+}
+.search .select_bar_btn{
+	padding: 8px 13px;
+	position: relative;
+	top: 6px;
+	border: none;
+	cursor: pointer;
+}
+.search .select_post_btn{
+	padding: 8px 13px;
+	position: relative;
+	top: 6px;
+	left: -6px;
+	border: none;
+	cursor: pointer;
+}
+.search .unselect_btn{
+	background-color: gray;
 }
 /*页码*/
 .index{
