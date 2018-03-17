@@ -15,10 +15,12 @@
 				<li>
 					<img src="../img/defaultHeadImg.jpg"/>
 				</li>
+				<div class="clear_float"></div>
 			</ul>
 			<ul class="not_login" id="notLogin">
 				<li id="headerRegister">注册</li>
 				<li id="headerLogin">登录</li>
+				<div class="clear_float"></div>
 			</ul>
 		</div>
 		<div class="container">
@@ -48,8 +50,8 @@
 							关注
 						</button>
 					</div>
-					<div class="posts">
-						<div class="post">
+					<div class="posts" id="postsContainer">
+						<!-- <div class="post">
 							<div class="post_content">
 								<div class="post_title_container">
 									<p class="is_top">置顶</p>
@@ -82,7 +84,7 @@
 									2018-12-21
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<ul class="index">
 							<li class="paging_btn" id="firstPageBtn">首页</li>
 							<li class="paging_btn" id="prevBtn">上一页</li>
@@ -103,7 +105,7 @@
 					<div class="send_area" id="sendArea">
 						<p class="send_area_title">发表帖子</p>
 						<div class="post_title">
-							<input type="text" placeholder="请输入帖子标题(最多80字)" maxlength="80" id="inputPostTitle" />
+							<input type="text" value='11' placeholder="请输入帖子标题(最多80字)" maxlength="80" id="inputPostTitle" />
 						</div>
 						<ul class="menu">
 							<li id="selectImg">图片</li>

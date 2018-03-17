@@ -1,4 +1,5 @@
 var domain = 'http://localhost';
+var fileDataArr = [];
 (function(){
 	var pageUrl = window.location.href;
 	var barName = '';
@@ -27,7 +28,7 @@ function init(){
 		onSubmitPostMsg();
 	});
 	//如果未登录不允许发帖
-	if(!!sessionStorage.getItem('user')){
+	if(!!localStorage.getItem('user')){
 		$('#editorArea').attr('contenteditable','true');
 		$('#notLoginTip').css('display', 'none');
 		$('#submit').attr('disabled',false);
@@ -36,6 +37,14 @@ function init(){
 		$('#notLoginTip').css('display', 'block');
 		$('#submit').attr('disabled',true);
 	}
+	//测试页面刷新或关闭，删除掉已经保存到本地的图片文件
+	//结果直接关闭浏览器的话不会执行
+	window.onbeforeunload = function(){
+		for(var i=0;i<fileDataArr.length;i++){
+			removeNotNeedImg(fileDataArr[i]);
+		}
+	}
+	
 }
 
 function resizeImg(){
@@ -58,6 +67,7 @@ function getBarMsg(barName){
 		},
 		success: function(result){
 			var data = JSON.parse(result);
+			console.log(data);
 			var barDescript = data[0].barDescript;
 			if(data.length === 0){
 				window.location.href = domain + '/pro/page/notExistBar.html?'+'barName='+$('#search').val();
@@ -71,15 +81,25 @@ function getBarMsg(barName){
 	});
 }
 
-function getPostsMsg(){
-	
+function getPostsMsg(barName){
+	$.ajax({
+		type: 'get',
+		url: domain + '/pro/php/barGetPostsMsg.php',
+		async: true,
+		data: {
+			barName: barName
+		},
+		success: function(e){
+
+		}
+	});
 }
 
 function initSendAreaBtnsPressEvent(){
 	$('.face').click(function(){
 		var $img = $(this).clone();
 		$img.removeAttr('class');
-		$('#editorArea').append($img);
+		insertHTML($img,$('#editorArea'));
 		$('#faceContainer').css('display','none');
 	});
 	//头像框存在时，如果点击外面部分则消失
@@ -101,7 +121,7 @@ function initSendAreaBtnsPressEvent(){
 		}
 	});
 	$('#selectImg').click(function(){
-		if(!!sessionStorage.getItem('user')){
+		if(!!localStorage.getItem('user')){
 			$('#inputSelectImg').click();
 		}else{
 			alert('请先登录');
@@ -109,64 +129,105 @@ function initSendAreaBtnsPressEvent(){
 	});
 }
 function imgChange(e){
-	var fileType = e.target.files[0].type;
-	if(fileType.indexOf('image') != -1){
-		var reader = new FileReader();
-		var file = document.getElementById('inputSelectImg').files[0];
-		reader.readAsDataURL(file);
-		reader.onload = function(e){
-			var fileData = e.target.result;
-			$.ajax({
-				url: domain + "/pro/php/getImgFile.php",
-				type: 'post',
-				async: true,
-				data: {
-					fileData: fileData
-				},
-				success: function(result){
-					var data = JSON.parse(result);
-					if(data.result == 'success'){
-						var $img = $('<img />');
-						$img.attr('src',data.filePath);
-						insertHTML($img,$('#editorArea'));
-						$('#editorArea').focus();
-						$img.bind('DOMNodeRemoved',function(){
-							removeNotNeedImg(data.filePath);
-						});
-					}else{
-						alert('选择图片失败');
+	if(isEditorAreaBlur()){
+		var fileType = e.target.files[0].type;
+		if(fileType.indexOf('image') != -1){
+			var reader = new FileReader();
+			var file = document.getElementById('inputSelectImg').files[0];
+			reader.readAsDataURL(file);
+			reader.onload = function(e){
+				var fileData = e.target.result;
+				$.ajax({
+					url: domain + "/pro/php/getTempImgFile.php",
+					type: 'post',
+					async: true,
+					data: {
+						fileData: fileData
+					},
+					success: function(result){
+						var data = JSON.parse(result);
+						if(data.result == 'success'){
+							var $img = $('<img />');
+							fileDataArr.push(data.filePath);
+							$img.attr('src',data.filePath);
+							insertHTML($img,$('#editorArea'));
+							$('#editorArea').focus();
+							$img.bind('DOMNodeRemoved',function(){
+								removeNotNeedImg(data.filePath);
+							});
+						}else{
+							alert('选择图片失败');
+						}
+					},
+					error: function(e){
+						console.log(e);
 					}
-				},
-				error: function(e){
-					console.log(e);
-				}
-			});
+				});
+			}
+		}else{
+			alert('只能上传图片');
 		}
 	}else{
-		alert('只能上传图片');
+		console.log('焦点不是editorarea');
 	}
 }
 
 function removeNotNeedImg(imgPath){
 	$.ajax({
 		type: 'get',
-		url: domain + "/pro/php/removeImg.php",
+		url: domain + "/pro/php/removeTempImg.php",
 		async: true,
 		data: {
 			imgPath: imgPath
 		},
 		success: function(result){
-			console.log(result);
+			console.log('remove '+result);
 		}
 	});
 }
-
+//点击发送按钮事件
 function onSubmitPostMsg(){
 	var postTitle = $('#inputPostTitle').val();
+	if(postTitle.trim() != ''){
+		$('#sendTip').css('display','none');
+		if(fileDataArr.length != 0){
+			$.ajax({
+				url: domain + "/pro/php/saveTempPostImg.php",
+				type: 'post',
+				async: true,
+				data: {
+					imgsData: fileDataArr
+				},
+				success: function(result){
+					if(result == 'success'){
+						submitPostMsg();
+					}else{
+						alert('未知错误,图片保存失败!');
+					}
+				},
+				error: function(e){
+					console.log(e);
+				}
+			});
+		}else{
+			submitPostMsg();
+		}
+	}else{
+		$('#sendTip').css('display','inline');
+	}
+}
+//发送事件
+function submitPostMsg(){
+	var postTitle = $('#inputPostTitle').val();
 	var barBelong = $('#barName').attr('barName');
-	var creatorId = sessionStorage.getItem('user');
-	var nickName = sessionStorage.getItem('userNickName');
-	var postContent = $('#editorArea').html();
+	var creatorId = localStorage.getItem('user');
+	var nickName = localStorage.getItem('userNickName');
+	var postContent = $('#editorArea').html().trim();
+	var imgReg=/<img\b[^>]*>/ig;
+	if(imgReg.test(postContent)){
+		var replaceReg = /postTempImg/g;
+		postContent = postContent.replace(replaceReg, 'postImg');
+	}
 	if(postTitle.trim() != ''){
 		$('#sendTip').css('display','none');
 		$.ajax({
@@ -185,7 +246,7 @@ function onSubmitPostMsg(){
 					$('#sendTip').css('display','inline').html('发布成功');
 					setTimeout(function(){
 						window.location.reload();
-					},500);
+					},300);
 				}else{
 					alert('未知错误,发布失败!');
 				}
@@ -221,7 +282,7 @@ function insertHTML(eleContent,eleContainer){
 				range.collapse(true);  
 				sel.removeAllRanges();  
 				sel.addRange(range);  
-			}  
+			}
 		}  
 	}else if(document.selection && document.selection.type !='Control'){  
 		eleContainer.focus(); //在非标准浏览器中 要先让你需要插入html的div 获得焦点  
@@ -230,3 +291,69 @@ function insertHTML(eleContent,eleContainer){
 		eleContainer.focus();      
 	}  
 }  
+
+function isEditorAreaBlur(){
+	var sel, range, checkNode;  
+	if (window.getSelection){  
+		// IE9 and non-IE  
+		sel = window.getSelection();
+		if(sel.anchorNode){
+			//如果是文本节点
+			if(sel.anchorNode.nodeType == 3){
+				checkNode = sel.anchorNode.parentNode;
+			}else{
+				checkNode = sel.anchorNode;
+			}
+			//当失去焦点的位置为editorArea或其子元素时，返回true
+			if($(checkNode).closest('#editorArea').length == 1 && $(checkNode).closest('#editorArea').attr('id') == 'editorArea'){
+				return true;
+			}else{
+				//焦点位置不在editorArea，插入失败
+				return false;
+			}
+		}else{
+			console.log('sel.anchorNode为null');
+		}
+	}
+	return true;
+}
+
+function createPost(data){
+
+}
+/*
+<div class="post">
+	<div class="post_content">
+		<div class="post_title_container">
+			<p class="is_top">置顶</p>
+			<p class="is_great">精</p>
+			<p class="post_title_text">
+				一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十
+			</p>
+		</div>
+		<div class="post_img_container">
+			<img src="../img/1.jpg" alt="" class="post_img" id="img1" />
+			<img src="../img/1.jpg" alt="" class="post_img" />
+			<img src="../img/1.jpg" alt="" class="post_img" />
+			<img src="../img/6.jpeg" alt="" class="post_img" />
+			<img src="../img/1.jpg" alt="" class="post_img" />
+			<img src="../img/1.jpg" alt="" class="post_img" />
+			<img src="../img/6.jpeg" alt="" class="post_img" />
+			<img src="../img/1.jpg" alt="" class="post_img" />	
+		</div>
+	</div>
+	<div class="post_msg">
+		<div class="master_msg">
+			<img src="../img/proImg/people.png" alt="" class="post_msg_people_img" />
+			<p class="master_name">hirara</p>
+		</div>
+		<div class="reply_num_msg">
+			<img src="../img/proImg/msg.png" alt="" class="post_msg_reply_img" />
+			<p class="reply_num">15616515156</p>
+		</div>
+		<div class="post_time">
+			2018-12-21
+		</div>
+	</div>
+</div>
+*/

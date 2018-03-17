@@ -28,8 +28,8 @@ function testLogin(){
 								result = JSON.parse(result)[0];
 //								console.log(result);
 								getUserMsg(result.username);
-								sessionStorage.setItem("user",result.username);
-								sessionStorage.setItem("userLevel",result.level);
+								localStorage.setItem("user",result.username);
+								localStorage.setItem("userLevel",result.level);
 								window.location.href = "../index.html";
 							}catch(e){
 								$("#remind").html("发生未知错误，请稍后再试!");
@@ -98,7 +98,7 @@ function getUserMsg(userName){
 		},
 		success: function(result){
 			var data = JSON.parse(result);
-			sessionStorage.setItem('userNickName',data.nickname);
+			localStorage.setItem('userNickName',data.nickname);
 		}
 	});
 }

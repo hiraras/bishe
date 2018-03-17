@@ -53,7 +53,7 @@ var dataPaging = {
 };
 //判断是否登录
 function isLogin(){
-	var user = sessionStorage.getItem("user");
+	var user = localStorage.getItem("user");
 	if(user == null || user == undefined || user == ""){
 		//未登录
 		$("#haveLogin").css("display","none");

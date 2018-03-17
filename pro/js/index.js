@@ -1,6 +1,6 @@
 var domain = "http://localhost";
 (function(){
-	var user = sessionStorage.getItem("user");
+	var user = localStorage.getItem("user");
 	if(user == null || user == undefined || user == ""){
 		//未登录
 		$("#userMsg").css("display","none");
@@ -84,7 +84,7 @@ function getSort(){
 
 function showThemeBar(){
 	var themeContentTop = 0;
-	if(sessionStorage.getItem('user')){
+	if(localStorage.getItem('user')){
 		themeContentTop = 211;
 	}
 	$('#themeContainer').on('mouseleave',function(){
@@ -129,7 +129,7 @@ function recommendBar(sortName){
 }
 
 function getUserMsg(){
-	var userId = sessionStorage.getItem('user');
+	var userId = localStorage.getItem('user');
 	$.ajax({
 		url: domain + "/pro/php/getUserMsg.php",
 		type: 'get',
