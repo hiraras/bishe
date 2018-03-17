@@ -22,7 +22,7 @@ var fileDataArr = [];
 
 function init(){
 	//设置帖子中图片点击放大
-	$('.post_img').click(resizeImg);
+	// $('.post_img').click(resizeImg);
 	//初始化发表部分按钮点击事件
 	initSendAreaBtnsPressEvent();
 
@@ -46,7 +46,6 @@ function init(){
 			removeNotNeedImg(fileDataArr[i]);
 		}
 	}
-	
 }
 
 function resizeImg(){
@@ -70,7 +69,7 @@ function getBarMsg(data){
 function searchBarMsg(barName){
 	$.ajax({
 		type: 'get',
-		url: domain + '/pro/php/barGetPostsMsg.php',
+		url: domain + '/pro/php/getBarState.php',
 		async: true,
 		data: {
 			barName: barName
@@ -81,6 +80,8 @@ function searchBarMsg(barName){
 			console.log(data);
 			if(data.code == 0){
 				getBarMsg(data.data);
+				getPostPageMsg(barName,0);
+				initPagingIndexClick(barName);
 				init();
 			}else if(data.code == 1){
 				window.location.href = domain + '/pro/page/blurBar.html?'+'barName='+$('#search').val();
@@ -314,8 +315,207 @@ function isEditorAreaBlur(){
 	return true;
 }
 
-function createPost(data){
+function getPostPageMsg(barName,indexNum){
+	$.ajax({
+		url: domain + "/pro/php/getPostMsgInBar.php",
+		type: 'get',
+		async: true,
+		data: {
+			barName: barName,
+			indexNum: indexNum
+		},
+		success: function(result){
+			var data = JSON.parse(result);
+			if(data.totalNum == 0){
+				console.log('当前还没有帖子');
+			}else{
 
+			}
+		}
+	});
+}
+
+function initPagingIndexClick(barName){
+	$('#prevBtn').click(function(){
+		prevPage(barName);
+	});
+	$('#nextBtn').click(function(){
+		nextPage(barName);
+	});
+	$('#firstPageBtn').click(function(){
+		firstPage(barName);
+	});
+	$('#lastPageBtn').click(function(){
+		lastPage(barName);
+	});
+	$('.index_item').click(function(){
+		var index = Number($(this).html()) - 1;
+		getBarMsg(barName,index);
+	});
+}
+
+function initIndex(){
+	var maxShowIndex = 10;
+	var currIndex = Number($('#postsContainer').attr('index'));
+	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
+	var halfIndexNum = Math.floor(maxShowIndex / 2) + 1;
+	if(currIndex == 0){
+		$('#prevBtn').css('display','none');
+		$('#firstPageBtn').css('display','none');
+	}else{
+		$('#prevBtn').css('display','inline-block');
+		$('#firstPageBtn').css('display','inline-block');
+	}
+	if(currIndex == totalNum){
+		$('#nextBtn').css('display','none');
+		$('#lastPageBtn').css('display','none');
+	}else{
+		$('#nextBtn').css('display','inline-block');
+		$('#lastPageBtn').css('display','inline-block');
+	}
+	$('.index_item').removeClass('currIndex');
+	
+	if(totalNum < maxShowIndex){
+		$('.index_item').each(function(index){
+			if(index > totalNum){
+				$(this).css('display','none');
+			}
+			if(index == currIndex){
+				$(this).addClass('currIndex');
+			}
+		});
+	}else{
+		if(currIndex < halfIndexNum){
+			$('.index_item').each(function(index){
+				$(this).html(index + 1);
+			});
+		}else if(currIndex > totalNum - halfIndexNum){
+			$('.index_item').each(function(index){
+				$(this).html(totalNum + 1 - (maxShowIndex - 1 - index));
+			});
+		}else{
+			$('.index_item').each(function(index){
+				$(this).html(currIndex + 1 - (halfIndexNum - index - 1));
+			});
+		}
+		$('.index_item').each(function(index){
+			if($(this).html() == currIndex + 1){
+				$(this).addClass('currIndex');
+			}
+		});
+	}
+}
+
+function freshBarItems(data, indexNum){
+	var pageNum = data.totalNum / data.pageItemNum;
+	//是否有页面的内容是只有一部分的
+	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
+	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
+	$('#postsContainer').find('.bar_intro').remove();
+	$('#postsContainer').attr('index', indexNum);
+	$('#postsContainer').attr('totalpagenum', --pageNum);
+	for(var i=0;i<data.value.length;i++){
+		var $item = createBarItem(data.value[i]);
+		$('#postsContainer').find('.index').before($item);
+	}
+	initIndex();
+	//使左边部分和右边部分高度一样
+	$('.left').css('height',$('.right').height()+20);
+}
+
+function prevPage(barName){
+	var currIndex = Number($('#postsContainer').attr('index'));
+	if(currIndex > 0){
+		getBarMsg(barName, --currIndex);
+	}
+}
+
+function nextPage(barName){
+	var currIndex = Number($('#postsContainer').attr('index'));
+	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
+	console.log(currIndex, totalNum);
+	if(currIndex < totalNum){
+		console.log(currIndex);
+		getBarMsg(barName, ++currIndex);
+	}
+}
+
+function firstPage(barName){
+	var currIndex = Number($('#postsContainer').attr('index'));
+	if(currIndex != 0){
+		getBarMsg(barName, 0);
+	}
+}
+
+function lastPage(barName){
+	var currIndex = Number($('#postsContainer').attr('index'));
+	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
+	if(currIndex != totalNum){
+		getBarMsg(barName, totalNum);
+	}
+}
+
+function createPost(data){
+	var $postDiv = $('<div></div>');
+	$postDiv.addClass('post');
+	var $postContentDiv = $('<div></div>');
+	$postContentDiv.addClass('post_content');
+	var $postTitleContainerDiv = $('<div></div>');
+	$postTitleContainerDiv.addClass('post_title_container');
+
+	var $isTopP = $('<p></p>');
+	$isTopP.addClass('is_top');
+	var $isGreatP = $('<p></p>');
+	$isGreatP.addClass('is_great');
+	var $postTitleTextP = $('<p></p>');
+	$postTitleTextP.addClass('post_title_text');
+	$postTitleContainerDiv.append($isTopP);
+	$postTitleContainerDiv.append($isGreatP);
+	$postTitleContainerDiv.append($postTitleTextP);
+
+	var $postImgContainerDiv = $('<div></div>');
+	$postImgContainerDiv.addClass('post_img_container');
+	var $postImg = $('<img />');
+	$postImg.addClass('post_img');
+	$postImg.src = '';
+	$postImgContainerDiv.append($postImg);
+
+	$postContentDiv.append($postTitleContainerDiv);
+	$postContentDiv.append($postImgContainerDiv);
+
+	var $postMsgDiv = $('<div></div>');
+	$postMsgDiv.addClass('post_msg');
+
+	var $masterMsgDiv = $('<div></div>');
+	$masterMsgDiv.addClass('master_msg');
+	var $postMsgPeopleImg = $('<img />');
+	$postMsgPeopleImg.addClass('post_msg_people_img');
+	$postMsgPeopleImg.src = '';
+	var $masterNameP = $('<p></p>');
+	$masterNameP.addClass('master_name');
+	$masterMsgDiv.append($postMsgPeopleImg);
+	$masterMsgDiv.append($masterNameP);
+
+	var $replyNumMsgDiv = $('<div></div>');
+	$replyNumMsgDiv.addClass('reply_num_msg');
+	var $postMsgReplyImg = $('<img />');
+	$postMsgReplyImg.addClass('post_msg_reply_img');
+	$postMsgReplyImg.src = '';
+	var $replyNumP = $('<p></p>');
+	$replyNumP.addClass('reply_num');
+	$replyNumMsgDiv.append($postMsgReplyImg);
+	$replyNumMsgDiv.append($replyNumP);
+
+	var $postTimeDiv = $('<div></div>');
+	$postTimeDiv.addClass('post_time');
+
+	$postMsgDiv.append($masterMsgDiv);
+	$postMsgDiv.append($replyNumMsgDiv);
+	$postMsgDiv.append($postTimeDiv);
+
+	$postDiv.append($postContentDiv);
+	$postDiv.append($postMsgDiv);
+	return $postDiv;
 }
 /*
 <div class="post">
@@ -338,18 +538,7 @@ function createPost(data){
 			<img src="../img/1.jpg" alt="" class="post_img" />	
 		</div>
 	</div>
-	<div class="post_msg">
-		<div class="master_msg">
-			<img src="../img/proImg/people.png" alt="" class="post_msg_people_img" />
-			<p class="master_name">hirara</p>
-		</div>
-		<div class="reply_num_msg">
-			<img src="../img/proImg/msg.png" alt="" class="post_msg_reply_img" />
-			<p class="reply_num">15616515156</p>
-		</div>
-		<div class="post_time">
-			2018-12-21
-		</div>
-	</div>
 </div>
+
+
 */
