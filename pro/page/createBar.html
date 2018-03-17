@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../common/css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/createBar.css"/>
+	</head>
+	<body>
+		<!--点击主页left内的主题分类进入，此页中的left显示主题名称和推荐贴吧，右边是所有贴吧-->
+		<div class="header">
+			<ul class="have_login" id="haveLogin">
+				<li id="myRoom">个人中心</li>
+				<li id="myMsg">消息</li>
+				<li id="toIndex">首页</li>
+				<li>
+					<img src="../img/defaultHeadImg.jpg"/>
+				</li>
+			</ul>
+			<ul class="not_login" id="notLogin">
+				<li id="headerRegister">注册</li>
+				<li id="headerLogin">登录</li>
+			</ul>
+		</div>
+		<div class="container">
+			<div class="content">
+				<div class="search">
+					<input type="text" id="search" class="search_text_insert" />
+					<button class="btn_search">
+						<img src="../img/search.png"/>
+					</button>
+					<div class="search_method_container" id="searchMethodContainer" searchType='0'>
+						<button class="select_bar_btn" id="searchMethodBar">吧</button>
+						<button class="select_post_btn unselect_btn" id="searchMethodPost">贴</button>
+					</div>
+                </div>
+                <div class="msg_container">
+                    
+                </div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/jquery/jquery-1.8.3.min.js"></script>
+	<script src="../common/js/common.js"></script>
+	<script src="../js/createBar.js"></script>
+</html>

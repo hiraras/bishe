@@ -119,8 +119,6 @@ function freshBarItems(data, indexNum){
 		$('#bars').find('.index').before($item);
 	}
 	initIndex();
-	//使左边部分和右边部分高度一样
-	$('.left').css('height',$('.right').height()+20);
 }
 
 function prevPage(barName){
@@ -133,9 +131,7 @@ function prevPage(barName){
 function nextPage(barName){
 	var currIndex = Number($('#bars').attr('index'));
 	var totalNum = Number($('#bars').attr('totalpagenum'));
-	console.log(currIndex, totalNum);
 	if(currIndex < totalNum){
-		console.log(currIndex);
 		getBarMsg(barName, ++currIndex);
 	}
 }

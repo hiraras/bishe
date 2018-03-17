@@ -1,10 +1,9 @@
 <?php
 require "connect.php";
 $barName = $_GET['barName'];
-$sql = "select * from bars where barName = '$barName'";
+$sql = "select bars.*,count(*) as postNum from bars,posts where bars.barName = '$barName' and posts.barBelong = '$barName'";
 $result = mysql_query($sql);
 $num = mysql_num_rows($result);
-
 $arr = array();
 
 class ResultData{

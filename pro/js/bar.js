@@ -17,7 +17,7 @@ var fileDataArr = [];
 	}
 	$('#search').attr('maxlength',80);
 	$('#search').val(barName);
-	getPostsMsg(barName);
+	searchBarMsg(barName);
 }());
 
 function init(){
@@ -59,30 +59,15 @@ function resizeImg(){
 	}
 }
 
-function getBarMsg(barName){
-	$.ajax({
-		url: domain + "/pro/php/barGetBarMsg.php",
-		type: 'get',
-		async: true,
-		data: {
-			barName: barName
-		},
-		success: function(result){
-			var data = JSON.parse(result);
-			var barDescript = data[0].barDescript;
-			if(data.length === 0){
-				
-				return ;
-			}
-			$('#barName').html(data[0].barName + '吧');
-			$('#barName').attr('barname',data[0].barName);
-			$('#concernNum').html('人数:'+data[0].concernNum);
-			$('#barIntroduce').html(barDescript);
-		}
-	});
+function getBarMsg(data){
+	$('#barName').html(data.barName + '吧');
+	$('#barName').attr('barname',data.barName);
+	$('#concernNum').html('人数:'+data.concernNum);
+	$('#barIntroduce').html(data.barDescript);
+	$('#postNum').html('帖子:'+data.postNum);
 }
 
-function getPostsMsg(barName){
+function searchBarMsg(barName){
 	$.ajax({
 		type: 'get',
 		url: domain + '/pro/php/barGetPostsMsg.php',
@@ -91,9 +76,11 @@ function getPostsMsg(barName){
 			barName: barName
 		},
 		success: function(result){
+			console.log(result);
 			var data = JSON.parse(result);
+			console.log(data);
 			if(data.code == 0){
-				getBarMsg(barName);
+				getBarMsg(data.data);
 				init();
 			}else if(data.code == 1){
 				window.location.href = domain + '/pro/page/blurBar.html?'+'barName='+$('#search').val();

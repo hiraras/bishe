@@ -192,3 +192,16 @@ $("#searchMethodContainer").on("click",function(){
 		$(this).attr('searchType','0');
 	}
 });
+
+$("#search").on("keydown",function(e){
+	e = e || event;
+	var keyCode = e.keyCode || e.which || e.charCode;
+	if(keyCode == 13){
+		var value = $('#search').val();
+		if(value != ''){
+			searchBar(value);
+		}else{
+			window.location.href = 'http://localhost/pro/index.html';
+		}
+	}
+});
