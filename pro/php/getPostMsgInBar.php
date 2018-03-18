@@ -2,7 +2,7 @@
 require "connect.php";
 $barName = $_GET['barName'];
 $indexNum = $_GET['indexNum'];
-$everyPageItemNum = 10;
+$everyPageItemNum = 2;
 $dataIndex = $indexNum*$everyPageItemNum;
 $sql = "select * from posts where barBelong='$barName' ORDER BY createTime DESC limit $dataIndex,$everyPageItemNum";
 $sql2 = "select * from posts where barBelong='$barName'";
@@ -14,6 +14,11 @@ $barTotalNum = mysql_num_rows($result2);
 //获得的结果数组只能用key值，不能用数字索引
 $arr = array();
 while($row = mysql_fetch_assoc($result)){
+	$postId = $row['id'];
+	$sql3 = "select * from post_reply where postBelongId='$postId' and status = 1";
+	$result3 = mysql_query($sql3);
+	$replyNum = mysql_num_rows($result3);
+	$row['replyNum'] = $replyNum;
 	array_push($arr,$row);
 }
 class ResultData{

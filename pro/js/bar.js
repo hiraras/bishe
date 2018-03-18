@@ -49,6 +49,10 @@ function init(){
 }
 
 function resizeImg(){
+	$(this).siblings("img").each(function(){
+		$(this).css('height','100px');
+		$(this).css('max-width','134px');
+	});
 	if($(this).css('height') == '100px'){
 		$(this).css('height','400px');
 		$(this).css('max-width','900px');
@@ -64,6 +68,7 @@ function getBarMsg(data){
 	$('#concernNum').html('人数:'+data.concernNum);
 	$('#barIntroduce').html(data.barDescript);
 	$('#postNum').html('帖子:'+data.postNum);
+	$('#barImg').attr('src',data.barImg);
 }
 
 function searchBarMsg(barName){
@@ -75,7 +80,6 @@ function searchBarMsg(barName){
 			barName: barName
 		},
 		success: function(result){
-			console.log(result);
 			var data = JSON.parse(result);
 			console.log(data);
 			if(data.code == 0){
@@ -329,10 +333,7 @@ function getPostPageMsg(barName,indexNum){
 			if(data.totalNum == 0){
 				console.log('当前还没有帖子');
 			}else{
-				console.log(data);
-				for(var i=0;i<data.value.length;i++){
-					createPost(data.value[i]);
-				}
+				freshBarItems(data,indexNum);
 			}
 		}
 	});
@@ -353,7 +354,7 @@ function initPagingIndexClick(barName){
 	});
 	$('.index_item').click(function(){
 		var index = Number($(this).html()) - 1;
-		getBarMsg(barName,index);
+		getPostPageMsg(barName,index);
 	});
 }
 
@@ -414,22 +415,20 @@ function freshBarItems(data, indexNum){
 	//是否有页面的内容是只有一部分的
 	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
 	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
-	$('#postsContainer').find('.bar_intro').remove();
+	$('#postsContainer').find('.post').remove();
 	$('#postsContainer').attr('index', indexNum);
 	$('#postsContainer').attr('totalpagenum', --pageNum);
 	for(var i=0;i<data.value.length;i++){
-		var $item = createBarItem(data.value[i]);
+		var $item = createPostItem(data.value[i]);
 		$('#postsContainer').find('.index').before($item);
 	}
 	initIndex();
-	//使左边部分和右边部分高度一样
-	$('.left').css('height',$('.right').height()+20);
 }
 
 function prevPage(barName){
 	var currIndex = Number($('#postsContainer').attr('index'));
 	if(currIndex > 0){
-		getBarMsg(barName, --currIndex);
+		getPostPageMsg(barName, --currIndex);
 	}
 }
 
@@ -438,14 +437,14 @@ function nextPage(barName){
 	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
 	console.log(currIndex, totalNum);
 	if(currIndex < totalNum){
-		getBarMsg(barName, ++currIndex);
+		getPostPageMsg(barName, ++currIndex);
 	}
 }
 
 function firstPage(barName){
 	var currIndex = Number($('#postsContainer').attr('index'));
 	if(currIndex != 0){
-		getBarMsg(barName, 0);
+		getPostPageMsg(barName, 0);
 	}
 }
 
@@ -453,12 +452,14 @@ function lastPage(barName){
 	var currIndex = Number($('#postsContainer').attr('index'));
 	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
 	if(currIndex != totalNum){
-		getBarMsg(barName, totalNum);
+		getPostPageMsg(barName, totalNum);
 	}
 }
 
-function createPost(data){
-	console.log(data);
+function createPostItem(data){
+	// console.log(data);
+	var maxShowImgNum = 4;
+	var imgReg=/<img\b[^>]*postImg[^>]*>/ig;
 	var $postDiv = $('<div></div>');
 	$postDiv.addClass('post');
 	var $postContentDiv = $('<div></div>');
@@ -479,19 +480,30 @@ function createPost(data){
 	var $postTitleTextP = $('<p></p>');
 	$postTitleTextP.addClass('post_title_text');
 	$postTitleTextP.html(data.postName);
+	$postTitleTextP.click(function(){
+		var postId = $(this).parents('.post').attr('postId');
+		window.location.href = 'http://localhost/pro/page/post.html?'+'postId='+postId;
+	});
 	$postTitleContainerDiv.append($isTopP);
 	$postTitleContainerDiv.append($isGreatP);
 	$postTitleContainerDiv.append($postTitleTextP);
 
 	var $postImgContainerDiv = $('<div></div>');
 	$postImgContainerDiv.addClass('post_img_container');
-	var $postImg = $('<img />');
-	$postImg.addClass('post_img');
-	$postImg.src = '';
-	$postImgContainerDiv.append($postImg);
 	var $postContentIntroP = $('<p></p>');
 	$postContentIntroP.addClass('post_content_intro');
+	$postContentIntroP.html(data.postContent.replace(imgReg,''));
 	$postImgContainerDiv.append($postContentIntroP);
+	var imgArr = data.postContent.match(imgReg);
+	if(imgArr){
+		for(var j=0;j<imgArr.length && j<maxShowImgNum;j++){
+			var $imgEle = $(imgArr[j]);
+			$imgEle.addClass('post_img');
+			$imgEle.click(resizeImg);
+			$postImgContainerDiv.append($imgEle);
+		}
+	}
+	
 	$postContentDiv.append($postTitleContainerDiv);
 	$postContentDiv.append($postImgContainerDiv);
 
@@ -502,9 +514,10 @@ function createPost(data){
 	$masterMsgDiv.addClass('master_msg');
 	var $postMsgPeopleImg = $('<img />');
 	$postMsgPeopleImg.addClass('post_msg_people_img');
-	$postMsgPeopleImg.src = '';
+	$postMsgPeopleImg.attr('src','../img/proImg/people.png');
 	var $masterNameP = $('<p></p>');
 	$masterNameP.addClass('master_name');
+	$masterNameP.html(data.creatorNickName);
 	$masterMsgDiv.append($postMsgPeopleImg);
 	$masterMsgDiv.append($masterNameP);
 
@@ -512,14 +525,22 @@ function createPost(data){
 	$replyNumMsgDiv.addClass('reply_num_msg');
 	var $postMsgReplyImg = $('<img />');
 	$postMsgReplyImg.addClass('post_msg_reply_img');
-	$postMsgReplyImg.src = '';
+	$postMsgReplyImg.attr('src','../img/proImg/msg.png');
 	var $replyNumP = $('<p></p>');
 	$replyNumP.addClass('reply_num');
+	$replyNumP.html(data.replyNum);
 	$replyNumMsgDiv.append($postMsgReplyImg);
 	$replyNumMsgDiv.append($replyNumP);
 
 	var $postTimeDiv = $('<div></div>');
+	var showCreateTimeStr = '';
 	$postTimeDiv.addClass('post_time');
+	if(isToday(data.createTime)){
+		showCreateTimeStr = data.createTime.substr(11);
+	}else{
+		showCreateTimeStr = data.createTime.substr(0,10);
+	}
+	$postTimeDiv.html(showCreateTimeStr);
 
 	$postMsgDiv.append($masterMsgDiv);
 	$postMsgDiv.append($replyNumMsgDiv);
@@ -527,30 +548,7 @@ function createPost(data){
 
 	$postDiv.append($postContentDiv);
 	$postDiv.append($postMsgDiv);
+	$postDiv.attr('postId',data.id);
+	$postDiv.attr('postId',data.id);
 	return $postDiv;
 }
-/*
-<div class="post">
-	<div class="post_content">
-		<div class="post_title_container">
-			<p class="is_top">置顶</p>
-			<p class="is_great">精</p>
-			<p class="post_title_text">
-				一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十
-			</p>
-		</div>
-		<div class="post_img_container">
-			<img src="../img/1.jpg" alt="" class="post_img" id="img1" />
-			<img src="../img/1.jpg" alt="" class="post_img" />
-			<img src="../img/1.jpg" alt="" class="post_img" />
-			<img src="../img/6.jpeg" alt="" class="post_img" />
-			<img src="../img/1.jpg" alt="" class="post_img" />
-			<img src="../img/1.jpg" alt="" class="post_img" />
-			<img src="../img/6.jpeg" alt="" class="post_img" />
-			<img src="../img/1.jpg" alt="" class="post_img" />	
-		</div>
-	</div>
-</div>
-
-
-*/

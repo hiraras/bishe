@@ -205,3 +205,16 @@ $("#search").on("keydown",function(e){
 		}
 	}
 });
+
+//判断所日期是否为今天
+function isToday(time){
+	var createDate = new Date(time);
+	var createDateDayStart = new Date(createDate.getFullYear()+'-'+(createDate.getMonth()+1)+'-'+createDate.getDate());
+	var today = new Date();
+	var todayDayStart = new Date(today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate());
+	if(createDateDayStart.getTime() == todayDayStart.getTime()){
+		return true;
+	}else{
+		return false;
+	}
+}
