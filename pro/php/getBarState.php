@@ -1,7 +1,8 @@
 <?php
 require "connect.php";
 $barName = $_GET['barName'];
-$sql = "select bars.*,count(*) as postNum from bars,posts where bars.barName = '$barName' and posts.barBelong = '$barName' and posts.status = 1";
+$sql = "select * from bars where barName = '$barName'";
+//$sql = "select bars.*,count(*) as postNum from bars,posts where bars.barName = '$barName' and posts.barBelong = '$barName' and posts.status = 1";
 $result = mysql_query($sql);
 $num = mysql_num_rows($result);
 $arr = array();
@@ -26,7 +27,12 @@ if($num == 0){
 	}
 }else{
 	$data->code = 0;
-	$data->data = mysql_fetch_assoc($result);
+	$row = mysql_fetch_assoc($result);
+	$sql3 = "select * from posts where barBelong='$barName' and status = 1";
+	$result3 = mysql_query($sql3);
+	$postNum = mysql_num_rows($result3);
+	$row['postNum'] = $postNum;
+	$data->data = $row;
 }
 echo json_encode($data);
 mysql_close($con);

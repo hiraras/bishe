@@ -31,6 +31,7 @@ ul,li{
 	line-height: 54px;
 	cursor: pointer;
 	height: 54px;
+	position: relative;
 }
 .header .have_login li:hover{
 	background: rgba(255,255,255,0.4);
@@ -58,6 +59,19 @@ ul,li{
 }
 .header .not_login li:hover{
 	background: rgba(255,255,255,0.4);
+}
+.header .header_img_menu{
+	position: absolute;
+	z-index: 10;
+	display: none;
+}
+.header .header_img_menu .header_img_menu_item{
+	background-color: rgba(0,0,0,0.6);
+	position: relative;
+	top: -3px;
+}
+.header .header_img_menu .header_img_menu_item:hover{
+	background-color: rgba(0,0,0,1);
 }
 /*清除浮动*/
 .clear_float{

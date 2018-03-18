@@ -205,6 +205,17 @@ $("#search").on("keydown",function(e){
 		}
 	}
 });
+$('#headerImgArea').on('mouseenter',function(){
+	$('#headerImgMenu').css('display','block');
+}).on('mouseleave',function(){
+	$('#headerImgMenu').css('display','none');
+});
+$('#exitLogin').click(function(){
+	localStorage.removeItem("user");
+	localStorage.removeItem("userLevel");
+	localStorage.removeItem("userNickName");
+	window.location.reload();
+});
 
 //判断所日期是否为今天
 function isToday(time){

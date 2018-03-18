@@ -12,10 +12,13 @@
 				<li id="myRoom">个人中心</li>
 				<li id="myMsg">消息</li>
 				<li id="toIndex">首页</li>
-				<li>
-					<img src="../img/defaultHeadImg.jpg"/>
+				<li id="headerImgArea">
+					<img src="../img/defaultHeadImg.jpg" id="headerImg"/>
+					<ul class="header_img_menu" id="headerImgMenu">
+						<li class="header_img_menu_item">其他</li>
+						<li class="header_img_menu_item" id="exitLogin">退出</li>
+					</ul>
 				</li>
-				<div class="clear_float"></div>
 			</ul>
 			<ul class="not_login" id="notLogin">
 				<li id="headerRegister">注册</li>
@@ -55,6 +58,7 @@
 						</button>
 					</div>
 					<div class="posts" id="postsContainer">
+						<div class="no_post_tip" id="noPostTip">该吧还没有帖子!</div>
 						<!-- <div class="post">
 							<div class="post_content">
 								<div class="post_title_container">

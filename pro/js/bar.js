@@ -83,8 +83,13 @@ function searchBarMsg(barName){
 			var data = JSON.parse(result);
 			console.log(data);
 			if(data.code == 0){
+				if(data.data.postNum == 0){
+					$('#noPostTip').css('display','block');
+				}else{
+					$('#noPostTip').css('display','none');
+					getPostPageMsg(barName,0);
+				}
 				getBarMsg(data.data);
-				getPostPageMsg(barName,0);
 				initPagingIndexClick(barName);
 				init();
 			}else if(data.code == 1){
