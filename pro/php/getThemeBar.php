@@ -13,7 +13,13 @@ $barTotalNum = mysql_num_rows($result2);
 //$arr = mysql_fetch_row($result);
 //获得的结果数组只能用key值，不能用数字索引
 $arr = array();
+$row;
 while($row = mysql_fetch_assoc($result)){
+	$barName = $row['barName'];
+	$sql3 = "select * from posts where barBelong='$barName'";
+	$result3 = mysql_query($sql3);
+	$postNum = mysql_num_rows($result3);
+	$row['postNum'] = $postNum;
 	array_push($arr,$row);
 }
 class ResultData{

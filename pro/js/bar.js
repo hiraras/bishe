@@ -329,7 +329,10 @@ function getPostPageMsg(barName,indexNum){
 			if(data.totalNum == 0){
 				console.log('当前还没有帖子');
 			}else{
-
+				console.log(data);
+				for(var i=0;i<data.value.length;i++){
+					createPost(data.value[i]);
+				}
 			}
 		}
 	});
@@ -435,7 +438,6 @@ function nextPage(barName){
 	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
 	console.log(currIndex, totalNum);
 	if(currIndex < totalNum){
-		console.log(currIndex);
 		getBarMsg(barName, ++currIndex);
 	}
 }
@@ -456,6 +458,7 @@ function lastPage(barName){
 }
 
 function createPost(data){
+	console.log(data);
 	var $postDiv = $('<div></div>');
 	$postDiv.addClass('post');
 	var $postContentDiv = $('<div></div>');
@@ -465,10 +468,17 @@ function createPost(data){
 
 	var $isTopP = $('<p></p>');
 	$isTopP.addClass('is_top');
+	if(data.isTop == '0'){
+		$isTopP.css('display','none');
+	}
 	var $isGreatP = $('<p></p>');
 	$isGreatP.addClass('is_great');
+	if(data.isGreat == '0'){
+		$isGreatP.css('display','none');
+	}
 	var $postTitleTextP = $('<p></p>');
 	$postTitleTextP.addClass('post_title_text');
+	$postTitleTextP.html(data.postName);
 	$postTitleContainerDiv.append($isTopP);
 	$postTitleContainerDiv.append($isGreatP);
 	$postTitleContainerDiv.append($postTitleTextP);
@@ -479,7 +489,9 @@ function createPost(data){
 	$postImg.addClass('post_img');
 	$postImg.src = '';
 	$postImgContainerDiv.append($postImg);
-
+	var $postContentIntroP = $('<p></p>');
+	$postContentIntroP.addClass('post_content_intro');
+	$postImgContainerDiv.append($postContentIntroP);
 	$postContentDiv.append($postTitleContainerDiv);
 	$postContentDiv.append($postImgContainerDiv);
 

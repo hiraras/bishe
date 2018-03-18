@@ -169,6 +169,11 @@
 	width: 740px;
 }
 
+.post .post_content_intro{
+	margin: 5px 0;
+	height: 21px;
+	overflow: hidden;
+}
 
 
 
