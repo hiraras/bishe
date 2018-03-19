@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title>个人中心</title>
 		<link rel="stylesheet" type="text/css" href="../common/css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/cropper.css">
 		<link rel="stylesheet" type="text/css" href="../css/personal_space.css"/>
 	</head>
 	<body>
@@ -25,11 +26,19 @@
 				<li id="headerLogin">登录</li>
 			</ul>
 		</div>
-		<div class="container">
-			
+		<div class="cropper_container">
+			<div class="img_container" id="imgContainer">
+				<img src="../img/1.jpg" alt="" id="image" />
+			</div>
+		</div>
+		<button id="btnGetCropper" data-option='{"maxWidth": 4096,"maxHeight": 4096}' data-method="getCroppedCanvas">获取图片</button>
+		<input type="file" id="inputImage" />
+		<div id="resultImgContainer">
+			<img src="" alt="" id="resultImg" />
 		</div>
 	</body>
-	<script src="../js/jquery/jquery-1.8.3.min.js"></script>
+	<script src="../js/jquery/jquery-1.9.1.min.js"></script>
 	<script src="../common/js/common.js"></script>
+	<script src="../js/cropper.js"></script>
 	<script src="../js/personal_space.js"></script>
 </html>

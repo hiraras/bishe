@@ -163,6 +163,7 @@ ul,li{
 	-moz-user-select:none;
 	-ms-user-select:none;
 	user-select:none;
+	background-color: white;
 }
 .index .index_item:hover{
 	border-color: #00a9cd;
@@ -179,6 +180,7 @@ ul,li{
 	-moz-user-select:none;
 	-ms-user-select:none;
 	user-select:none;
+	background-color: white;
 }
 .index .paging_btn:hover{
 	border-color: #00a9cd;
@@ -186,6 +188,7 @@ ul,li{
 }
 .index .index_item.currIndex{
 	border: none;
+	background-color: rgba(255,255,255,0); 
 }
 /*发送区域*/
 .send_area{
