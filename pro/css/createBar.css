@@ -16,3 +16,32 @@
     position: relative;
     padding: 15px 10px;
 }
+.input_container{
+	
+}
+.input_bar_name{
+	font-size: 16px;
+}
+.create_tip_container{
+	padding-left: 76px;
+}
+.create_tip_item{
+	color: #CCCCCC;
+	font-size: 14px;
+	margin-top: 6px;
+}
+.btn_submit{
+	background-color: #00a9cd;
+	width: 72px;
+	height: 30px;
+	color: #FFFFFF;
+	border: none;
+	border-radius: 6px;
+	margin-left: 76px;
+	margin-top: 15px;
+	cursor: pointer;
+}
+
+
+
+
