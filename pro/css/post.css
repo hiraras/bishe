@@ -1,5 +1,8 @@
+.index{
+	position: relative;
+	margin: 20px auto 10px;
+}
 .main{
-	border: 1px solid #000000;
 	border-radius: 8px;
 	box-shadow: 0 0 5px #000000;
 	overflow: hidden;
@@ -48,13 +51,17 @@
 	margin-left: 10px;
 }
 .comment .comment_text img{
-	max-width: 900px;
+	max-width: 700px;
 	height: auto;
 }
 .main .content .post_msg{
 	border-bottom: 1px solid #000000;
 	font-size: 24px;
 	padding: 10px;
+}
+.comment .comment_content .replys{
+	padding: 10px 0;
+	background-color: #7b3100;
 }
 .comment .comment_content .reply_item{
 	border-radius: 6px;

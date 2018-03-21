@@ -12,272 +12,159 @@
 				<li id="myRoom">个人中心</li>
 				<li id="myMsg">消息</li>
 				<li id="toIndex">首页</li>
-				<li>
-					<img src="../img/defaultHeadImg.jpg"/>
+				<li id="headerImgArea">
+					<img src="../img/defaultHeadImg.jpg" id="headerImg"/>
+					<ul class="header_img_menu" id="headerImgMenu">
+						<li class="header_img_menu_item">其他</li>
+						<li class="header_img_menu_item" id="exitLogin">退出</li>
+					</ul>
 				</li>
 			</ul>
 			<ul class="not_login" id="notLogin">
 				<li id="headerRegister">注册</li>
 				<li id="headerLogin">登录</li>
+				<div class="clear_float"></div>
 			</ul>
 		</div>
 		<div class="container">
 			<div class="content">
 				<div class="search">
-					<input type="text" id="search" />
-					<div class="btn_search">
+					<input type="text" id="search" class="search_text_insert" />
+					<button class="btn_search">
 						<img src="../img/search.png"/>
+					</button>
+					<div class="search_method_container" id="searchMethodContainer" searchType='0'>
+						<button class="select_bar_btn" id="searchMethodBar">吧</button>
+						<button class="select_post_btn unselect_btn" id="searchMethodPost">贴</button>
 					</div>
 				</div>
 				<div class="main">
 					<div class="intro">
 						<div>
-							<img src="../img/2.jpg" alt="" />
+							<img src="../img/2.jpg" alt="" id="barImg" />
 						</div>
-						<div>
-							<h2>凉宫春日的忧郁吧</h2>
+						<div class="bar_intro_container">
+							<h2 id = 'barName'></h2>
 							<div class="post_status">
-								<div class="post_status_item">人数:15616151</div>
-								<div class="post_status_item">帖子:15651</div>
+								<div class="post_status_item" id = 'concernNum'></div>
+								<div class="post_status_item" id = 'postNum'></div>
 							</div>
-							<p class="intro_content">
-								这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍这是介绍
+							<p class="intro_content" id = 'barIntroduce'>
+								
 							</p>
 						</div>
 						<button class="btn_attention">
 							关注
 						</button>
-						<button class="btn_public">
-							发帖
-						</button>
 					</div>
-					<div class="posts">
-						<div class="post_msg">
-							<p class="post_title">
-								帖子
-							</p>
-							<p class="poster">发布者</p>
-							<p class="reply_num">回复数</p>
-							<p class="post_time">发布时间</p>
-						</div>
-						<div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div>
-						<div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div><div class="post">
-							<p class="post_title">
-								<span class="top_post">置顶</span>
-								<span class="competitive">精</span>
-								据诶发危机of囧鹅肥哦i万份恶口分哦平
-							</p>
-							<p class="poster">hirara</p>
-							<p class="reply_num">00000</p>
-							<p class="post_time">2018-2-1</p>
-						</div>
+					<div class="posts" id="postsContainer">
+						<div class="no_post_tip" id="noPostTip">该吧还没有帖子!</div>
+						<!-- <div class="post">
+							<div class="post_content">
+								<div class="post_title_container">
+									<p class="is_top">置顶</p>
+									<p class="is_great">精</p>
+									<p class="post_title_text">
+										一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十
+									</p>
+								</div>
+								<div class="post_img_container">
+									<p class="post_content_intro">
+										微积分of家哦啊万i俄方joi阿娥分骄傲i俄方jo挨饿附近ioweajfoaiejfoiaewjfijafe姐啊佛饥挨饿佛jo万i阿娥放假哦i额外加分哦i阿娥分阿娥分
+									</p>
+									<img src="../img/1.jpg" alt="" class="post_img" id="img1" />
+									<img src="../img/1.jpg" alt="" class="post_img" />
+									<img src="../img/1.jpg" alt="" class="post_img" />
+									<img src="../img/6.jpeg" alt="" class="post_img" />
+									<img src="../img/1.jpg" alt="" class="post_img" />
+									<img src="../img/1.jpg" alt="" class="post_img" />
+									<img src="../img/6.jpeg" alt="" class="post_img" />
+									<img src="../img/1.jpg" alt="" class="post_img" />	
+								</div>
+							</div>
+							<div class="post_msg">
+								<div class="master_msg">
+									<img src="../img/proImg/people.png" alt="" class="post_msg_people_img" />
+									<p class="master_name">hirara</p>
+								</div>
+								<div class="reply_num_msg">
+									<img src="../img/proImg/msg.png" alt="" class="post_msg_reply_img" />
+									<p class="reply_num">15616515156</p>
+								</div>
+								<div class="post_time">
+									2018-12-21
+								</div>
+							</div>
+						</div> -->
+						<ul class="index">
+							<li class="paging_btn" id="firstPageBtn">首页</li>
+							<li class="paging_btn" id="prevBtn">上一页</li>
+							<li class="index_item">1</li>
+							<li class="index_item">2</li>
+							<li class="index_item">3</li>
+							<li class="index_item">4</li>
+							<li class="index_item">5</li>
+							<li class="index_item">6</li>
+							<li class="index_item">7</li>
+							<li class="index_item">8</li>
+							<li class="index_item">9</li>
+							<li class="index_item">10</li>
+							<li class="paging_btn" id="nextBtn">下一页</li>
+							<li class="paging_btn" id="lastPageBtn">尾页</li>
+						</ul>
 					</div>
-					<div class="index">
-						<span class="index_item" id="prev">上一页</span>
-						<span class="index_item">1</span>
-						<span class="index_item">2</span>
-						<span class="index_item">3</span>
-						<span class="index_item">4</span>
-						<span class="index_item">5</span>
-						<span class="index_item">6</span>
-						<span class="index_item">7</span>
-						<span class="index_item">8</span>
-						<span class="index_item">9</span>
-						<span class="index_item">10</span>
-						<span class="index_item" id="next">下一页</span>
-					</div>
-					<div class="send_area">
+					<div class="send_area" id="sendArea">
 						<p class="send_area_title">发表帖子</p>
 						<div class="post_title">
-							<input type="text" placeholder="请输入帖子标题" />
+							<input type="text" value='11' placeholder="请输入帖子标题(最多80字)" maxlength="80" id="inputPostTitle" />
 						</div>
 						<ul class="menu">
-							<li>图片</li>
-							<li>表情</li>
+							<li id="selectImg">图片</li>
+							<form action="" method="post" enctype="multipart/form-data" name="upload_form" style="display: none" id="uploadImgForm">
+								<input type="file" id="inputSelectImg" accept="image/*" onchange="imgChange(event)" />
+							</form>
+							<li id="selectFace">表情</li>
 						</ul>
-						<div class="editor_area" contenteditable="true">
+						<div class="editor_area" contenteditable="true" id="editorArea">
 							
 						</div>
+						<div class="not_login_tip" id="notLoginTip">
+							<a href="http://localhost/pro/page/login.html">请先登录</a>
+						</div>
+						<div class="face_container" id="faceContainer">
+							<img src="../img/proImg/face1.png" class = "face" />
+							<img src="../img/proImg/face2.png" class = "face" />
+							<img src="../img/proImg/face3.png" class = "face" />
+							<img src="../img/proImg/face4.png" class = "face" />
+							<img src="../img/proImg/face5.png" class = "face" />
+							<img src="../img/proImg/face6.png" class = "face" />
+							<img src="../img/proImg/face7.png" class = "face" />
+							<img src="../img/proImg/face8.png" class = "face" />
+							<img src="../img/proImg/face9.png" class = "face" />
+							<img src="../img/proImg/face10.png" class = "face" />
+							<img src="../img/proImg/face11.png" class = "face" />
+							<img src="../img/proImg/face12.png" class = "face" />
+							<img src="../img/proImg/face13.png" class = "face" />
+							<img src="../img/proImg/face14.png" class = "face" />
+							<img src="../img/proImg/face15.png" class = "face" />
+							<img src="../img/proImg/face16.png" class = "face" />
+							<img src="../img/proImg/face17.png" class = "face" />
+							<img src="../img/proImg/face18.png" class = "face" />
+							<img src="../img/proImg/face19.png" class = "face" />
+							<img src="../img/proImg/face20.png" class = "face" />
+							<img src="../img/proImg/face21.png" class = "face" />
+							<img src="../img/proImg/face22.png" class = "face" />
+							<img src="../img/proImg/face23.png" class = "face" />
+							<img src="../img/proImg/face24.png" class = "face" />
+							<img src="../img/proImg/face25.png" class = "face" />
+							<img src="../img/proImg/face26.png" class = "face" />
+							<img src="../img/proImg/face27.png" class = "face" />
+							<img src="../img/proImg/face28.png" class = "face" />
+							<img src="../img/proImg/face29.png" class = "face" />
+							<img src="../img/proImg/face30.png" class = "face" />
+						</div>
+						<button class="submit" id="submit">发布</button>
+						<span class="send_tip" id="sendTip">标题不能为空</span>
 					</div>
 				</div>
 			</div>

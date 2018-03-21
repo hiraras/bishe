@@ -86,8 +86,8 @@ var testRegister = function(){
 													$("#remind").html("用户已存在");
 												}else if(num == 101){
 													$("#remind").html("注册成功");
-													sessionStorage.setItem("user",username);
-													sessionStorage.setItem("userLevel",1);
+													localStorage.setItem("user",username);
+													localStorage.setItem("userLevel",1);
 													window.location.href = "../index.html";
 												}else if(num == 102){
 													$("#remind").html("注册失败");

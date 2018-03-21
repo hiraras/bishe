@@ -14,8 +14,12 @@
 				<li id="myRoom">个人中心</li>
 				<li id="myMsg">消息</li>
 				<li id="toIndex">首页</li>
-				<li>
-					<img src="./img/defaultHeadImg.jpg"/>
+				<li id="headerImgArea">
+					<img src="./img/defaultHeadImg.jpg" id="headerImg"/>
+					<ul class="header_img_menu" id="headerImgMenu">
+						<li class="header_img_menu_item">其他</li>
+						<li class="header_img_menu_item" id="exitLogin">退出</li>
+					</ul>
 				</li>
 			</ul>
 			<ul class="not_login" id="notLogin">
@@ -38,52 +42,39 @@
 			</div>
 			<div class="content" id="content">
 				<div class="search">
-					<input type="text" id="search" />
-					<div class="btn_search">
+					<input type="text" id="search" class="search_text_insert" />
+					<button class="btn_search">
 						<img src="./img/search.png"/>
+					</button>
+					<div class="search_method_container" id="searchMethodContainer" searchType='0'>
+						<button class="select_bar_btn" id="searchMethodBar">吧</button>
+						<button class="select_post_btn unselect_btn" id="searchMethodPost">贴</button>
 					</div>
 				</div>
-				<div class="left">
+				<div class="left" id="leftContainer">
 					<div class="user_msg" id="userMsg">
-						<img src="./img/defaultHeadImg.jpg" alt="" />
-						<p class="user_name">hirara</p>
+						<img src="./img/defaultHeadImg.jpg" alt="" id="headImg" />
+						<p class="user_name" id="userName">hirara</p>
 					</div>
 					<div class="themes" id="themes">
-						<div class="theme">有氧运动</div>
-						<div class="theme">有氧运动</div>
-						<div class="theme">有氧运动</div>
-						<div class="theme">有氧运动</div>
-						<div class="theme">有氧运动</div>
-						<div class="theme">有氧运动</div>
-						<div class="theme">有氧运动</div>
+						
 					</div>
 					<div class="theme_container" id="themeContainer">
-							<div class="theme_title">有氧运动</div>
+							<div class="theme_title" id="sortTitle">有氧运动</div>
 							<div class="line"></div>
-							<div class="theme_content">俯卧撑</div>
-							<div class="theme_content">引体向上</div>
-							<div class="theme_content">游泳</div>
-							<div class="theme_content">俯卧撑</div>
-							<div class="theme_content">引体向上</div>
-							<div class="theme_content">游泳</div>
-							<div class="theme_content">俯卧撑啊啊啊</div>
-							<div class="theme_content">引体向上</div>
-							<div class="theme_content">游泳</div>
-							<div class="theme_content">俯卧撑</div>
-							<div class="theme_content">引体向上</div>
-							<div class="theme_content">俯卧撑啊啊啊</div>
-							<div class="theme_content">游泳</div>
-							<div class="theme_content">俯卧撑</div>
-							<div class="theme_content">引体向上</div>
-							<div class="theme_content">游泳</div>
-						</div>
+					</div>
 				</div>
-				<div class="right">
-					<div class="row_bar">
+				<div class="right" id="rightContainer">
+					<!--<div class="row_bar">
 						<div class="bar">
 							<div class="bar_title">
 								<img src="img/banner1.jpg"/>
 								<p>引体向上啊啊aefaefaef</p>
+								<p class="bar_hot">
+									<span>关注数:56165165</span>
+									<br />
+									<span>帖子数:56165165</span>
+								</p>
 							</div>
 							<div class="clear_float"></div>
 							<div class="bar_descript">
@@ -94,299 +85,7 @@
 								这是引体向上把
 							</div>
 						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-					</div>
-					<div class="row_bar">
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-					</div>
-					<div class="row_bar">
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-					</div>
-					<div class="row_bar">
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-					</div>
-					<div class="row_bar">
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-					</div>
-					<div class="row_bar">
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-					</div>
-					<div class="row_bar">
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-						<div class="bar">
-							<div class="bar_title">
-								<img src="img/banner1.jpg"/>
-								<p>引体向上啊啊aefaefaef</p>
-							</div>
-							<div class="clear_float"></div>
-							<div class="bar_descript">
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-								这是引体向上把
-							</div>
-						</div>
-					</div>
+					</div>-->
 				</div>
 				<div class="clear_float"></div>
 			</div>
