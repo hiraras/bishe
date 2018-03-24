@@ -48,30 +48,74 @@ function init(){
 		for(var i=0;i<fileDataArr.length;i++){
 			removeNotNeedImg(fileDataArr[i]);
 		}
-	}
+    }
+    //回复内容中的回复按钮被点击时回复框内保存被点击的用户的信息
+    $('.reply_btn').click(getReplyedName);
+    //点击回复按钮发布评论
+    $('.submit_reply_btn').click(sendReplyToReply);
+
+    $('.reply_editor_area').focus(replyToReplyNotLoginTip);
 }
 
-function resizeImg(){
-	$(this).siblings("img").each(function(){
-		$(this).css('height','100px');
-		$(this).css('max-width','134px');
-	});
-	if($(this).css('height') == '100px'){
-		$(this).css('height','400px');
-		$(this).css('max-width','900px');
-	}else{
-		$(this).css('height','100px');
-		$(this).css('max-width','134px');
-	}
+function getReplyedName(){
+    var replyederNickName = $(this).parent().siblings('.reply_text').find('.replyer').html();
+    replyederNickName = replyederNickName.substring(0,replyederNickName.length-1);
+    $(this).parent().parent().parent().siblings('.reply_area').find('.reply_editor_area').html('回复 '+replyederNickName+':');
+}
+//未登录状态回复则显示未登录提示
+function replyToReplyNotLoginTip(){
+    var user = localStorage.getItem('user');
+    if(!user){
+        alert('登录后才能发表回复!');
+        $(this).blur();
+    }
 }
 
-function getBarMsg(data){
-	$('#barName').html(data.barName + '吧');
-	$('#barName').attr('barname',data.barName);
-	$('#concernNum').html('人数:'+data.concernNum);
-	$('#barIntroduce').html(data.barDescript);
-	$('#postNum').html('帖子:'+data.postNum);
-	$('#barImg').attr('src',data.barImg);
+//发送评论的评论
+function sendReplyToReply(){
+    var content = $(this).siblings('.reply_editor_area').html().trim();
+    var postId = $('#postTitle').attr('postId');
+    var position = $(this).closest('.comment').attr('position');
+    var replyerId = localStorage.getItem('user');
+    var replyerNickName = localStorage.getItem('userNickName');
+    var replyerHeadImg = localStorage.getItem('headImg');
+    $that = $(this);
+    if(isLogin()){
+        if(content != ''){
+            $.ajax({
+                type: 'post',
+                url: domain + '/pro/php/sendReplyToReply.php',
+                async: true,
+                data: {
+                    postId: postId,
+                    content: content,
+                    position: position,
+                    replyerId: replyerId,
+                    replyerNickName: replyerNickName,
+                    replyerHeadImg: replyerHeadImg
+                },
+                success: function(result){
+                    if(result == 'success'){
+                        $that.siblings('.reply_to_reply_send_tip').css('display','inline');
+                        setTimeout(function(){
+                            window.location.reload();
+                        },300);
+                    }else{
+                        alert('未知原因,发布失败!');
+                    }
+                }
+            });
+        }else{
+            //未输入内容
+            console.log('内容为空');
+        }
+    }else{
+        alert('请先登录!');
+    }
+}
+
+function getPostReplysMsg(data){
+	
 }
 
 function searchPostMsg(postId){
@@ -98,11 +142,12 @@ function searchPostMsg(postId){
                 $('#commentText').html(data.data.postContent);
                 $('#creatorPostTime').html(isToday(data.data.createTime)?data.data.createTime.substr(11):data.data.createTime.substr(0,10));
                 $('#postTitle').attr('postId',postId);
+                $('.master_comment').attr('position',1);
             }else if(data.result == 'noReply'){
                 //没有回复
                 console.log(1);
             }
-            getBarMsg(data.data);
+            getPostReplysMsg();
             initPagingIndexClick(postId);
             init();
 		}

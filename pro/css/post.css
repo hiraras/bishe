@@ -107,10 +107,56 @@
 .comment_content .reply_item .reply_time{
 	text-align: right;
 }
-
-
-
-
+.replys .reply_area{
+	text-align: right;
+	position: relative;
+}
+.replys .reply_area .reply_editor_area{
+	min-height: 60px;
+	max-height: 70px;
+	background: #FFFFFF;
+	border: 1px solid #00a9cd;
+	border-radius: 4px;
+	width: 860px;
+	padding: 5px 10px;
+	margin: 0 auto;
+	margin-top: 5px;
+	text-align: left;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+.replys .submit_reply_btn{
+	background: #FFFFFF;
+	text-align: right;
+	padding-right: 15px;
+	border: 1px solid black;
+	border-radius: 4px;
+	padding: 5px 10px;
+	cursor: pointer;
+	margin: 10px 20px 0px 0px;
+}
+.replys .submit_reply_btn:hover{
+	color: #00a9cd;
+	border-color: #00a9cd;
+}
+.replys .reply_btn{
+	background: #FFFFFF;
+	text-align: right;
+	padding-right: 15px;
+	border: 1px solid black;
+	border-radius: 4px;
+	padding: 5px 10px;
+	cursor: pointer;
+	margin: 10px 20px 0px 0px;
+}
+.replys .reply_btn:hover{
+	color: #00a9cd;
+	border-color: #00a9cd;
+}
+.reply_area .reply_to_reply_send_tip{
+	color: #FFFFFF;
+	display: none;
+}
 
 
 

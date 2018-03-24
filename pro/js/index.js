@@ -141,6 +141,7 @@ function getUserMsg(){
 			var data = JSON.parse(result);
 			var imgSrc = data.headImg.substr(1);
 			$('#headImg').attr('src',imgSrc);
+			$('#headerImg').attr('src',imgSrc);
 			$('#userName').html(data.nickname);
 		}
 	});

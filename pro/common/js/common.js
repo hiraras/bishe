@@ -73,6 +73,7 @@ function init(){
 	}
 }
 init();
+//获得用户头像并保存和显示到header中，因为一次回复回复没读到nickname就在这里增加设置一个nickname，以防万一
 function getHeadImg(){
 	var user = localStorage.getItem("user");
 	var domain = 'http://localhost';
@@ -86,8 +87,11 @@ function getHeadImg(){
 		success: function(result){
 			try{
 				var data = JSON.parse(result);
-				$('#headerImg').attr('src',data.headImg);
+				if(window.location.pathname.indexOf('index.html') == -1){
+					$('#headerImg').attr('src',data.headImg);
+				}
 				localStorage.setItem('headImg',data.headImg);
+				localStorage.setItem('userNickName',data.nickname);
 			}catch(e){
 				console.log(e)
 			}
@@ -243,6 +247,7 @@ $('#exitLogin').click(function(){
 	localStorage.removeItem("user");
 	localStorage.removeItem("userLevel");
 	localStorage.removeItem("userNickName");
+	localStorage.removeItem("headImg");
 	window.location.reload();
 });
 
