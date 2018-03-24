@@ -157,7 +157,44 @@
 	color: #FFFFFF;
 	display: none;
 }
-
+.index .reply_index_item{
+	border: 1px solid #000000;
+	border-radius: 4px;
+	text-align: center;
+	padding: 5px 10px;
+	cursor: pointer;
+	display: inline-block;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	background-color: white;
+}
+.index .reply_index_item:hover{
+	border-color: #00a9cd;
+	color: #00a9cd;
+}
+.index .reply_paging_btn{
+	border: 1px solid #000000;
+	border-radius: 4px;
+	text-align: center;
+	padding: 5px 10px;
+	cursor: pointer;
+	display: inline-block;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	background-color: white;
+}
+.index .reply_paging_btn:hover{
+	border-color: #00a9cd;
+	color: #00a9cd;
+}
+.index .reply_index_item.currIndex{
+	border: none;
+	background-color: rgba(255,255,255,0); 
+}
 
 
 

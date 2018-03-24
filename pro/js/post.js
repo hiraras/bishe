@@ -114,7 +114,7 @@ function sendReplyToReply(){
     }
 }
 
-function getPostReplysMsg(data){
+function getPostReplysMsg(){
 	
 }
 
@@ -142,12 +142,12 @@ function searchPostMsg(postId){
                 $('#commentText').html(data.data.postContent);
                 $('#creatorPostTime').html(isToday(data.data.createTime)?data.data.createTime.substr(11):data.data.createTime.substr(0,10));
                 $('#postTitle').attr('postId',postId);
-                $('.master_comment').attr('position',1);
+				$('.master_comment').attr('position',1);
             }else if(data.result == 'noReply'){
                 //没有回复
                 console.log(1);
-            }
-            getPostReplysMsg();
+			}
+			getPostReplysMsg();
             initPagingIndexClick(postId);
             init();
 		}
@@ -510,100 +510,79 @@ function lastPage(barName){
 		getPostPageMsg(barName, totalNum);
 	}
 }
+//回复的回复组件
+function createReplysItem(data){
+	var $replysDiv = $('<div></div>');
+	$replysDiv.addClass('replys');
+	var $replyItemDiv = $('<div></div>');
+	$replyItemDiv.addClass('reply_item');
+	var $replyItemHeadImg = $('<img />');
+	$replyItemHeadImg.attr('src','../img/3.jpg');
+	var $replyContentDiv = $('<div></div>');
+	$replyContentDiv.addClass('reply_content');
+	var $replyTextP = $('<p></p>');
+	$replyTextP.addClass('reply_text');
+	var $replyContentUserNameSpan = $('<span></span>');
+	$replyContentUserNameSpan.html('hirara:');
+	$replyTextP.html($replyContentUserNameSpan+'这是回复内容这是回复内容这是回复内容这是回');
+	var $replyTimeDiv = $('<div></div>');
+	$replyTimeDiv.addClass('reply_time');
+	var $timeSpan = $('<span></span>');
+	$timeSpan.html('2018-2-9 10:46:00');
+	var $replyBtn = $('<button></button>');
+	$replyBtn.addClass('reply_btn');
+	$replyBtn.html('回复');
+	$replyTimeDiv.append($timeSpan);
+	$replyTimeDiv.append($replyBtn);
+	$replyContentDiv.append($replyTextP);
+	$replyContentDiv.append($replyTimeDiv);
+	var $clearFloatDiv = $('<div></div>');
+	$clearFloatDiv.addClass('clear_float');
+	$replyItemDiv.append($replyItemHeadImg);
+	$replyItemDiv.append($replyContentDiv);
+	$replyItemDiv.append($clearFloatDiv);
 
-function createPostItem(data){
-	// console.log(data);
-	var maxShowImgNum = 4;
-	var imgReg=/<img\b[^>]*postImg[^>]*>/ig;
-	var $postDiv = $('<div></div>');
-	$postDiv.addClass('post');
-	var $postContentDiv = $('<div></div>');
-	$postContentDiv.addClass('post_content');
-	var $postTitleContainerDiv = $('<div></div>');
-	$postTitleContainerDiv.addClass('post_title_container');
+	var $replyAreaDiv = $('<div></div>');
+	$replyAreaDiv.addClass('reply_area');
+	var $replyEditorAreaDiv = $('<div></div>');
+	$replyEditorAreaDiv.addClass('reply_editor_area');
+	$replyEditorAreaDiv.attr('contenteditable','true');
+	var $replyToReplySendTipSpan = $('<span></span>');
+	$replyToReplySendTipSpan.html('发布成功');
+	var $submitReplyBtn = $('<button></button>');
+	$submitReplyBtn.addClass('submit_reply_btn');
+	$submitReplyBtn.html('回复');
+	$replyAreaDiv.append($replyEditorAreaDiv);
+	$replyAreaDiv.append($replyToReplySendTipSpan);
+	$replyAreaDiv.append($submitReplyBtn);
 
-	var $isTopP = $('<p></p>');
-	$isTopP.addClass('is_top');
-	if(data.isTop == '0'){
-		$isTopP.css('display','none');
+	var $indexUl = $('<ul></ul>');
+	$indexUl.addClass('index');
+	var $replyPagingFirstBtnLi = $('<li></li>');
+	$replyPagingFirstBtnLi.addClass('reply_paging_btn');
+	$replyPagingFirstBtnLi.html('首页');
+	var $replyPagingPrevBtnLi = $('<li></li>');
+	$replyPagingPrevBtnLi.addClass('reply_paging_btn');
+	$replyPagingPrevBtnLi.html('上一页');
+	$indexUl.append($replyPagingFirstBtnLi);
+	$indexUl.append($replyPagingPrevBtnLi);
+	for(var i=0;i<10;i++){
+		var $replyPagingIndexBtnLi = $('<li></li>');
+		$replyPagingIndexBtnLi.addClass('reply_index_item');
+		$replyPagingIndexBtnLi.html(i+1);
+		$indexUl.append($replyPagingIndexBtnLi);
 	}
-	var $isGreatP = $('<p></p>');
-	$isGreatP.addClass('is_great');
-	if(data.isGreat == '0'){
-		$isGreatP.css('display','none');
-	}
-	var $postTitleTextP = $('<p></p>');
-	$postTitleTextP.addClass('post_title_text');
-	$postTitleTextP.html(data.postName);
-	$postTitleTextP.click(function(){
-		var postId = $(this).parents('.post').attr('postId');
-		window.location.href = 'http://localhost/pro/page/post.html?'+'postId='+postId;
-	});
-	$postTitleContainerDiv.append($isTopP);
-	$postTitleContainerDiv.append($isGreatP);
-	$postTitleContainerDiv.append($postTitleTextP);
+	var $replyPagingNextBtnLi = $('<li></li>');
+	$replyPagingNextBtnLi.addClass('reply_paging_btn');
+	$replyPagingNextBtnLi.html('下一页');
+	var $replyPagingLastBtnLi = $('<li></li>');
+	$replyPagingLastBtnLi.addClass('reply_paging_btn');
+	$replyPagingLastBtnLi.html('尾页');
+	$indexUl.append($replyPagingNextBtnLi);
+	$indexUl.append($replyPagingLastBtnLi);
 
-	var $postImgContainerDiv = $('<div></div>');
-	$postImgContainerDiv.addClass('post_img_container');
-	var $postContentIntroP = $('<p></p>');
-	$postContentIntroP.addClass('post_content_intro');
-	$postContentIntroP.html(data.postContent.replace(imgReg,''));
-	$postImgContainerDiv.append($postContentIntroP);
-	var imgArr = data.postContent.match(imgReg);
-	if(imgArr){
-		for(var j=0;j<imgArr.length && j<maxShowImgNum;j++){
-			var $imgEle = $(imgArr[j]);
-			$imgEle.addClass('post_img');
-			$imgEle.click(resizeImg);
-			$postImgContainerDiv.append($imgEle);
-		}
-	}
-	
-	$postContentDiv.append($postTitleContainerDiv);
-	$postContentDiv.append($postImgContainerDiv);
-
-	var $postMsgDiv = $('<div></div>');
-	$postMsgDiv.addClass('post_msg');
-
-	var $masterMsgDiv = $('<div></div>');
-	$masterMsgDiv.addClass('master_msg');
-	var $postMsgPeopleImg = $('<img />');
-	$postMsgPeopleImg.addClass('post_msg_people_img');
-	$postMsgPeopleImg.attr('src','../img/proImg/people.png');
-	var $masterNameP = $('<p></p>');
-	$masterNameP.addClass('master_name');
-	$masterNameP.html(data.creatorNickName);
-	$masterMsgDiv.append($postMsgPeopleImg);
-	$masterMsgDiv.append($masterNameP);
-
-	var $replyNumMsgDiv = $('<div></div>');
-	$replyNumMsgDiv.addClass('reply_num_msg');
-	var $postMsgReplyImg = $('<img />');
-	$postMsgReplyImg.addClass('post_msg_reply_img');
-	$postMsgReplyImg.attr('src','../img/proImg/msg.png');
-	var $replyNumP = $('<p></p>');
-	$replyNumP.addClass('reply_num');
-	$replyNumP.html(data.replyNum);
-	$replyNumMsgDiv.append($postMsgReplyImg);
-	$replyNumMsgDiv.append($replyNumP);
-
-	var $postTimeDiv = $('<div></div>');
-	var showCreateTimeStr = '';
-	$postTimeDiv.addClass('post_time');
-	if(isToday(data.createTime)){
-		showCreateTimeStr = data.createTime.substr(11);
-	}else{
-		showCreateTimeStr = data.createTime.substr(0,10);
-	}
-	$postTimeDiv.html(showCreateTimeStr);
-
-	$postMsgDiv.append($masterMsgDiv);
-	$postMsgDiv.append($replyNumMsgDiv);
-	$postMsgDiv.append($postTimeDiv);
-
-	$postDiv.append($postContentDiv);
-	$postDiv.append($postMsgDiv);
-	$postDiv.attr('postId',data.id);
-	$postDiv.attr('postId',data.id);
-	return $postDiv;
+	$replysDiv.append($replyItemDiv);
+	$replysDiv.append($replyAreaDiv);
+	$replysDiv.append($indexUl);
+	return $replysDiv;
 }
