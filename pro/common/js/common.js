@@ -58,16 +58,45 @@ function isLogin(){
 		//未登录
 		$("#haveLogin").css("display","none");
 		$("#notLogin").css("display","block");
+		return false;
 	}else{
 		//已登录
 		$("#haveLogin").css("display","block");
 		$("#notLogin").css("display","none");
+		return true;
 	}
 };
 function init(){
-	isLogin();
+	var result = isLogin();
+	if(result){
+		getHeadImg();
+	}
 }
 init();
+function getHeadImg(){
+	var user = localStorage.getItem("user");
+	var domain = 'http://localhost';
+	$.ajax({
+		url: domain + "/pro/php/getHeadImg.php",
+		type: 'get',
+		async: true,
+		data: {
+			user: user
+		},
+		success: function(result){
+			try{
+				var data = JSON.parse(result);
+				$('#headerImg').attr('src',data.headImg);
+				localStorage.setItem('headImg',data.headImg);
+			}catch(e){
+				console.log(e)
+			}
+		},
+		error: function(e){
+			console.log(e);
+		}
+	});
+}
 
 function bindEvent(){
 	$("#login").on("click",function(){

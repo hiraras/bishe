@@ -23,12 +23,16 @@
 	width: 80px;
 	height: 80px;
 	margin-top: 20px;
+	border-radius: 4px;
 }
 .comment .user_msg .user_name{
 	margin-top: 20px;
 }
 .comment .comment_content{
 	flex: 5;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 .comment .comment_content .comment_text{
 	padding: 5px;
@@ -46,6 +50,11 @@
 	border-radius: 4px;
 	padding: 5px 10px;
 	margin-left: 15px;
+	cursor: pointer;
+}
+.comment .comment_msg button:hover{
+	color: #00a9cd;
+	border-color: #00a9cd;
 }
 .comment .comment_msg span{
 	margin-left: 10px;
@@ -83,13 +92,17 @@
 }
 .comment_content .reply_item .reply_content{
 	float: left;
-	width: 800px;
+	width: 810px;
 	/*margin-left: 10px;*/
 	padding-left: 15px;
 	box-sizing: border-box;
 }
 .comment_content .reply_item .reply_text{
 	display: inline-block;
+	font-size: 14px;
+}
+.comment_content .reply_item .reply_text .replyer{
+	font-size: 16px;
 }
 .comment_content .reply_item .reply_time{
 	text-align: right;

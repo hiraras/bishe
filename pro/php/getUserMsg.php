@@ -8,5 +8,5 @@ $result = mysql_query($sql);
 //获得的结果数组只能用key值，不能用数字索引
 $arr = mysql_fetch_assoc($result);
 echo json_encode($arr);
-
+mysql_close($con);
 ?>

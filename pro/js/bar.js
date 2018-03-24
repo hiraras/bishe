@@ -34,10 +34,12 @@ function init(){
 		$('#editorArea').attr('contenteditable','true');
 		$('#notLoginTip').css('display', 'none');
 		$('#submit').attr('disabled',false);
+		$('#submit').css('background','#00a9cd');
 	}else{
 		$('#editorArea').attr('contenteditable','false');
 		$('#notLoginTip').css('display', 'block');
 		$('#submit').attr('disabled',true);
+		$('#submit').css('background','gray');
 	}
 	//测试页面刷新或关闭，删除掉已经保存到本地的图片文件
 	//结果直接关闭浏览器的话不会执行
@@ -103,10 +105,12 @@ function searchBarMsg(barName){
 
 function initSendAreaBtnsPressEvent(){
 	$('.face').click(function(){
-		var $img = $(this).clone();
-		$img.removeAttr('class');
-		insertHTML($img,$('#editorArea'));
-		$('#faceContainer').css('display','none');
+		if(isEditorAreaBlur()){
+			var $img = $(this).clone();
+			$img.removeAttr('class');
+			insertHTML($img,$('#editorArea'));
+			$('#faceContainer').css('display','none');
+		}
 	});
 	//头像框存在时，如果点击外面部分则消失
 	$('html').click(function(e){

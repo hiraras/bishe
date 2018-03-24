@@ -156,16 +156,6 @@
 .post .post_msg .post_time{
 	text-align: right;
 }
-.send_area{
-	position: relative;
-}
-.send_area .post_title{
-	border-bottom: 1px solid #000000;
-}
-.send_area .post_title input{
-	height: 30px;
-	width: 100%;
-}
 .intro .bar_intro_container{
 	height: 100%;
 	width: 740px;

@@ -132,6 +132,7 @@ ul,li{
 	top: 6px;
 	border: none;
 	cursor: pointer;
+	background: #00a9cd;
 }
 .search .select_post_btn{
 	padding: 8px 13px;
@@ -140,9 +141,10 @@ ul,li{
 	left: -6px;
 	border: none;
 	cursor: pointer;
+	background: #00a9cd;
 }
 .search .unselect_btn{
-	background-color: gray;
+	background-color: #afafaf;
 }
 /*页码*/
 .index{
@@ -254,6 +256,7 @@ ul,li{
 	-khtml-user-select: none;
 	user-select: none;
 	display: none;
+	padding-top: 4px;
 }
 .send_area .face{
 	cursor: pointer;
@@ -292,4 +295,14 @@ ul,li{
 }
 .send_area img{
 	max-height: 200px;
+}
+.send_area{
+	position: relative;
+}
+.send_area .post_title{
+	border-bottom: 1px solid #000000;
+}
+.send_area .post_title input{
+	height: 30px;
+	width: 100%;
 }
