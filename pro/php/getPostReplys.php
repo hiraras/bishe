@@ -2,11 +2,12 @@
 require "connect.php";
 $postId = $_GET['postId'];
 $indexNum = $_GET['indexNum'];
-$everyPageItemNum = 14;
-$showReplyToReplyNum = 6;
+$everyPageItemNum = 2;
+//需要和getReplyToReplyMsg.php中的$everyPageItemNum相等
+$showReplyToReplyNum = 1;
 $dataIndex = $indexNum*$everyPageItemNum;
 //获得回复
-$sql = "select * from post_reply where postBelongId='$postId' and status = 1 ORDER BY position DESC limit $dataIndex,$everyPageItemNum";
+$sql = "select * from post_reply where postBelongId='$postId' and status = 1 ORDER BY position ASC limit $dataIndex,$everyPageItemNum";
 $sql2 = "select * from post_reply where postBelongId='$postId' and status = 1";
 $result = mysql_query($sql);
 $result2 = mysql_query($sql2);

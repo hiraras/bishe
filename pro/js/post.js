@@ -59,7 +59,7 @@ function getReplyedName(){
     }else{
 		var replyederNickName = $(this).parent().siblings('.reply_text').find('.replyer').html();
 		replyederNickName = replyederNickName.substring(0,replyederNickName.length-1);
-		$(this).parent().parent().parent().siblings('.reply_area').find('.reply_editor_area').html('回复 '+replyederNickName+':');
+		$(this).closest('.reply_item').siblings('.reply_area').find('.reply_editor_area').html('回复 '+replyederNickName+':');
 	}
 }
 //未登录状态回复则显示未登录提示
@@ -128,13 +128,39 @@ function getPostReplysMsg(postId, indexNum){
 		success: function(result){
 			try{
 				var data = JSON.parse(result);
-				console.log(data);
+				// console.log(data);
 				freshPageReplyItems(data,indexNum);
 			}catch(e){
 				console.log(result);
 				console.log(e);
 			}
 
+		}
+	});
+}
+
+function getPostReplyToReplyMsg(postId, indexNum, position){
+	console.log(postId, indexNum, position);
+	var that = this;
+	$.ajax({
+		type: 'get',
+		url: domain + '/pro/php/getReplyToReplyMsg.php',
+		async: true,
+		data: {
+			postId: postId,
+			indexNum: indexNum,
+			position: position
+		},
+		success: function(result){
+			try{
+				var data = JSON.parse(result);
+				// console.log(data);
+				// freshPageReplyToReplyItems.call(that, data, indexNum);
+			}catch(e){
+				console.log(result);
+				console.log(e);
+			}
+			freshPageReplyToReplyItems.call(that, data, indexNum);
 		}
 	});
 }
@@ -150,7 +176,7 @@ function searchPostMsg(postId){
 		success: function(result){
             try{
                 var data = JSON.parse(result);
-                console.log(data);
+                // console.log(data);
             }catch(e){
 				console.log(e);
                 return ;
@@ -419,10 +445,122 @@ function initPagingIndexClick(barName){
 	});
 }
 
+function initReplyToReplyPagingIndexClick(postId){
+	$('.reply_first_btn').click(function(){
+		var position = $(this).closest('.comment').attr('position');
+		var index = $(this).closest('.replys').attr('index');
+		replyToReplyFirstPage.call(this, postId, index, position);
+	});
+	$('.reply_prev_btn').click(function(){
+		var position = $(this).closest('.comment').attr('position');
+		var index = $(this).closest('.replys').attr('index');
+		replyToReplyPrevPage.call(this, postId, index, position);
+	});
+	$('.reply_next_btn').click(function(){
+		var position = $(this).closest('.comment').attr('position');
+		var index = $(this).closest('.replys').attr('index');
+		var totalNum = $(this).closest('.replys').attr('totalpagenum');
+		replyToReplyNextPage.call(this, postId, index, position, totalNum);
+	});
+	$('.reply_last_btn').click(function(){
+		var position = $(this).closest('.comment').attr('position');
+		var index = $(this).closest('.replys').attr('index');
+		var totalNum = $(this).closest('.replys').attr('totalpagenum');
+		replyToReplyLastPage.call(this, postId, index, position, totalNum);
+	});
+	$('.reply_index_item').click(function(){
+		var index = Number($(this).html()) - 1;
+		var position = $(this).closest('.comment').attr('position');
+		getPostReplyToReplyMsg.call(this, postId, index , position);
+	});
+}
+
+function replyToReplyPrevPage(postId, index, position){
+	var currIndex = Number(index);
+	if(currIndex > 0){
+		getPostReplyToReplyMsg.call(this, postId, --currIndex, position);
+	}
+}
+
+function replyToReplyNextPage(postId, index, position, totalNum){
+	var currIndex = Number(index);
+	totalNum = Number(totalNum);
+	if(currIndex < totalNum){
+		getPostReplyToReplyMsg.call(this, postId, ++currIndex, position);
+	}
+}
+
+function replyToReplyFirstPage(postId, index, position){
+	var currIndex = Number(index);
+	if(currIndex != 0){
+		getPostReplyToReplyMsg.call(this, postId, 0, position);
+	}
+}
+
+function replyToReplyLastPage(postId, index, position, totalNum){
+	var currIndex = Number(index);
+	totalNum = Number(totalNum);
+	if(currIndex != totalNum){
+		getPostReplyToReplyMsg.call(this, postId, totalNum, position);
+	}
+}
+
+function initReplyToReplyIndex(){
+	var maxShowIndex = 10;
+	var currIndex = Number($(this).closest('.replys').attr('index'));
+	var totalNum = Number($(this).closest('.replys').attr('totalpagenum'));
+	var halfIndexNum = Math.floor(maxShowIndex / 2) + 1;
+	if(currIndex == 0){
+		$(this).parent().find('.reply_first_btn').css('display','none');
+		$(this).parent().find('.reply_prev_btn').css('display','none');
+	}else{
+		$(this).parent().find('.reply_first_btn').css('display','inline-block');
+		$(this).parent().find('.reply_prev_btn').css('display','inline-block');
+	}
+	if(currIndex == totalNum){
+		$(this).parent().find('.reply_last_btn').css('display','none');
+		$(this).parent().find('.reply_next_btn').css('display','none');
+	}else{
+		$(this).parent().find('.reply_last_btn').css('display','inline-block');
+		$(this).parent().find('.reply_next_btn').css('display','inline-block');
+	}
+	$(this).parent().find('.reply_index_item').removeClass('currIndex');
+	
+	if(totalNum < maxShowIndex){
+		$(this).parent().find('.reply_index_item').each(function(index){
+			if(index > totalNum){
+				$(this).css('display','none');
+			}
+			if(index == currIndex){
+				$(this).addClass('currIndex');
+			}
+		});
+	}else{
+		if(currIndex < halfIndexNum){
+			$(this).parent().find('.reply_index_item').each(function(index){
+				$(this).html(index + 1);
+			});
+		}else if(currIndex > totalNum - halfIndexNum){
+			$(this).parent().find('.reply_index_item').each(function(index){
+				$(this).html(totalNum + 1 - (maxShowIndex - 1 - index));
+			});
+		}else{
+			$(this).parent().find('.reply_index_item').each(function(index){
+				$(this).html(currIndex + 1 - (halfIndexNum - index - 1));
+			});
+		}
+		$(this).parent().find('.reply_index_item').each(function(index){
+			if($(this).html() == currIndex + 1){
+				$(this).addClass('currIndex');
+			}
+		});
+	}
+}
+
 function initIndex(){
 	var maxShowIndex = 10;
-	var currIndex = Number($('#postsContainer').attr('index'));
-	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
+	var currIndex = Number($('#comments').attr('index'));
+	var totalNum = Number($('#comments').attr('totalpagenum'));
 	var halfIndexNum = Math.floor(maxShowIndex / 2) + 1;
 	if(currIndex == 0){
 		$('#prevBtn').css('display','none');
@@ -472,6 +610,7 @@ function initIndex(){
 }
 
 function freshPageReplyItems(data, indexNum){
+	var postId = $('#postTitle').attr('postId');
 	if(indexNum != 0){
 		$('#masterComment').css('display','none');
 	}else{
@@ -486,21 +625,41 @@ function freshPageReplyItems(data, indexNum){
 	$('#comments').attr('totalpagenum', --pageNum);
 	for(var i=0;i<data.value.length;i++){
 		var $item = createCommentItem(data.value[i]);
-		$('#masterComment').after($item);
+		$('#comments').append($item);
 	}
+	initReplyToReplyPagingIndexClick(postId);
+	$('.reply_first_btn').each(function(){
+		initReplyToReplyIndex.call(this);
+	});
 	initIndex();
 }
 
+function freshPageReplyToReplyItems(data, indexNum){
+	// console.log(data);
+	var that = this;
+	var pageNum = data.totalNum / data.pageItemNum;
+	//是否有页面的内容是只有一部分的
+	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
+	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
+	$(this).closest('.replys').find('.reply_item').remove();
+	$(this).closest('.replys').attr('index', indexNum);
+	$(this).closest('.replys').attr('totalpagenum', --pageNum);
+	createReplysItem(data).find('.reply_item').each(function(){
+		$(that).parent().siblings('.reply_area').before($(this));
+	});
+	initReplyToReplyIndex.call(this);
+}
+
 function prevPage(barName){
-	var currIndex = Number($('#postsContainer').attr('index'));
+	var currIndex = Number($('#comments').attr('index'));
 	if(currIndex > 0){
 		getPostReplysMsg(barName, --currIndex);
 	}
 }
 
 function nextPage(barName){
-	var currIndex = Number($('#postsContainer').attr('index'));
-	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
+	var currIndex = Number($('#comments').attr('index'));
+	var totalNum = Number($('#comments').attr('totalpagenum'));
 	console.log(currIndex, totalNum);
 	if(currIndex < totalNum){
 		getPostReplysMsg(barName, ++currIndex);
@@ -508,24 +667,33 @@ function nextPage(barName){
 }
 
 function firstPage(barName){
-	var currIndex = Number($('#postsContainer').attr('index'));
+	var currIndex = Number($('#comments').attr('index'));
 	if(currIndex != 0){
 		getPostReplysMsg(barName, 0);
 	}
 }
 
 function lastPage(barName){
-	var currIndex = Number($('#postsContainer').attr('index'));
-	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
+	var currIndex = Number($('#comments').attr('index'));
+	var totalNum = Number($('#comments').attr('totalpagenum'));
 	if(currIndex != totalNum){
 		getPostReplysMsg(barName, totalNum);
 	}
 }
 //回复的回复组件
 function createReplysItem(data){
-	console.log(data);
+	// console.log(data);
+	if(data.value.length == 0){
+		return ;
+	}
 	var $replysDiv = $('<div></div>');
 	$replysDiv.addClass('replys');
+	$replysDiv.attr('index', 0);
+	var pageNum = data.totalNum / data.pageItemNum;
+	//是否有页面的内容是只有一部分的
+	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
+	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
+	$replysDiv.attr('totalpagenum', --pageNum);
 
 	for(var j=0;j<data.value.length;j++){
 		var $replyItemDiv = $('<div></div>');
@@ -585,9 +753,11 @@ function createReplysItem(data){
 	$indexUl.addClass('reply_index');
 	var $replyPagingFirstBtnLi = $('<li></li>');
 	$replyPagingFirstBtnLi.addClass('reply_paging_btn');
+	$replyPagingFirstBtnLi.addClass('reply_first_btn');
 	$replyPagingFirstBtnLi.html('首页');
 	var $replyPagingPrevBtnLi = $('<li></li>');
 	$replyPagingPrevBtnLi.addClass('reply_paging_btn');
+	$replyPagingPrevBtnLi.addClass('reply_prev_btn');
 	$replyPagingPrevBtnLi.html('上一页');
 	$indexUl.append($replyPagingFirstBtnLi);
 	$indexUl.append($replyPagingPrevBtnLi);
@@ -599,9 +769,11 @@ function createReplysItem(data){
 	}
 	var $replyPagingNextBtnLi = $('<li></li>');
 	$replyPagingNextBtnLi.addClass('reply_paging_btn');
+	$replyPagingNextBtnLi.addClass('reply_next_btn');
 	$replyPagingNextBtnLi.html('下一页');
 	var $replyPagingLastBtnLi = $('<li></li>');
 	$replyPagingLastBtnLi.addClass('reply_paging_btn');
+	$replyPagingLastBtnLi.addClass('reply_last_btn');
 	$replyPagingLastBtnLi.html('尾页');
 	$indexUl.append($replyPagingNextBtnLi);
 	$indexUl.append($replyPagingLastBtnLi);
@@ -645,8 +817,14 @@ function createCommentItem(data){
 	$timeSpan.html(replyTime);
 	var $watchReplyBtn = $('<button></button>');
 	$watchReplyBtn.addClass('watch_reply_btn');
-	$watchReplyBtn.html('查看回复('+data.replyToReplyData.value.length+')');
-	$watchReplyBtn.click(onPressWatchReplyBtnHandler);
+	if(data.replyToReplyData.value.length == 0){
+		$watchReplyBtn.html('查看回复('+data.replyToReplyData.totalNum+')');
+	}else{
+		$watchReplyBtn.html('隐藏回复('+data.replyToReplyData.totalNum+')');
+		$watchReplyBtn.click(function(){
+			onPressWatchReplyBtnHandler.call($watchReplyBtn,data.replyToReplyData.totalNum);
+		});
+	}
 	$commentMsgDiv.append($reportBtn);
 	$commentMsgDiv.append($positionSpan);
 	$commentMsgDiv.append($timeSpan);
@@ -662,8 +840,15 @@ function createCommentItem(data){
 	return $commentDiv;
 }
 //点击查看回复按钮
-function onPressWatchReplyBtnHandler(){
+function onPressWatchReplyBtnHandler(num){
 	var itemReplys = $(this).parent().siblings('.replys');
+	if(itemReplys.css('display') == 'none'){
+		var str = '隐藏回复('+num+')';
+		$(this).html(str.toString());
+	}else{
+		var str = '查看回复('+num+')';
+		$(this).html(str.toString());
+	}
 	itemReplys.toggle('normal');
 }
 
