@@ -5,7 +5,7 @@ $nickName = $_POST["nickName"];
 $replyContent = $_POST["replyContent"];
 require "connect.php";
 $now = date("Y-m-d H:i:s");
-$sql = "select position from post_reply where postBelongId = '$postId' order by position DESC";
+$sql = "select position from post_reply where postBelongId = '$postId' and status = 1 order by position DESC";
 $result = mysql_query($sql);
 $num = mysql_num_rows($result);
 if($num == 0){

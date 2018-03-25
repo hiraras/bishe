@@ -1,7 +1,7 @@
 <?php
 require "connect.php";
 $barName = $_GET['barName'];
-$sql = "select * from bars where barName = '$barName'";
+$sql = "select * from bars where barName = '$barName' and status = 1";
 //$sql = "select bars.*,count(*) as postNum from bars,posts where bars.barName = '$barName' and posts.barBelong = '$barName' and posts.status = 1";
 $result = mysql_query($sql);
 $num = mysql_num_rows($result);
@@ -14,7 +14,7 @@ class ResultData{
 $data = new ResultData();
 if($num == 0){
 	//没有该吧，进行模糊查询
-	$sql2 = "select * from bars where barName LIKE '%$barName%'";
+	$sql2 = "select * from bars where barName LIKE '%$barName%' and status = 1";
 	$result2 = mysql_query($sql2);
 	$num2 = mysql_num_rows($result2);
 	if($num2 == 0){

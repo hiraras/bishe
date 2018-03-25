@@ -2,7 +2,7 @@
 require "connect.php";
 $hotStandrad = 50000;
 $barNum = 21;
-$sql = "select * from bars where concernNum>'$hotStandrad' ORDER BY concernNum DESC limit $barNum";
+$sql = "select * from bars where concernNum>'$hotStandrad' and status = 1 ORDER BY concernNum DESC limit $barNum";
 $result = mysql_query($sql);
 //获得的结果数组只能用数字索引，不能用key值
 //$arr = mysql_fetch_row($result);
