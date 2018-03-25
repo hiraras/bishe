@@ -44,7 +44,7 @@
 	margin-bottom: 10px;
 	margin-right: 20px;
 }
-.comment .comment_msg button{
+.comment .comment_msg .report_btn{
 	background: none;
 	border: 1px solid #000000;
 	border-radius: 4px;
@@ -52,7 +52,19 @@
 	margin-left: 15px;
 	cursor: pointer;
 }
-.comment .comment_msg button:hover{
+.comment .comment_msg .report_btn:hover{
+	color: #00a9cd;
+	border-color: #00a9cd;
+}
+.comment .comment_msg .watch_reply_btn{
+	background: none;
+	border: 1px solid #000000;
+	border-radius: 4px;
+	padding: 5px 10px;
+	margin-left: 15px;
+	cursor: pointer;
+}
+.comment .comment_msg .watch_reply_btn:hover{
 	color: #00a9cd;
 	border-color: #00a9cd;
 }

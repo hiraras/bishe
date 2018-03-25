@@ -114,8 +114,19 @@ function sendReplyToReply(){
     }
 }
 
-function getPostReplysMsg(){
-	
+function getPostReplysMsg(postId, indexNum){
+	$.ajax({
+		type: 'get',
+		url: domain + '/pro/php/getPostReplys.php',
+		async: true,
+		data: {
+			postId: postId,
+			indexNum: indexNum
+		},
+		success: function(result){
+			console.log(result);
+		}
+	});
 }
 
 function searchPostMsg(postId){
@@ -147,7 +158,7 @@ function searchPostMsg(postId){
                 //没有回复
                 console.log(1);
 			}
-			getPostReplysMsg();
+			getPostReplysMsg(postId);
             initPagingIndexClick(postId);
             init();
 		}
@@ -586,3 +597,52 @@ function createReplysItem(data){
 	$replysDiv.append($indexUl);
 	return $replysDiv;
 }
+
+//创建页面
+function createCommentItem(data){
+	var $commentDiv = $('<div></div>');
+	$commentDiv.addClass('comment');
+	$commentDiv.attr('position',6);
+	var $userMsgDiv = $('<div></div>');
+	$userMsgDiv.addClass('user_msg');
+	var $userMsgHeadImg = $('<img />');
+	$userMsgHeadImg.attr('src','../img/2.jpg');
+	var $userNameP = $('<p></p>');
+	$userNameP.addClass('user_name');
+	$userNameP.html('hirara');
+	$userMsgDiv.append($userMsgHeadImg);
+	$userMsgDiv.append($userNameP);
+
+	var $commentContentDiv = $('<div></div>');
+	$commentContentDiv.addClass('comment_content');
+	var $commentTextDiv = $('<div></div>');
+	$commentTextDiv.addClass('comment_text');
+	var $commentMsgDiv = $('<div></div>');
+	$commentMsgDiv.addClass('comment_msg');
+	var $reportBtn = $('<button></button>');
+	$reportBtn.addClass('reply_btn');
+	$reportBtn.html('举报');
+	var $positionSpan = $('<span></span>');
+	$positionSpan.html(1+'楼');
+	var $timeSpan = $('<span></span>');
+	$timeSpan.html('2018-2-9 10:46:00');
+	var $watchReplyBtn = $('<button></button>');
+	$watchReplyBtn.addClass('watch_reply_btn');
+	$watchReplyBtn.html('查看回复');
+	$commentMsgDiv.append($reportBtn);
+	$commentMsgDiv.append($positionSpan);
+	$commentMsgDiv.append($timeSpan);
+	$commentMsgDiv.append($watchReplyBtn);
+	var $replysDiv = createReplysItem(data);
+	$commentContentDiv.append($commentTextDiv);
+	$commentContentDiv.append($commentMsgDiv);
+	$commentContentDiv.append($replysDiv);
+
+	$commentDiv.append($userMsgDiv);
+	$commentDiv.append($commentContentDiv);
+
+	return $commentDiv;
+}
+
+
+
