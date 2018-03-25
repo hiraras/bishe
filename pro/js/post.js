@@ -49,18 +49,18 @@ function init(){
 			removeNotNeedImg(fileDataArr[i]);
 		}
     }
-    //回复内容中的回复按钮被点击时回复框内保存被点击的用户的信息
-    $('.reply_btn').click(getReplyedName);
-    //点击回复按钮发布评论
-    $('.submit_reply_btn').click(sendReplyToReply);
-
-    $('.reply_editor_area').focus(replyToReplyNotLoginTip);
+    
 }
 
 function getReplyedName(){
-    var replyederNickName = $(this).parent().siblings('.reply_text').find('.replyer').html();
-    replyederNickName = replyederNickName.substring(0,replyederNickName.length-1);
-    $(this).parent().parent().parent().siblings('.reply_area').find('.reply_editor_area').html('回复 '+replyederNickName+':');
+	var user = localStorage.getItem('user');
+    if(!user){
+        alert('登录后才能发表回复!');
+    }else{
+		var replyederNickName = $(this).parent().siblings('.reply_text').find('.replyer').html();
+		replyederNickName = replyederNickName.substring(0,replyederNickName.length-1);
+		$(this).parent().parent().parent().siblings('.reply_area').find('.reply_editor_area').html('回复 '+replyederNickName+':');
+	}
 }
 //未登录状态回复则显示未登录提示
 function replyToReplyNotLoginTip(){
@@ -96,6 +96,7 @@ function sendReplyToReply(){
                 },
                 success: function(result){
                     if(result == 'success'){
+						$that.siblings('.reply_to_reply_send_tip').html('发布成功');
                         $that.siblings('.reply_to_reply_send_tip').css('display','inline');
                         setTimeout(function(){
                             window.location.reload();
@@ -107,7 +108,8 @@ function sendReplyToReply(){
             });
         }else{
             //未输入内容
-            console.log('内容为空');
+			   $(this).siblings('.reply_to_reply_send_tip').html('内容为空');
+			   $(this).siblings('.reply_to_reply_send_tip').css('display','inline');
         }
     }else{
         alert('请先登录!');
@@ -124,7 +126,15 @@ function getPostReplysMsg(postId, indexNum){
 			indexNum: indexNum
 		},
 		success: function(result){
-			console.log(result);
+			try{
+				var data = JSON.parse(result);
+				console.log(data);
+				freshPageReplyItems(data,indexNum);
+			}catch(e){
+				console.log(result);
+				console.log(e);
+			}
+
 		}
 	});
 }
@@ -142,7 +152,7 @@ function searchPostMsg(postId){
                 var data = JSON.parse(result);
                 console.log(data);
             }catch(e){
-                console.log(e);
+				console.log(e);
                 return ;
             }
 			if(data.result == 'success'){
@@ -154,13 +164,18 @@ function searchPostMsg(postId){
                 $('#creatorPostTime').html(isToday(data.data.createTime)?data.data.createTime.substr(11):data.data.createTime.substr(0,10));
                 $('#postTitle').attr('postId',postId);
 				$('.master_comment').attr('position',1);
-            }else if(data.result == 'noReply'){
-                //没有回复
-                console.log(1);
+				getPostReplysMsg(postId, 0);
+				initPagingIndexClick(postId);
+				init();
+            }else if(data.result == 'notExist'){
+				//帖子不存在
+				$('#main').css('display','none');
+				$('#postNotExistTip').css('display','block');
+				setTimeout(function(){
+					alert('帖子不存在');
+				},300);
+				return ;
 			}
-			getPostReplysMsg(postId);
-            initPagingIndexClick(postId);
-            init();
 		}
 	});
 }
@@ -385,26 +400,6 @@ function isEditorAreaBlur(){
 	return true;
 }
 
-function getPostPageMsg(barName,indexNum){
-	$.ajax({
-		url: domain + "/pro/php/getPostMsgInBar.php",
-		type: 'get',
-		async: true,
-		data: {
-			barName: barName,
-			indexNum: indexNum
-		},
-		success: function(result){
-			var data = JSON.parse(result);
-			if(data.totalNum == 0){
-				console.log('当前还没有帖子');
-			}else{
-				freshBarItems(data,indexNum);
-			}
-		}
-	});
-}
-
 function initPagingIndexClick(barName){
 	$('#prevBtn').click(function(){
 		prevPage(barName);
@@ -420,7 +415,7 @@ function initPagingIndexClick(barName){
 	});
 	$('.index_item').click(function(){
 		var index = Number($(this).html()) - 1;
-		getPostPageMsg(barName,index);
+		getPostReplysMsg(barName,index);
 	});
 }
 
@@ -476,17 +471,22 @@ function initIndex(){
 	}
 }
 
-function freshBarItems(data, indexNum){
+function freshPageReplyItems(data, indexNum){
+	if(indexNum != 0){
+		$('#masterComment').css('display','none');
+	}else{
+		$('#masterComment').css('display','flex');
+	}
 	var pageNum = data.totalNum / data.pageItemNum;
 	//是否有页面的内容是只有一部分的
 	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
 	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
-	$('#postsContainer').find('.post').remove();
-	$('#postsContainer').attr('index', indexNum);
-	$('#postsContainer').attr('totalpagenum', --pageNum);
+	$('#comments').find('.comment').remove();
+	$('#comments').attr('index', indexNum);
+	$('#comments').attr('totalpagenum', --pageNum);
 	for(var i=0;i<data.value.length;i++){
-		var $item = createPostItem(data.value[i]);
-		$('#postsContainer').find('.index').before($item);
+		var $item = createCommentItem(data.value[i]);
+		$('#masterComment').after($item);
 	}
 	initIndex();
 }
@@ -494,7 +494,7 @@ function freshBarItems(data, indexNum){
 function prevPage(barName){
 	var currIndex = Number($('#postsContainer').attr('index'));
 	if(currIndex > 0){
-		getPostPageMsg(barName, --currIndex);
+		getPostReplysMsg(barName, --currIndex);
 	}
 }
 
@@ -503,14 +503,14 @@ function nextPage(barName){
 	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
 	console.log(currIndex, totalNum);
 	if(currIndex < totalNum){
-		getPostPageMsg(barName, ++currIndex);
+		getPostReplysMsg(barName, ++currIndex);
 	}
 }
 
 function firstPage(barName){
 	var currIndex = Number($('#postsContainer').attr('index'));
 	if(currIndex != 0){
-		getPostPageMsg(barName, 0);
+		getPostReplysMsg(barName, 0);
 	}
 }
 
@@ -518,57 +518,71 @@ function lastPage(barName){
 	var currIndex = Number($('#postsContainer').attr('index'));
 	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
 	if(currIndex != totalNum){
-		getPostPageMsg(barName, totalNum);
+		getPostReplysMsg(barName, totalNum);
 	}
 }
 //回复的回复组件
 function createReplysItem(data){
+	console.log(data);
 	var $replysDiv = $('<div></div>');
 	$replysDiv.addClass('replys');
-	var $replyItemDiv = $('<div></div>');
-	$replyItemDiv.addClass('reply_item');
-	var $replyItemHeadImg = $('<img />');
-	$replyItemHeadImg.attr('src','../img/3.jpg');
-	var $replyContentDiv = $('<div></div>');
-	$replyContentDiv.addClass('reply_content');
-	var $replyTextP = $('<p></p>');
-	$replyTextP.addClass('reply_text');
-	var $replyContentUserNameSpan = $('<span></span>');
-	$replyContentUserNameSpan.html('hirara:');
-	$replyTextP.html($replyContentUserNameSpan+'这是回复内容这是回复内容这是回复内容这是回');
-	var $replyTimeDiv = $('<div></div>');
-	$replyTimeDiv.addClass('reply_time');
-	var $timeSpan = $('<span></span>');
-	$timeSpan.html('2018-2-9 10:46:00');
-	var $replyBtn = $('<button></button>');
-	$replyBtn.addClass('reply_btn');
-	$replyBtn.html('回复');
-	$replyTimeDiv.append($timeSpan);
-	$replyTimeDiv.append($replyBtn);
-	$replyContentDiv.append($replyTextP);
-	$replyContentDiv.append($replyTimeDiv);
-	var $clearFloatDiv = $('<div></div>');
-	$clearFloatDiv.addClass('clear_float');
-	$replyItemDiv.append($replyItemHeadImg);
-	$replyItemDiv.append($replyContentDiv);
-	$replyItemDiv.append($clearFloatDiv);
+
+	for(var j=0;j<data.value.length;j++){
+		var $replyItemDiv = $('<div></div>');
+		$replyItemDiv.addClass('reply_item');
+		var $replyItemHeadImg = $('<img />');
+		$replyItemHeadImg.attr('src',data.value[j].replyerHeadImg);
+		var $replyContentDiv = $('<div></div>');
+		$replyContentDiv.addClass('reply_content');
+		var $replyTextP = $('<p></p>');
+		$replyTextP.addClass('reply_text');
+		var $replyContentUserNameSpan = $('<span></span>');
+		$replyContentUserNameSpan.addClass('replyer');
+		$replyContentUserNameSpan.html(data.value[j].replyerNickName+':');
+		$replyTextP.html($replyContentUserNameSpan);
+		$replyTextP.html($replyTextP.html() + data.value[j].content);
+		var $replyTimeDiv = $('<div></div>');
+		$replyTimeDiv.addClass('reply_time');
+		var $timeSpan = $('<span></span>');
+		var replyToReplyTime = isToday(data.value[j].replyTime)?data.value[j].replyTime.substr(11):data.value[j].replyTime.substr(0,10);
+		$timeSpan.html(replyToReplyTime);
+		var $replyBtn = $('<button></button>');
+		$replyBtn.addClass('reply_btn');
+		$replyBtn.html('回复');
+		//回复内容中的回复按钮被点击时回复框内保存被点击的用户的信息
+		$replyBtn.click(getReplyedName);
+		$replyTimeDiv.append($timeSpan);
+		$replyTimeDiv.append($replyBtn);
+		$replyContentDiv.append($replyTextP);
+		$replyContentDiv.append($replyTimeDiv);
+		var $clearFloatDiv = $('<div></div>');
+		$clearFloatDiv.addClass('clear_float');
+		$replyItemDiv.append($replyItemHeadImg);
+		$replyItemDiv.append($replyContentDiv);
+		$replyItemDiv.append($clearFloatDiv);
+		$replysDiv.append($replyItemDiv);
+	}
 
 	var $replyAreaDiv = $('<div></div>');
 	$replyAreaDiv.addClass('reply_area');
 	var $replyEditorAreaDiv = $('<div></div>');
 	$replyEditorAreaDiv.addClass('reply_editor_area');
 	$replyEditorAreaDiv.attr('contenteditable','true');
+	$replyEditorAreaDiv.focus(replyToReplyNotLoginTip);
 	var $replyToReplySendTipSpan = $('<span></span>');
 	$replyToReplySendTipSpan.html('发布成功');
+	$replyToReplySendTipSpan.addClass('reply_to_reply_send_tip');
 	var $submitReplyBtn = $('<button></button>');
 	$submitReplyBtn.addClass('submit_reply_btn');
 	$submitReplyBtn.html('回复');
+	//点击回复按钮发布评论
+    $submitReplyBtn.click(sendReplyToReply);
 	$replyAreaDiv.append($replyEditorAreaDiv);
 	$replyAreaDiv.append($replyToReplySendTipSpan);
 	$replyAreaDiv.append($submitReplyBtn);
 
 	var $indexUl = $('<ul></ul>');
-	$indexUl.addClass('index');
+	$indexUl.addClass('reply_index');
 	var $replyPagingFirstBtnLi = $('<li></li>');
 	$replyPagingFirstBtnLi.addClass('reply_paging_btn');
 	$replyPagingFirstBtnLi.html('首页');
@@ -592,24 +606,25 @@ function createReplysItem(data){
 	$indexUl.append($replyPagingNextBtnLi);
 	$indexUl.append($replyPagingLastBtnLi);
 
-	$replysDiv.append($replyItemDiv);
 	$replysDiv.append($replyAreaDiv);
 	$replysDiv.append($indexUl);
+
 	return $replysDiv;
 }
 
 //创建页面
 function createCommentItem(data){
+	// console.log(data);
 	var $commentDiv = $('<div></div>');
 	$commentDiv.addClass('comment');
-	$commentDiv.attr('position',6);
+	$commentDiv.attr('position',data.position);
 	var $userMsgDiv = $('<div></div>');
 	$userMsgDiv.addClass('user_msg');
 	var $userMsgHeadImg = $('<img />');
-	$userMsgHeadImg.attr('src','../img/2.jpg');
+	$userMsgHeadImg.attr('src',data.headImg);
 	var $userNameP = $('<p></p>');
 	$userNameP.addClass('user_name');
-	$userNameP.html('hirara');
+	$userNameP.html(data.creatorNickName);
 	$userMsgDiv.append($userMsgHeadImg);
 	$userMsgDiv.append($userNameP);
 
@@ -617,23 +632,26 @@ function createCommentItem(data){
 	$commentContentDiv.addClass('comment_content');
 	var $commentTextDiv = $('<div></div>');
 	$commentTextDiv.addClass('comment_text');
+	$commentTextDiv.html(data.content);
 	var $commentMsgDiv = $('<div></div>');
 	$commentMsgDiv.addClass('comment_msg');
 	var $reportBtn = $('<button></button>');
-	$reportBtn.addClass('reply_btn');
+	$reportBtn.addClass('report_btn');
 	$reportBtn.html('举报');
 	var $positionSpan = $('<span></span>');
-	$positionSpan.html(1+'楼');
+	$positionSpan.html(data.position+'楼');
 	var $timeSpan = $('<span></span>');
-	$timeSpan.html('2018-2-9 10:46:00');
+	var replyTime = isToday(data.createTime)?data.createTime.substr(11):data.createTime.substr(0,10);
+	$timeSpan.html(replyTime);
 	var $watchReplyBtn = $('<button></button>');
 	$watchReplyBtn.addClass('watch_reply_btn');
-	$watchReplyBtn.html('查看回复');
+	$watchReplyBtn.html('查看回复('+data.replyToReplyData.value.length+')');
+	$watchReplyBtn.click(onPressWatchReplyBtnHandler);
 	$commentMsgDiv.append($reportBtn);
 	$commentMsgDiv.append($positionSpan);
 	$commentMsgDiv.append($timeSpan);
 	$commentMsgDiv.append($watchReplyBtn);
-	var $replysDiv = createReplysItem(data);
+	var $replysDiv = createReplysItem(data.replyToReplyData);
 	$commentContentDiv.append($commentTextDiv);
 	$commentContentDiv.append($commentMsgDiv);
 	$commentContentDiv.append($replysDiv);
@@ -643,6 +661,10 @@ function createCommentItem(data){
 
 	return $commentDiv;
 }
-
+//点击查看回复按钮
+function onPressWatchReplyBtnHandler(){
+	var itemReplys = $(this).parent().siblings('.replys');
+	itemReplys.toggle('normal');
+}
 
 

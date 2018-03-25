@@ -19,7 +19,7 @@ if($num == 1){
     $obj->result = 'success';
     $obj->data = $arr;
 }else{
-    $obj->result = 'noReply';
+    $obj->result = 'notExist';
     $obj->data = array();
 }
 

@@ -36,14 +36,14 @@
 					<button class="select_post_btn unselect_btn" id="searchMethodPost">贴</button>
 				</div>
 			</div>
-			<div class="main">
+			<div class="main" id="main">
 				<div class="content">
 					<div class="post_msg" id="postTitle">
 						这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题
 						这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题这是标题
 					</div>
 					<div id="comments">
-						<div class="master_comment comment">
+						<div class="master_comment" id="masterComment">
 							<div class="user_msg">
 								<img src="../img/2.jpg" id="creatorHeadImg"/>
 								<p class="user_name" id="creatorNickName">hirara</p>
@@ -202,6 +202,9 @@
 					<span class="send_tip" id="sendTip">内容不能为空</span>
 				</div>
 			</div>
+			<h2 id="postNotExistTip" class="post_not_exist_tip">
+				该帖子帖子不存在!
+			</h2>
 		</div>
 	</body>
 	<script src="../js/jquery/jquery-1.8.3.min.js"></script>

@@ -10,7 +10,7 @@ $result = mysql_query($sql);
 $num = mysql_num_rows($result);
 if($num == 0){
     //没有回复
-    $replyPosition = 1;
+    $replyPosition = 2;
 }else{
     $positionData = mysql_fetch_assoc($result);
     $replyPosition = $positionData['position'] + 1;
