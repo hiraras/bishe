@@ -338,7 +338,7 @@ function submitReplyMsg(){
 	var imgReg=/<img\b[^>]*>/ig;
 	if(imgReg.test(replyContent)){
 		var replaceReg = /postTempImg/g;
-		replyContent = replyContent.replace(replaceReg, 'postImg');
+		replyContent = replyContent.replace(replaceReg, 'replyImg');
 	}
     $('#sendTip').css('display','none');
     $.ajax({
@@ -620,6 +620,9 @@ function freshPageReplyItems(data, indexNum){
 	//是否有页面的内容是只有一部分的
 	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
 	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
+	if(pageNum == 0){
+		pageNum = 1;
+	}
 	$('#comments').find('.comment').remove();
 	$('#comments').attr('index', indexNum);
 	$('#comments').attr('totalpagenum', --pageNum);
@@ -641,6 +644,9 @@ function freshPageReplyToReplyItems(data, indexNum){
 	//是否有页面的内容是只有一部分的
 	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
 	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
+	if(pageNum == 0){
+		pageNum = 1;
+	}
 	$(this).closest('.replys').find('.reply_item').remove();
 	$(this).closest('.replys').attr('index', indexNum);
 	$(this).closest('.replys').attr('totalpagenum', --pageNum);
@@ -693,6 +699,9 @@ function createReplysItem(data){
 	//是否有页面的内容是只有一部分的
 	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
 	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
+	if(pageNum == 0){
+		pageNum = 1;
+	}
 	$replysDiv.attr('totalpagenum', --pageNum);
 
 	for(var j=0;j<data.value.length;j++){

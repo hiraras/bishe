@@ -424,6 +424,9 @@ function freshBarItems(data, indexNum){
 	//是否有页面的内容是只有一部分的
 	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
 	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
+	if(pageNum == 0){
+		pageNum = 1;
+	}
 	$('#postsContainer').find('.post').remove();
 	$('#postsContainer').attr('index', indexNum);
 	$('#postsContainer').attr('totalpagenum', --pageNum);

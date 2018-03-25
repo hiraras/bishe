@@ -111,6 +111,9 @@ function freshBarItems(data, indexNum){
 	//是否有页面的内容是只有一部分的
 	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
 	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
+	if(pageNum == 0){
+		pageNum = 1;
+	}
 	$('#bars').find('.bar_intro').remove();
 	$('#bars').attr('index', indexNum);
 	$('#bars').attr('totalpagenum', --pageNum);
