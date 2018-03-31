@@ -26,15 +26,62 @@
 				<li id="headerLogin">登录</li>
 			</ul>
 		</div>
-		<div class="cropper_container">
-			<div class="img_container" id="imgContainer">
-				<img src="../img/1.jpg" alt="" id="image" />
+		<div class="container">
+			<div class="user_msg">
+				<img src="../img/1.jpg" alt="" class="user_head_img" id="userHeadImg">
+				<p class="user_nickname" id="userNickname"></p>
+				<div class="user_data_container">
+					<span id="myPostNum">发帖数:</span>
+					<span id="barAge">吧龄:</span>
+				</div>
+				<button class="editor_user_msg_btn" id="editorUserMsgBtn">编辑个人信息</button>
+			</div>
+			<ul class="feature_list">
+				<li>我的信息</li>
+				<li>我发布的帖子</li>
+				<li>我的回复</li>
+				<li>通知</li>
+				<li>关注的吧</li>
+			</ul>
+			<div class="content">
+
+			</div>
+			<div class="content">
+
+			</div>
+			<div class="content">
+
+			</div>
+			<div class="content">
+
+			</div>
+			<div class="content">
+
 			</div>
 		</div>
-		<button id="btnGetCropper" data-option='{"maxWidth": 4096,"maxHeight": 4096}' data-method="getCroppedCanvas">获取图片</button>
-		<input type="file" id="inputImage" />
-		<div id="resultImgContainer">
-			<img src="" alt="" id="resultImg" />
+		<div class="mask" id="cropperMask">
+			<div class="cropper_container">
+				<div class="img_container" id="imgContainer">
+					<img src="" alt="" id="image" />
+				</div>
+				<button class="select_img_btn" id="selectImgBtn">选择图片</button>
+				<button id="btnGetCropper" class="save_img_btn" data-option='{"maxWidth": 4096,"maxHeight": 4096}' data-method="getCroppedCanvas">保存</button>
+				<button class="cancel_select_img_btn" id="cancelSelectBtn">取消</button>
+				<input type="file" id="inputImage" style="display: none" />
+			</div>
+		</div>
+		<div class="mask" id="editorMask">
+			<div class="user_msg_editor_container">
+				<label for="inputSchool">学校:</label>
+				<input type="text" id="inputSchool" placeholder="请输入学校"><br />
+				<label for="age">年龄:</label>
+				<input type="text" id="inputAge" placeholder="请输入年领"><br />
+				<label for="address">居住地:</label>
+				<input type="text" id="inputAddress" placeholder="请输入地址"><br />
+				<span id='editResultTip' class="edit_result_tip"></span>
+				<button class="cancel_submit_btn" id="cancelEditorBtn">取消</button>
+				<button class="submit_editor_btn" id="submitEditorBtn">提交</button>
+			</div>
 		</div>
 	</body>
 	<script src="../js/jquery/jquery-1.9.1.min.js"></script>

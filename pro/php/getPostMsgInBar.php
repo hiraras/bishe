@@ -2,7 +2,7 @@
 require "connect.php";
 $barName = $_GET['barName'];
 $indexNum = $_GET['indexNum'];
-$everyPageItemNum = 1;
+$everyPageItemNum = 14;
 $dataIndex = $indexNum*$everyPageItemNum;
 $sql = "select * from posts where barBelong='$barName' and status = 1 ORDER BY createTime DESC limit $dataIndex,$everyPageItemNum";
 $sql2 = "select * from posts where barBelong='$barName' and status = 1";

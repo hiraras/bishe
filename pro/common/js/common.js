@@ -190,12 +190,7 @@ $("#headerRegister").on("click",function(){
 $("#toIndex").on("click",function(){
 	window.location.href = "../index.html";
 });
-$("#myMsg").on("click",function(){
-	window.location.href = "";
-});
-$("#myRoom").on("click",function(){
-	window.location.href = "";
-});
+$("#myMsg").css('display','none');
 
 $('.btn_search').click(function(){
 	var value = $('#search').val();
@@ -263,3 +258,51 @@ function isToday(time){
 		return false;
 	}
 }
+
+$('#headerImg').click(function(){
+	var username = localStorage.getItem('user');
+	window.location.href = 'http://localhost/pro/page/personal_space.html?userId='+username;
+});
+$('#myRoom').click(function(){
+	var username = localStorage.getItem('user');
+	window.location.href = 'http://localhost/pro/page/personal_space.html?userId='+username;
+});
+
+function barAge(timeStr){
+	var createTime = new Date(timeStr);
+	var now = new Date();
+	var ageMills = now.getTime() - createTime.getTime();
+	var age = new Date(ageMills);
+	var monthArr = [31,29,31,30,31,30,31,31,30,31,30,31];
+	var yearTotalDay = 365;
+	var beforeMonthDay = 0;
+	if(isLeapYear()){
+	  monthArr[1] = 29;
+	  yearTotalDay = 366;
+	}else{
+	  monthArr[1] = 28;
+	}
+	for(var i=0;i<age.getMonth();i++){
+	  beforeMonthDay += monthArr[i];
+	}
+	beforeMonthDay += age.getDate();
+	return ''+Math.floor((age.getFullYear() - 1970+beforeMonthDay/yearTotalDay)*100)/100;
+  }
+  
+  function isLeapYear(){
+	var date = new Date();
+	var year = date.getFullYear;
+	if(year % 100 == 0){
+	  if(year % 400 == 0){
+		return true;
+	  }else{
+		return false;
+	  }
+	}else{
+	  if(year % 4 == 0){
+		return true;
+	  }else{
+		return false;
+	  }
+	}
+  }

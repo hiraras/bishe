@@ -30,7 +30,7 @@ function testLogin(){
 								getUserMsg(result.username);
 								localStorage.setItem("user",result.username);
 								localStorage.setItem("userLevel",result.level);
-								window.location.href = "../index.html";
+								window.history.back();
 							}catch(e){
 								$("#remind").html("发生未知错误，请稍后再试!");
 								console.log(e);
