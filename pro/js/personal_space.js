@@ -188,6 +188,7 @@ function switchContent(num){
       getMyPostData(userId, 0);
       break;
     case 2:
+      getMyReplyPostData(userId, 0);
       break;
     case 3:
       break;
@@ -234,12 +235,9 @@ function getMyReplyPostData(userId,indexNum){
 			indexNum: indexNum
 		},
 		success: function(result){
-			var data = JSON.parse(result);
-			if(data.totalNum == 0){
-				console.log('当前还没有帖子');
-			}else{
-				freshBarItems(data,indexNum);
-			}
+      console.log(result);
+      var data = JSON.parse(result);
+      console.log(data);
 		}
 	});
 }
