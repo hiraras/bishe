@@ -187,7 +187,8 @@ function switchContent(num){
       initPagingIndexClick(userId);
       getMyPostData(userId, 0);
       break;
-    case 2:
+		case 2:
+			initMyReplyPostPagingIndexClick(userId);
       getMyReplyPostData(userId, 0);
       break;
     case 3:
@@ -235,11 +236,44 @@ function getMyReplyPostData(userId,indexNum){
 			indexNum: indexNum
 		},
 		success: function(result){
-      console.log(result);
-      var data = JSON.parse(result);
-      console.log(data);
+      try{
+				var data = JSON.parse(result);
+			}catch(e){
+				console.log(e);
+			}
+			if(data.value.length == 0){
+				console.log('当前还没有回复的帖子');
+			}else{
+				// for(var i=0;i<data.value.length;i++){
+				// 	if(data.value[i].postName == null){
+				// 		data.value.splice(i,1);
+				// 		data.totalNum --;
+				// 		i--;
+				// 	}
+				// }
+				freshReplyPostItem(data, indexNum);
+				console.log(data);
+			}
 		}
 	});
+}
+
+function freshReplyPostItem(data, indexNum){
+	var pageNum = data.totalNum / data.pageItemNum;
+	//是否有页面的内容是只有一部分的
+	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
+	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
+	if(pageNum == 0){
+		pageNum = 1;
+	}
+	$('#myReplyPosts').find('.my_reply_post').remove();
+	$('#myReplyPosts').attr('index', indexNum);
+	$('#myReplyPosts').attr('totalpagenum', --pageNum);
+	for(var i=0;i<data.value.length;i++){
+		var $item = createMyReplyPostItem(data.value[i]);
+		$('#myReplyPosts').find('.myReplyIndex').before($item);
+	}
+	initMyReplyIndex();
 }
 
 function resizeImg(){
@@ -268,7 +302,7 @@ function freshBarItems(data, indexNum){
 	$('#contentMyPosts').attr('totalpagenum', --pageNum);
 	for(var i=0;i<data.value.length;i++){
 		var $item = createPostItem(data.value[i]);
-		$('#contentMyPosts').find('.index').before($item);
+		$('#contentMyPosts').find('.myPostsIndex').before($item);
 	}
 	initIndex();
 }
@@ -290,6 +324,58 @@ function initPagingIndexClick(userId){
 		var index = Number($(this).html()) - 1;
 		getMyPostData(userId,index);
 	});
+}
+
+function initMyReplyPostPagingIndexClick(userId){
+	$('#contentMyReplyPrevBtn').click(function(){
+		myReplyPrevPage(userId);
+	});
+	$('#contentMyReplyNextBtn').click(function(){
+		myReplyNextPage(userId);
+	});
+	$('#contentMyReplyFirstPageBtn').click(function(){
+		myReplyFirstPage(userId);
+	});
+	$('#contentMyReplyLastPageBtn').click(function(){
+		myReplyLastPage(userId);
+	});
+	$('#myReplyPosts .index_item').click(function(){
+		var index = Number($(this).html()) - 1;
+		getMyReplyPostData(userId,index);
+	});
+}
+
+
+function myReplyPrevPage(userId){
+	var currIndex = Number($('#myReplyPosts').attr('index'));
+	if(currIndex > 0){
+		getMyReplyPostData(userId, --currIndex);
+	}
+}
+
+function myReplyNextPage(userId){
+  console.log(userId);
+	var currIndex = Number($('#myReplyPosts').attr('index'));
+	var totalNum = Number($('#myReplyPosts').attr('totalpagenum'));
+	console.log(currIndex, totalNum);
+	if(currIndex < totalNum){
+		getMyReplyPostData(userId, ++currIndex);
+	}
+}
+
+function myReplyFirstPage(userId){
+	var currIndex = Number($('#myReplyPosts').attr('index'));
+	if(currIndex != 0){
+		getMyReplyPostData(userId, 0);
+	}
+}
+
+function myReplyLastPage(userId){
+	var currIndex = Number($('#myReplyPosts').attr('index'));
+	var totalNum = Number($('#myReplyPosts').attr('totalpagenum'));
+	if(currIndex != totalNum){
+		getMyReplyPostData(userId, totalNum);
+	}
 }
 
 function createPostItem(data){
@@ -407,10 +493,10 @@ function initIndex(){
 		$('#contentMyPostsNextBtn').css('display','inline-block');
 		$('#contentMyPostsLastPageBtn').css('display','inline-block');
 	}
-	$('.index_item').removeClass('currIndex');
+	$('#contentMyPosts .index_item').removeClass('currIndex');
 	
 	if(totalNum < maxShowIndex){
-		$('.index_item').each(function(index){
+		$('#contentMyPosts .index_item').each(function(index){
 			if(index > totalNum){
 				$(this).css('display','none');
 			}
@@ -420,19 +506,71 @@ function initIndex(){
 		});
 	}else{
 		if(currIndex < halfIndexNum){
-			$('.index_item').each(function(index){
+			$('#contentMyPosts .index_item').each(function(index){
 				$(this).html(index + 1);
 			});
 		}else if(currIndex > totalNum - halfIndexNum){
-			$('.index_item').each(function(index){
+			$('#contentMyPosts .index_item').each(function(index){
 				$(this).html(totalNum + 1 - (maxShowIndex - 1 - index));
 			});
 		}else{
-			$('.index_item').each(function(index){
+			$('#contentMyPosts .index_item').each(function(index){
 				$(this).html(currIndex + 1 - (halfIndexNum - index - 1));
 			});
 		}
-		$('.index_item').each(function(index){
+		$('#contentMyPosts .index_item').each(function(index){
+			if($(this).html() == currIndex + 1){
+				$(this).addClass('currIndex');
+			}
+		});
+	}
+}
+
+function initMyReplyIndex(){
+	var maxShowIndex = 10;
+	var currIndex = Number($('#myReplyPosts').attr('index'));
+	var totalNum = Number($('#myReplyPosts').attr('totalpagenum'));
+	var halfIndexNum = Math.floor(maxShowIndex / 2) + 1;
+	if(currIndex == 0){
+		$('#contentMyReplyPrevBtn').css('display','none');
+		$('#contentMyReplyFirstPageBtn').css('display','none');
+	}else{
+		$('#contentMyReplyPrevBtn').css('display','inline-block');
+		$('#contentMyReplyFirstPageBtn').css('display','inline-block');
+	}
+	if(currIndex == totalNum){
+		$('#contentMyReplyNextBtn').css('display','none');
+		$('#contentMyReplyLastPageBtn').css('display','none');
+	}else{
+		$('#contentMyReplyNextBtn').css('display','inline-block');
+		$('#contentMyReplyLastPageBtn').css('display','inline-block');
+	}
+	$('#myReplyPosts .index_item').removeClass('currIndex');
+	
+	if(totalNum < maxShowIndex){
+		$('#myReplyPosts .index_item').each(function(index){
+			if(index > totalNum){
+				$(this).css('display','none');
+			}
+			if(index == currIndex){
+				$(this).addClass('currIndex');
+			}
+		});
+	}else{
+		if(currIndex < halfIndexNum){
+			$('#myReplyPosts .index_item').each(function(index){
+				$(this).html(index + 1);
+			});
+		}else if(currIndex > totalNum - halfIndexNum){
+			$('#myReplyPosts .index_item').each(function(index){
+				$(this).html(totalNum + 1 - (maxShowIndex - 1 - index));
+			});
+		}else{
+			$('#myReplyPosts .index_item').each(function(index){
+				$(this).html(currIndex + 1 - (halfIndexNum - index - 1));
+			});
+		}
+		$('#myReplyPosts .index_item').each(function(index){
 			if($(this).html() == currIndex + 1){
 				$(this).addClass('currIndex');
 			}
@@ -527,4 +665,42 @@ function initBtnEvent(){
   });
 }
 
+function createMyReplyPostItem(data){
+	console.log(data);
+	var imgReg=/<img\b[^>]*postImg[^>]*>/ig;
+	var $myReplyPostDiv = $('<div></div>');
+	$myReplyPostDiv.addClass('my_reply_post');
+	$myReplyPostDiv.attr('postId',data.postBelongId);
+	var $replyPostFromContainerDiv = $('<div></div>');
+	$replyPostFromContainerDiv.addClass('reply_post_from_container');
+	var $replyPostNameSpan = $('<span></span>');
+	$replyPostNameSpan.addClass('reply_post_name');
+	$replyPostNameSpan.html(data.postName);
+	$replyPostNameSpan.click(function(){
+		var postId = $(this).closest('.my_reply_post').attr('postId');
+		window.location.href = 'http://localhost/pro/page/post.html?'+'postId='+postId;
+	});
+	var $replyPostBarBelongSpan = $('<span></span>');
+	$replyPostBarBelongSpan.addClass('reply_post_bar_belong');
+	$replyPostBarBelongSpan.html('来自:'+data.barBelong);
+	var $replyPostContentP = $('<p></p>');
+	$replyPostContentP.addClass('reply_post_content');
+	var content = data.content.replace(imgReg,'');
+	$replyPostContentP.html('回复内容:'+content);
+	var $replyPostTimeP = $('<p></p>');
+	$replyPostTimeP.addClass('reply_post_time');
+	var replyTime = data.createTime;
+	if(isToday(replyTime)){
+		replyTime = replyTime.substr(11);
+	}else{
+		replyTime = replyTime.substr(0,10);
+	}
+	$replyPostTimeP.html('回复时间:'+replyTime);
 
+	$replyPostFromContainerDiv.append($replyPostNameSpan);
+	$replyPostFromContainerDiv.append($replyPostBarBelongSpan);
+	$myReplyPostDiv.append($replyPostFromContainerDiv);
+	$myReplyPostDiv.append($replyPostContentP);
+	$myReplyPostDiv.append($replyPostTimeP);
+	return $myReplyPostDiv;
+}

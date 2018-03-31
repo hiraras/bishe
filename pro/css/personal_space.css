@@ -202,7 +202,7 @@
     margin-left: 100px;
 }
 .content{
-    padding: 15px 10px;
+    padding: 15px 5px;
     display: none;
 }
 .contentUserMsgItemContainer{
@@ -322,8 +322,37 @@
 	display: inline-block;
 	margin-right: 10px;
 }
+.my_reply_post{
+    border: 1px solid #00a9cd;
+    padding: 10px 8px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+.my_reply_post .reply_post_from_container{
 
+}
+.my_reply_post .my_reply_post{
 
+}
+.my_reply_post .reply_post_name{
+    color: #00a9cd;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-right: 15px;
+}
+.my_reply_post .reply_post_bar_belong{
+    color: black;
+    text-decoration: none;
+}
+.my_reply_post .reply_post_content{
+    margin-top: 10px;
+}
+.my_reply_post .reply_post_content img{
+    max-width: 200px;
+}
+.my_reply_post .reply_post_time{
+    margin-top: 10px;
+}
 
 
 
