@@ -36,27 +36,61 @@
 				</div>
 				<button class="editor_user_msg_btn" id="editorUserMsgBtn">编辑个人信息</button>
 			</div>
-			<ul class="feature_list">
+			<ul class="feature_list" id="featureList">
 				<li>我的信息</li>
 				<li>我发布的帖子</li>
-				<li>我的回复</li>
+				<li>回复过的帖子</li>
 				<li>通知</li>
 				<li>关注的吧</li>
 			</ul>
-			<div class="content">
-
+			<div class="content" id="contentUserMsg">
+				<div class="contentUserMsgItemContainer">
+					<p id="contentUserMsgSchool" class="contentUserMsgItem">学校:</p>
+					<p id="contentUserMsgAge" class="contentUserMsgItem">年龄:</p>
+					<p id="contentUserMsgAddress" class="contentUserMsgItem">地址:</p>
+				</div>
 			</div>
-			<div class="content">
-
+			<div class="content posts" id="contentMyPosts">
+				<ul class="index">
+					<li class="paging_btn" id="contentMyPostsFirstPageBtn">首页</li>
+					<li class="paging_btn" id="contentMyPostsPrevBtn">上一页</li>
+					<li class="index_item">1</li>
+					<li class="index_item">2</li>
+					<li class="index_item">3</li>
+					<li class="index_item">4</li>
+					<li class="index_item">5</li>
+					<li class="index_item">6</li>
+					<li class="index_item">7</li>
+					<li class="index_item">8</li>
+					<li class="index_item">9</li>
+					<li class="index_item">10</li>
+					<li class="paging_btn" id="contentMyPostsNextBtn">下一页</li>
+					<li class="paging_btn" id="contentMyPostsLastPageBtn">尾页</li>
+				</ul>
 			</div>
-			<div class="content">
-
+			<div class="content" id="contentMyReply">
+				<ul class="index">
+					<li class="paging_btn" id="contentMyReplyFirstPageBtn">首页</li>
+					<li class="paging_btn" id="contentMyReplyPrevBtn">上一页</li>
+					<li class="index_item">1</li>
+					<li class="index_item">2</li>
+					<li class="index_item">3</li>
+					<li class="index_item">4</li>
+					<li class="index_item">5</li>
+					<li class="index_item">6</li>
+					<li class="index_item">7</li>
+					<li class="index_item">8</li>
+					<li class="index_item">9</li>
+					<li class="index_item">10</li>
+					<li class="paging_btn" id="contentMyReplyNextBtn">下一页</li>
+					<li class="paging_btn" id="contentMyReplyLastPageBtn">尾页</li>
+				</ul>
 			</div>
-			<div class="content">
-
+			<div class="content" id="contentMyInform">
+				4
 			</div>
-			<div class="content">
-
+			<div class="content" id="contentAttendBar">
+				5
 			</div>
 		</div>
 		<div class="mask" id="cropperMask">

@@ -1,11 +1,11 @@
 <?php
 require "connect.php";
-$barName = $_GET['barName'];
+$userId = $_GET['userId'];
 $indexNum = $_GET['indexNum'];
 $everyPageItemNum = 3;
 $dataIndex = $indexNum*$everyPageItemNum;
-$sql = "select * from posts where barBelong='$barName' and status = 1 ORDER BY createTime DESC limit $dataIndex,$everyPageItemNum";
-$sql2 = "select * from posts where barBelong='$barName' and status = 1";
+$sql = "select * from posts where creatorId='$userId' and status = 1 ORDER BY createTime DESC limit $dataIndex,$everyPageItemNum";
+$sql2 = "select * from posts where creatorId='$userId' and status = 1";
 $result = mysql_query($sql);
 $result2 = mysql_query($sql2);
 $barTotalNum = mysql_num_rows($result2);

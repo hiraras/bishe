@@ -87,12 +87,21 @@
     border-top: 1px solid #000000;
     border-bottom: 1px solid #000000;
     width: 25%;
+    -ms-touch-action: none;
+    touch-action: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .feature_list li:hover{
     color: #00a9cd;
 }
 .feature_list li:last-child{
     border-right: 0px solid #000000;
+}
+.feature_list li:first-child{
+    border-bottom: none;
 }
 .list_select{
     border-bottom: 0px solid #000000;
@@ -192,11 +201,127 @@
 .edit_result_tip{
     margin-left: 100px;
 }
+.content{
+    padding: 15px 10px;
+    display: none;
+}
+.contentUserMsgItemContainer{
+    width: 450px;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 8px 8px;
+}
+.content .contentUserMsgItem{
+    margin-bottom: 10px;
+    border-bottom: 1px solid black;
+}
+.content .contentUserMsgItem:last-child{
+    margin-bottom: 0px;
+    border-bottom: none;
+}
 
-
-
-
-
+.posts{
+	width: 100%;
+}
+.posts .post{
+	padding: 10px 14px;
+	border-bottom: 1px solid #cccccc;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.post .post_content{
+	
+}
+.posts .post .is_top{
+	background: #00a9cd;
+	border-radius: 4px;
+	padding: 5px;
+	width: 50px;
+	text-align: center;
+	margin-right: 5px;
+}
+.posts .post .post_title_text{
+	line-height: 30px;
+	height: 30px;
+	overflow: hidden;
+	color: #00a9cd;
+	cursor: pointer;
+}
+.posts .post .post_title_text:hover{
+	text-decoration: underline;
+}
+.posts .post .is_great{
+	background: #FF0000;
+	border-radius: 4px;
+	padding: 5px;
+	margin-right: 5px;
+}
+.posts .post .post_title_container{
+	display: flex;
+	align-items: center;
+}
+.post .post_img_container{
+	margin-top: 10px;
+	min-height: 50px;
+}
+.post .post_img_container .post_img{
+	height: 100px;
+	max-width: 134px;
+	cursor: pointer;
+}
+.post .post_msg{
+	display: flex;
+	justify-content: space-around;
+	flex-direction: column;
+	margin-left: 30px;
+	min-width: 128px;
+}
+.post .post_msg .master_msg{
+	display: flex;
+	align-items: center;
+}
+.post .post_msg .reply_num_msg{
+	display: flex;
+	align-items: center;
+}
+.post .post_msg .post_msg_people_img{
+	width: 24px;
+	height: 24px;
+}
+.post .post_msg .post_msg_reply_img{
+	width: 24px;
+	height: 24px;
+}
+.post .post_msg p{
+	display: inline-block;
+}
+.post .post_msg .post_time{
+	text-align: right;
+}
+.intro .bar_intro_container{
+	height: 100%;
+	width: 740px;
+}
+.post .post_content_intro{
+	margin: 5px 0;
+	height: 25px;
+	overflow: hidden;
+}
+.post .post_content_intro img{
+	height: 21px;
+}
+.no_post_tip{
+	color: blue;
+	padding: 8px 10px;
+	border-bottom: 1px solid black;
+	display: none;
+}
+.post_status_item{
+	display: inline-block;
+	margin-right: 10px;
+}
 
 
 

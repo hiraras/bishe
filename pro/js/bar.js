@@ -87,12 +87,13 @@ function searchBarMsg(barName){
 			if(data.code == 0){
 				if(data.data.postNum == 0){
 					$('#noPostTip').css('display','block');
+					$('.index').css('display','none');
 				}else{
 					$('#noPostTip').css('display','none');
 					getPostPageMsg(barName,0);
+					initPagingIndexClick(barName);
 				}
 				getBarMsg(data.data);
-				initPagingIndexClick(barName);
 				init();
 			}else if(data.code == 1){
 				window.location.href = domain + '/pro/page/blurBar.html?'+'barName='+$('#search').val();
