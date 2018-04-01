@@ -86,6 +86,9 @@ $("#username").on("blur",function(){
 		$("#remind").html("请输入正确的账号");
 	}
 });
+$('#findPassWord').click(function(){
+	window.location.href = 'http://localhost/pro/page/findPassWord.html';
+});
 
 function getUserMsg(userName){
 	var domain = "http://localhost";

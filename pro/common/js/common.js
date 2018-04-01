@@ -245,6 +245,10 @@ $('#exitLogin').click(function(){
 	localStorage.removeItem("headImg");
 	window.location.reload();
 });
+$('#changePassWord').click(function(){
+	window.location.href = 'http://localhost/pro/page/changePassWord.html';
+});
+
 
 //判断所日期是否为今天
 function isToday(time){

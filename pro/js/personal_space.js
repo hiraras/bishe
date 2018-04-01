@@ -92,6 +92,7 @@ function initCropper(){
 }
 
 function init(){
+	var $image = $('#image');
   var username = localStorage.getItem('user');
   if(username == userId){
     $('#userHeadImg').click(function(){
@@ -105,12 +106,12 @@ function init(){
       $('#inputImage').click();
     });
     $('#cancelSelectBtn').click(function(){
-      $('#cropperMask').css('display',"none");
-      window.location.reload();
+			$('#cropperMask').css('display',"none");
+			$image.cropper('destroy');
     });
     $('#cancelEditorBtn').click(function(){
-      $('#editorMask').css('display',"none");
-      window.location.reload();
+			$('#editorMask').css('display',"none");
+			$image.cropper('destroy');
     });
     $('#submitEditorBtn').click(function(){
       var school = $('#inputSchool').val();
@@ -666,7 +667,7 @@ function initBtnEvent(){
 }
 
 function createMyReplyPostItem(data){
-	console.log(data);
+	// console.log(data);
 	var imgReg=/<img\b[^>]*postImg[^>]*>/ig;
 	var $myReplyPostDiv = $('<div></div>');
 	$myReplyPostDiv.addClass('my_reply_post');
@@ -682,7 +683,7 @@ function createMyReplyPostItem(data){
 	});
 	var $replyPostBarBelongSpan = $('<span></span>');
 	$replyPostBarBelongSpan.addClass('reply_post_bar_belong');
-	$replyPostBarBelongSpan.html('来自:'+data.barBelong);
+	$replyPostBarBelongSpan.html('来自:'+data.barBelong+'吧');
 	var $replyPostContentP = $('<p></p>');
 	$replyPostContentP.addClass('reply_post_content');
 	var content = data.content.replace(imgReg,'');

@@ -1,7 +1,7 @@
 <?php
 $username = $_POST['user'];
 $password = $_POST['psw'];
-$password = md5("123456");
+$password = md5($password);
 require "connect.php";
 $sql1 = "select * from login where username='$username'";
 $result1 = mysql_query($sql1);
