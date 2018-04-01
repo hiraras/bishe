@@ -1,11 +1,3 @@
-.index{
-	position: relative;
-	margin: 20px auto 10px;
-}
-.content{
-	width: 100%;
-	padding-bottom: 60px;
-}
 .main{
 	width: 100%;
 	border-radius: 8px;
@@ -13,72 +5,14 @@
 	overflow: hidden;
 	border: 1px solid #000000;
 }
-.main .intro{
-	height: 150px;
-}
-.main .intro>div{
-	float: left;
-}
-.main .intro img{
-	height: 150px;
-	width: 150px;
-	float: left;
-}
-.main .intro h2{
-	vertical-align: top;
-	margin-top: 10px;
-	margin-left: 20px;
-}
-.main .intro .post_status{
-	color: #fb7000;
-	vertical-align: top;
-	margin-top: 10px;
-	margin-left: 20px;
-}
-.post_status_item{
-	display: inline-block;
-	margin-right: 10px;
-}
-
-.intro .intro_content{
-	margin-left: 20px;
-	margin-top: 8px;
-	width: 100%;
-	height: 62px;
-	overflow: hidden;
-}
-
-.intro .btn_attention{
-	background: #00a9cd;
-	color: #FFFFFF;
-	text-align: center;
-	height: 50px;
-	line-height: 50px;
-	border: none;
-	font-size: 24px;
-	border-radius: 5px;
-	float: right;
-	margin-right: 50px;
-	margin-top: 50px;
-	padding: 0 20px;
-}
-.intro .btn_public{
-	background: #00a9cd;
-	color: #FFFFFF;
-	text-align: center;
-	height: 50px;
-	line-height: 50px;
-	border: none;
-	font-size: 24px;
-	border-radius: 5px;
-	float: right;
-	margin-right: 50px;
-	margin-top: 50px;
-	padding: 0 20px;
+.no_post_tip{
+	color: blue;
+	padding: 8px 10px;
+	border-bottom: 1px solid black;
+	display: none;
 }
 .posts{
 	width: 100%;
-	border-top: 2px solid #000000;
 }
 .posts .post{
 	padding: 10px 14px;
@@ -86,9 +20,6 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-}
-.post .post_content{
-	
 }
 .posts .post .is_top{
 	background: #00a9cd;
@@ -156,10 +87,6 @@
 .post .post_msg .post_time{
 	text-align: right;
 }
-.intro .bar_intro_container{
-	height: 100%;
-	width: 740px;
-}
 .post .post_content_intro{
 	margin: 5px 0;
 	height: 25px;
@@ -168,16 +95,7 @@
 .post .post_content_intro img{
 	height: 21px;
 }
-.no_post_tip{
-	color: blue;
-	padding: 8px 10px;
-	border-bottom: 1px solid black;
-	display: none;
+.index{
+	position: relative;
+	margin: 20px auto 10px;
 }
-
-
-
-
-
-
-

@@ -162,7 +162,7 @@ function createCheckCode(){
 			ctx.strokeStyle = getRandomColor();
 			ctx.lineWidth = 1;
 			ctx.moveTo(getRandom(0,80),getRandom(0,35));
-	　　		ctx.lineTo(getRandom(0,80),getRandom(0,35));
+			ctx.lineTo(getRandom(0,80),getRandom(0,35));
 			ctx.stroke();
 			ctx.closePath();
 		}
