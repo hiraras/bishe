@@ -59,7 +59,14 @@ function changePassWordBtnPressHandle(){
     }
 }
 
-
+//绑定回车键提交
+$(".container input").on("keydown",function(e){
+	e = e || event;
+	var keyCode = e.keyCode || e.which || e.charCode;
+	if(keyCode == 13){
+		changePassWordBtnPressHandle();
+	}
+});
 
 
 

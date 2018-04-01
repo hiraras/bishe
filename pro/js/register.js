@@ -1,4 +1,4 @@
-var randomNum = -11111111;
+var randomNum = -getRandom(100000,999999);
 //验证码有效时间(倒计时时间)
 var timeNum = 60;
 var domain = "http://localhost";
@@ -20,7 +20,7 @@ var sendPhoneMsg = function(){
 			var timer = setInterval(function(){
 				timeNum --;
 				if(timeNum <= 0){
-					randomNum = -11111111;
+					randomNum = -getRandom(100000,999999);
 					timeNum = 60;
 					clearInterval(timer);
 					$("#checkCode").on("click",sendPhoneMsg);
