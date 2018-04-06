@@ -1,19 +1,21 @@
+.container{
+	width: 100%;
+	margin: 0 auto;
+	margin-bottom: 200px;
+	position: relative;
+	border: none;
+}
 h2{
     text-align: center;
     margin-top: 20px;
 }
-.container{
-    border-radius: 8px;
-	box-shadow: 0 0 1px #000000;
-	overflow: hidden;
-	border: 1px solid #000000;
-}
 .content{
-    margin-top: 20px;
+	margin: 0 auto;
+	margin-top: 20px;
+	display: flex;
 }
 .content .left{
-	width: 250px;
-	float: left;
+	min-width: 100px;
 	background: #FFFFFF;
 	margin-right: 10px;
 	/*height: 1000px;*/
@@ -23,8 +25,6 @@ h2{
 	z-index: 999;
 }
 .content .right{
-	width: 840px;
-	float: left;
 	/*height: 1000px;*/
 	background: #FFFFFF;
 	border-radius: 3px;
@@ -42,7 +42,9 @@ h2{
     color: #00a9cd;
     border-color: #00a9cd;
 }
-
+table{
+	margin-top: 15px;
+}
 
 
 
