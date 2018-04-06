@@ -17,6 +17,11 @@ if($num == 1){
     $row = mysql_fetch_assoc($result2);
     $arr['creatorHeadImg'] = $row['headImg'];
     $arr['nickname'] = $row['nickname'];
+    $barBelong = $arr['barBelong'];
+    $sql3 = "select master from bars where barName='$barBelong'";
+    $result3 = mysql_query($sql3);
+    $row2 = mysql_fetch_assoc($result3);
+    $arr['master'] = $row2['master'];
     $obj->result = 'success';
     $obj->data = $arr;
 }else{

@@ -156,6 +156,33 @@ function searchBarMsg(barName){
 	});
 }
 
+function getTopAndGreatPostMsg(barName){
+	$.ajax({
+		url: domain + "/pro/php/getTopAndGreatPost.php",
+		type: 'get',
+		async: true,
+		data: {
+			barName: barName
+		},
+		success: function(result){
+			try{
+				var data = JSON.parse(result);
+			}catch(e){
+				console.log(e);
+			}
+			if(data.value.length == 0){
+				console.log('当前还没有置顶、加精帖');
+			}else{
+				console.log(data);
+				for(var i=0;i<data.value.length;i++){
+					var $item = createPostItem(data.value[i]);
+					$('#topAndGreatPostContainer').append($item);
+				}
+			}
+		}
+	});
+}
+
 function initSendAreaBtnsPressEvent(){
 	$('.face').click(function(){
 		if(isEditorAreaBlur()){
@@ -425,12 +452,16 @@ function initIndex(){
 	var currIndex = Number($('#postsContainer').attr('index'));
 	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
 	var halfIndexNum = Math.floor(maxShowIndex / 2) + 1;
+	var barName = $('#barName').attr('barName');
 	if(currIndex == 0){
 		$('#prevBtn').css('display','none');
 		$('#firstPageBtn').css('display','none');
+		$('#topAndGreatPostContainer').css('display','block');
+		getTopAndGreatPostMsg(barName);
 	}else{
 		$('#prevBtn').css('display','inline-block');
 		$('#firstPageBtn').css('display','inline-block');
+		$('#topAndGreatPostContainer').css('display','none');
 	}
 	if(currIndex == totalNum){
 		$('#nextBtn').css('display','none');
@@ -536,11 +567,15 @@ function createPostItem(data){
 	$isTopP.addClass('is_top');
 	if(data.isTop == '0'){
 		$isTopP.css('display','none');
+	}else{
+		$isTopP.html('置顶');
 	}
 	var $isGreatP = $('<p></p>');
 	$isGreatP.addClass('is_great');
 	if(data.isGreat == '0'){
 		$isGreatP.css('display','none');
+	}else{
+		$isGreatP.html('精');
 	}
 	var $postTitleTextP = $('<p></p>');
 	$postTitleTextP.addClass('post_title_text');

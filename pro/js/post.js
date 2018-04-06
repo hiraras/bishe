@@ -182,6 +182,31 @@ function searchPostMsg(postId){
                 return ;
             }
 			if(data.result == 'success'){
+				if(data.data.master == localStorage.getItem('user')){
+					$('#postOptionBtnContainer').css('display','block');
+					$('#toTopBtn').click(function(){
+						toTopBtnPressHandle();
+					});
+					$('#toGreatBtn').click(function(){
+						toGreatBtnPressHandle();
+					});
+					if(Number(data.data.isTop) == 0){
+						$('#toTopBtn').html('置顶');
+						$('#toTopBtn').attr('isTop','0');
+					}else{
+						$('#toTopBtn').html('取消置顶');
+						$('#toTopBtn').attr('isTop','1');
+					}
+					if(Number(data.data.isGreat) == 0){
+						$('#toGreatBtn').html('加精');
+						$('#toGreatBtn').attr('isGreat','0');
+					}else{
+						$('#toGreatBtn').html('取消加精');
+						$('#toGreatBtn').attr('isGreat','1');
+					}
+				}else{
+					$('#postOptionBtnContainer').css('display','none');
+				}
                 sessionStorage.setItem('barName',data.data.barBelong);
                 $('#postTitle').html(data.data.postName);
                 $('#creatorHeadImg').attr('src',data.data.creatorHeadImg);
@@ -201,6 +226,62 @@ function searchPostMsg(postId){
 					alert('帖子不存在');
 				},300);
 				return ;
+			}
+		}
+	});
+}
+
+function toTopBtnPressHandle(){
+	var postId = $('#postTitle').attr('postId');
+	var status = Number($('#toTopBtn').attr('isTop'));
+	$.ajax({
+		type: 'post',
+		url: domain + '/pro/php/setPostIsTopStatus.php',
+		async: true,
+		data: {
+			postId: postId,
+			status: status
+		},
+		success: function(result){
+			console.log(result);
+			if(result == 'success'){
+				if(status == 0){
+					$('#toTopBtn').html('取消置顶');
+					$('#toTopBtn').attr('isTop','1');
+				}else{
+					$('#toTopBtn').html('置顶');
+					$('#toTopBtn').attr('isTop','0');
+				}
+			}else{
+				alert('发生未知错误');
+			}
+		}
+	});
+}
+
+function toGreatBtnPressHandle(){
+	var postId = $('#postTitle').attr('postId');
+	var status = Number($('#toGreatBtn').attr('isGreat'));
+	$.ajax({
+		type: 'post',
+		url: domain + '/pro/php/setPostIsGreatStatus.php',
+		async: true,
+		data: {
+			postId: postId,
+			status: status
+		},
+		success: function(result){
+			console.log(result);
+			if(result == 'success'){
+				if(status == 0){
+					$('#toGreatBtn').html('取消加精');
+					$('#toGreatBtn').attr('isTop','1');
+				}else{
+					$('#toGreatBtn').html('加精');
+					$('#toGreatBtn').attr('isTop','0');
+				}
+			}else{
+				alert('发生未知错误');
 			}
 		}
 	});
