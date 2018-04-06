@@ -231,9 +231,6 @@
 	flex-direction: row;
 	justify-content: space-between;
 }
-.post .post_content{
-	
-}
 .posts .post .is_top{
 	background: #00a9cd;
 	border-radius: 4px;

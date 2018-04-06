@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="../common/css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/cropper.css">
 		<link rel="stylesheet" type="text/css" href="../css/bar.css"/>
 	</head>
 	<body>
@@ -55,6 +56,9 @@
 						</div>
 						<button class="btn_attention" id="btnAttention">
 							关注
+						</button>
+						<button class="btn_editor_bar_msg" id="btnEditorBarMsg">
+								编辑吧资料
 						</button>
 					</div>
 					<div class="posts" id="postsContainer">
@@ -171,9 +175,32 @@
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>
+		<div class="mask mask_editor_bar_msg">
+			<div class="editor_bar_msg_content" id="editorBarMsgContent">
+				<img src="../img/1.jpg" alt="" class="bar_img" id="editorBarImg">
+				<br />
+				<p class="input_tip">请输入吧描述</p>
+				<textarea class="input_bar_descript" id="inputBarDescript"></textarea>
+				<p class="bar_editor_submit_tip">&nbsp;</p>
+				<button class="submit_editor_btn" id="submitEditorBtn">提交</button>
+				<button class="submit_editor_btn" id="cancelEditorBtn">取消</button>
+			</div>
+		</div>
+		<div class="mask crop_mask" id="cropperMask">
+			<div class="cropper_container">
+				<div class="img_container" id="imgContainer">
+					<img src="" alt="" id="image" />
+				</div>
+				<button class="select_img_btn" id="selectImgBtn">选择图片</button>
+				<button id="btnGetCropper" class="save_img_btn" data-option='{"maxWidth": 4096,"maxHeight": 4096}' data-method="getCroppedCanvas">保存</button>
+				<button class="cancel_select_img_btn" id="cancelSelectBtn">取消</button>
+				<input type="file" id="inputImage" style="display: none" />
+			</div>
+		</div>
 	</body>
-	<script src="../js/jquery/jquery-1.8.3.min.js"></script>
+	<script src="../js/jquery/jquery-1.9.1.min.js"></script>
 	<script src="../common/js/common.js"></script>
+	<script src="../js/cropper.js"></script>
 	<script src="../js/bar.js"></script>
 </html>

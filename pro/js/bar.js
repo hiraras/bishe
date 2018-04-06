@@ -20,14 +20,155 @@ var fileDataArr = [];
 	searchBarMsg(barName);
 }());
 
+function initCropper(){
+	'use strict';
+	var console = window.console || { log: function () {} };
+	var URL = window.URL || window.webkitURL;
+	var imgContainer = $('#imgContainer');
+	// Import image
+	var $inputImage = $('#inputImage');
+	var $image = $('#image');
+	$image.attr('src',$('#barImg').attr('src'));
+	var $download = $('#download');
+	var originalImageURL = $image.attr('src');
+	var uploadedImageType = 'image/jpeg';
+	var uploadedImageURL;
+	var options = {
+	  aspectRatio: 1 / 1,
+	  preview: '.img-preview',
+	};
+	imgContainer.width($image.width());
+	imgContainer.height($image.height());
+	//初始化
+	$image.cropper(options);
+	if (URL) {
+	  $inputImage.change(function (){
+		var imgContainer = $('#imgContainer');
+		var files = this.files, file;
+		if(!$image.data('cropper')){
+		  return;
+		}
+		if(files && files.length){
+		  file = files[0];
+		  if(/^image\/\w+$/.test(file.type)){
+			uploadedImageType = file.type;
+			if (uploadedImageURL){
+			  URL.revokeObjectURL(uploadedImageURL);
+			}
+			uploadedImageURL = URL.createObjectURL(file);
+			imgContainer.height(400);
+			imgContainer.width(400);
+			var tempImg = $image.cropper('destroy').attr('src', uploadedImageURL).on('load',function(){
+				imgContainer.width($(this).width());
+				imgContainer.height($(this).height());
+				tempImg.cropper(options);
+			});
+			$inputImage.val('');
+		  }else{
+			window.alert('Please choose an image file.');
+		  }
+		}
+	  });
+	}else{
+	  $inputImage.prop('disabled', true).parent().addClass('disabled');
+	}
+	initBtnEvent();
+}
+function initBtnEvent(){
+	$('#btnGetCropper').click(function(){
+		var barId = $('#barName').attr('barId');
+		var $download = $('#download');
+		var uploadedImageType = 'image/jpeg';
+		var $image = $('#image');
+		var $this = $(this);
+		var data = $this.data();
+		var cropper = $image.data('cropper');
+		var cropped;
+		var result;
+		if(cropper && data.method){
+		data = $.extend({}, data); // Clone a new one
+		cropped = cropper.cropped;
+		if(uploadedImageType === 'image/jpeg'){
+			if (!data.option) {
+			data.option = {};
+			}
+			data.option.fillColor = '#fff';
+		}
+		result = $image.cropper(data.method, data.option, data.secondOption);
+		var imgURL = result.toDataURL();
+		$.ajax({
+			type: 'post',
+			url: domain + '/pro/php/saveBarHeadImg.php',
+			async: true,
+			data: {
+				fileData: imgURL,
+				barId: barId
+			},
+			success: function(result){
+				try{
+					var data = JSON.parse(result);
+				}catch(e){
+					console.log(e);
+				}
+				if(data.result == 'success'){
+					window.location.reload();
+				}else{
+					alert('未知错误');
+				}
+			}
+		});
+	}
+  });
+}
 function init(){
 	//设置帖子中图片点击放大
 	// $('.post_img').click(resizeImg);
 	//初始化发表部分按钮点击事件
 	initSendAreaBtnsPressEvent();
-
+	$image = $('#image');
 	$('#submit').click(function(){
 		onSubmitPostMsg();
+	});
+	$('#editorBarImg').click(function(){
+		$('#cropperMask').css('display','block');
+		initCropper();
+	});
+	$('#cancelSelectBtn').click(function(){
+		$('#cropperMask').css('display',"none");
+		$image.cropper('destroy');
+	});
+	$('#selectImgBtn').click(function(){
+		$('#inputImage').click();
+	});
+	$('#cancelEditorBtn').click(function(){
+		$('.mask_editor_bar_msg').css('display','none');
+	});
+	$('#submitEditorBtn').click(function(){
+		var barId = $('#barName').attr('barId');
+		var content = $('#inputBarDescript').val();
+		if(content.trim() != ''){
+			$.ajax({
+				type: 'post',
+				url: domain + '/pro/php/changeBarDescript.php',
+				async: true,
+				data: {
+					barId: barId,
+					content: content
+				},
+				success: function(result){
+					console.log(result);
+					if(result == 'success'){
+						$('.bar_editor_submit_tip').html('提交成功');
+						setTimeout(function(){
+							window.location.reload();
+						},300);
+					}else{
+						alert('发生未知错误,数据提交失败');
+						window.location.reload();
+					}
+				}
+			});
+		}
 	});
 	$('#btnAttention').click(function(){
 		if(!!localStorage.getItem('user')){
@@ -107,6 +248,15 @@ function resizeImg(){
 }
 
 function getBarMsg(data){
+	if(data.master == localStorage.getItem('user')){
+		$('#btnEditorBarMsg').css('display','inline-block');
+		$('#btnEditorBarMsg').click(function(){
+			console.log(1);
+			$('.mask_editor_bar_msg').css('display','inline-block');
+		});
+	}else{
+		$('#btnEditorBarMsg').css('display','none');
+	}
 	$('#barName').html(data.barName + '吧');
 	$('#barName').attr('barname',data.barName);
 	$('#barName').attr('barId',data.id);

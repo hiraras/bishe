@@ -138,6 +138,7 @@ function init(){
             address: address
           },
           success: function(result){
+						console.log(result);
             if(result == 'success'){
               $('#editResultTip').html('提交成功');
               setTimeout(function(){
