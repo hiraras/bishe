@@ -353,7 +353,23 @@
 .my_reply_post .reply_post_time{
     margin-top: 10px;
 }
-
-
-
+.not_exist_tip{
+    color: #00a9cd;
+    margin-left: 15px;
+    display: none;
+}
+.my_attention_bar_item{
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 5px 8px;
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+.my_attention_bar_item:hover{
+    border: 1px solid #00a9cd;
+    color: #00a9cd;
+}
 

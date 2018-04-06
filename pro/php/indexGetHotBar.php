@@ -15,6 +15,10 @@ while($row = mysql_fetch_assoc($result)){
 	$result3 = mysql_query($sql3);
 	$postNum = mysql_num_rows($result3);
 	$row['postNum'] = $postNum;
+	$sql4 = "select * from bar_attention where barName='$barName' and status = 1";
+	$result4 = mysql_query($sql4);
+	$attentionNum = mysql_num_rows($result4);
+	$row['attentionNum'] = $attentionNum;
 	array_push($arr,$row);
 }
 echo json_encode($arr);

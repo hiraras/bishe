@@ -1,6 +1,7 @@
 <?php
 require "connect.php";
 $barName = $_GET['barName'];
+$userId = $_GET['userId'];
 $sql = "select * from bars where barName = '$barName' and status = 1";
 //$sql = "select bars.*,count(*) as postNum from bars,posts where bars.barName = '$barName' and posts.barBelong = '$barName' and posts.status = 1";
 $result = mysql_query($sql);
@@ -32,6 +33,18 @@ if($num == 0){
 	$result3 = mysql_query($sql3);
 	$postNum = mysql_num_rows($result3);
 	$row['postNum'] = $postNum;
+	$sql4 = "select * from bar_attention where barName='$barName' and status = 1";
+	$result4 = mysql_query($sql4);
+	$attentionNum = mysql_num_rows($result4);
+	$row['attentionNum'] = $attentionNum;
+	$sql5 = "select * from bar_attention where barName='$barName' and userId='$userId' and status = 1";
+	$result5 = mysql_query($sql5);
+	$num2 = mysql_num_rows($result5);
+	if($num2 == 1){
+		$row['isAttention'] = true;
+	}else{
+		$row['isAttention'] = false;
+	}
 	$data->data = $row;
 }
 echo json_encode($data);

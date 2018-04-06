@@ -122,10 +122,12 @@ function getBarMsg(themeName,indexNum){
 		success: function(result){
 			var data = JSON.parse(result);
 			console.log(data);
-			if(data.length != 0){
+			if(data.value.length != 0){
 				freshBarItems(data, indexNum);
 			}else{
 				//没有获得数据
+				$('#notHaveBarTip').css('display','block');
+				$('.index').css('display','none');
 			}
 		}
 	});
@@ -202,7 +204,7 @@ function createBarItem(data){
 	$postStatusDiv.addClass('post_status');
 	var $concernNumDiv = $('<div></div>');
 	$concernNumDiv.addClass('post_status_item');
-	$concernNumDiv.html('人数:'+data.concernNum);
+	$concernNumDiv.html('人数:'+data.attentionNum);
 	var $postNumDiv = $('<div></div>');
 	$postNumDiv.addClass('post_status_item');
 	$postNumDiv.html('帖子:'+data.postNum);

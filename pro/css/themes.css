@@ -98,4 +98,12 @@
 .index{
 	margin-top: 20px;
 }
+.content .tip{
+	width: 50%;
+	background: #FFFFFF;
+	border-radius: 5px;
+    position: relative;
+	padding: 15px 10px;
+	display: none;
+}
 

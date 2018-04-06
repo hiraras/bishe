@@ -29,6 +29,47 @@ function init(){
 	$('#submit').click(function(){
 		onSubmitPostMsg();
 	});
+	$('#btnAttention').click(function(){
+		if(!!localStorage.getItem('user')){
+			var barName = $('#barName').attr('barname');
+			var barId = $('#barName').attr('barId');
+			var userId = localStorage.getItem('user');
+			var attentionStatus = $('#btnAttention').attr('attentionStatus');
+			attentionStatus = Number(attentionStatus);
+			$.ajax({
+				type: 'get',
+				url: domain + '/pro/php/barAttention.php',
+				async: true,
+				data: {
+					barName: barName,
+					userId: userId,
+					barId: barId,
+					attentionStatus: attentionStatus
+				},
+				success: function(result){
+					// console.log(result);
+					if(result == 'success'){
+						if(attentionStatus == 1){
+							$('#btnAttention').html('关注');
+							$('#btnAttention').attr('attentionStatus',2);
+							var concernNum = $('#concernNum').html().substr($('#concernNum').html().indexOf(':')+1);
+							$('#concernNum').html('人数:'+(Number(concernNum) - 1));
+						}else{
+							$('#btnAttention').html('已关注');
+							$('#btnAttention').attr('attentionStatus',1);
+							var concernNum = $('#concernNum').html().substr($('#concernNum').html().indexOf(':')+1);
+							$('#concernNum').html('人数:'+(Number(concernNum) + 1));
+						}
+					}else{
+						alert('未知错误');
+					}
+				}
+			});
+		}else{
+			alert('请先登录');
+		}
+	});
+
 	//如果未登录不允许发帖
 	if(!!localStorage.getItem('user')){
 		$('#editorArea').attr('contenteditable','true');
@@ -40,6 +81,7 @@ function init(){
 		$('#notLoginTip').css('display', 'block');
 		$('#submit').attr('disabled',true);
 		$('#submit').css('background','gray');
+		$('#btnAttention').html('关注');
 	}
 	//测试页面刷新或关闭，删除掉已经保存到本地的图片文件
 	//结果直接关闭浏览器的话不会执行
@@ -67,19 +109,29 @@ function resizeImg(){
 function getBarMsg(data){
 	$('#barName').html(data.barName + '吧');
 	$('#barName').attr('barname',data.barName);
-	$('#concernNum').html('人数:'+data.concernNum);
+	$('#barName').attr('barId',data.id);
+	$('#concernNum').html('人数:'+data.attentionNum);
 	$('#barIntroduce').html(data.barDescript);
 	$('#postNum').html('帖子:'+data.postNum);
 	$('#barImg').attr('src',data.barImg);
+	if(data.isAttention){
+		$('#btnAttention').html('已关注');
+		$('#btnAttention').attr('attentionStatus',1);
+	}else{
+		$('#btnAttention').html('关注');
+		$('#btnAttention').attr('attentionStatus',2);
+	}
 }
 
 function searchBarMsg(barName){
+	var userId = localStorage.getItem('user');
 	$.ajax({
 		type: 'get',
 		url: domain + '/pro/php/getBarState.php',
 		async: true,
 		data: {
-			barName: barName
+			barName: barName,
+			userId: userId
 		},
 		success: function(result){
 			var data = JSON.parse(result);

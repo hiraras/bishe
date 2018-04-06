@@ -61,6 +61,7 @@
 	margin-right: 50px;
 	margin-top: 50px;
 	padding: 0 20px;
+	cursor: pointer;
 }
 .intro .btn_public{
 	background: #00a9cd;

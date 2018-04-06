@@ -175,7 +175,7 @@ function getHotBar(){
 				var $p2 = $('<p></p>');
 				$p2.addClass('bar_hot');
 				var $span1 = $('<span></span>');
-				$span1.html('关注数:'+data[i].concernNum);
+				$span1.html('关注数:'+data[i].attentionNum);
 				var $span2 = $('<span></span>');
 				$span2.html('帖子数:'+data[i].postNum);
 				var $br = $('<br />');

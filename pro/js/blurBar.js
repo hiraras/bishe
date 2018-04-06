@@ -173,7 +173,7 @@ function createBarItem(data){
 	$postStatusDiv.addClass('post_status');
 	var $concernNumDiv = $('<div></div>');
 	$concernNumDiv.addClass('post_status_item');
-	$concernNumDiv.html('人数:'+data.concernNum);
+	$concernNumDiv.html('人数:'+data.attentionNum);
 	var $postNumDiv = $('<div></div>');
 	$postNumDiv.addClass('post_status_item');
 	$postNumDiv.html('帖子:'+data.postNum);

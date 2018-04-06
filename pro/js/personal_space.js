@@ -26,12 +26,12 @@ $(function () {
       }catch(e){
         console.log(e);
       }
-      console.log(data);
       if(data){
         userData = data;
         init();
       }else{
-        console.log('用户不存在');
+				console.log('用户不存在');
+				window.location.href = "http://localhost/pro/index.html";
       }
     }
   });
@@ -194,11 +194,43 @@ function switchContent(num){
       break;
     case 3:
       break;
-    case 4:
+		case 4:
+			getMyAttentionBar(userId);
       break;
     default:
       break;
   }
+}
+
+function getMyAttentionBar(userId){
+		$.ajax({
+			url: domain + "/pro/php/getMyAttentionBar.php",
+			type: 'get',
+			async: true,
+			data: {
+				userId: userId
+			},
+			success: function(result){
+				try{
+					var data = JSON.parse(result);
+				}catch(e){
+					console.log(e);
+				}
+				if(data.result){
+					for(var i=0;i<data.data.length;i++){
+						var $div = $('<div></div>');
+						$div.html(data.data[i].barName+'吧');
+						$div.attr('barId', data.data[i].barId);
+						$div.attr('barName', data.data[i].barName);
+						$div.addClass('my_attention_bar_item');
+						$div.click(function(){
+							window.location.href = "http://localhost/pro/page/bar.html?barName="+$(this).attr('barName');
+						});
+						$('#contentAttendBar').append($div);
+					}
+				}
+			}
+		});
 }
 
 function getContentUserMsg(){
@@ -219,7 +251,7 @@ function getMyPostData(userId,indexNum){
 		success: function(result){
 			var data = JSON.parse(result);
 			if(data.totalNum == 0){
-				console.log('当前还没有帖子');
+				$('#notExistMyPostTip').css('display','inline');
 			}else{
 				freshBarItems(data,indexNum);
 			}
@@ -243,7 +275,7 @@ function getMyReplyPostData(userId,indexNum){
 				console.log(e);
 			}
 			if(data.value.length == 0){
-				console.log('当前还没有回复的帖子');
+				$('#notExistMyReplyTip').css('display','inline');
 			}else{
 				// for(var i=0;i<data.value.length;i++){
 				// 	if(data.value[i].postName == null){
