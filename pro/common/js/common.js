@@ -194,7 +194,7 @@ $("#myMsg").css('display','none');
 
 $('.btn_search').click(function(){
 	var value = $('#search').val();
-	if(value != ''){
+	if(value.trim() != ''){
 		searchBar(value);
 	}else{
 		window.location.href = 'http://localhost/pro/index.html';
@@ -226,7 +226,7 @@ $("#search").on("keydown",function(e){
 	var keyCode = e.keyCode || e.which || e.charCode;
 	if(keyCode == 13){
 		var value = $('#search').val();
-		if(value != ''){
+		if(value.trim() != ''){
 			searchBar(value);
 		}else{
 			window.location.href = 'http://localhost/pro/index.html';
@@ -243,7 +243,11 @@ $('#exitLogin').click(function(){
 	localStorage.removeItem("userLevel");
 	localStorage.removeItem("userNickName");
 	localStorage.removeItem("headImg");
-	window.location.reload();
+	if(window.location.href.indexOf('personal_space') != -1){
+		window.location.href = 'http://localhost/pro/index.html';
+	}else{
+		window.location.reload();
+	}
 });
 $('#changePassWord').click(function(){
 	window.location.href = 'http://localhost/pro/page/changePassWord.html';

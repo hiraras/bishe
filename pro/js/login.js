@@ -18,22 +18,24 @@ function testLogin(){
 					data:{"user":username,"psw": psw},
 					dataType: "text",
 					success: function(result){
-//						result = JSON.parse(result);
-						if(result == 2){
+						try{
+							result = JSON.parse(result);
+						}catch(e){
+							$("#remind").html("发生未知错误，请稍后再试!");
+							console.log(e);
+						}
+						if(result.value == 2){
 							$("#remind").html("用户名不存在");
-						}else if(result == 0){
+						}else if(result.value == 0){
 							$("#remind").html("用户名或密码不正确");
 						}else{
-							try{
-								result = JSON.parse(result)[0];
-//								console.log(result);
-								getUserMsg(result.username);
-								localStorage.setItem("user",result.username);
-								localStorage.setItem("userLevel",result.level);
+							getUserMsg(result.data.username);
+							localStorage.setItem("user",result.data.username);
+							localStorage.setItem("userLevel",result.data.level);
+							if(result.value == 'admin'){
+								window.location.href = "http://localhost/pro/page/admin.html";
+							}else{
 								window.history.back();
-							}catch(e){
-								$("#remind").html("发生未知错误，请稍后再试!");
-								console.log(e);
 							}
 						}
 					},
