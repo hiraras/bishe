@@ -32,12 +32,19 @@ while($row = mysql_fetch_assoc($result)){
 	$result4 = mysql_query($sql4);
 	$userId = $row['creatorId'];
 	//获得头像
-	$sql5 = "select headImg from usermsg where username='$userId'";
+	$sql5 = "select headImg,nickname from usermsg where username='$userId'";
 	$result5 = mysql_query($sql5);
 	$row3 = mysql_fetch_assoc($result5);
 	$row['headImg'] = $row3['headImg'];
+	$row['nickname'] = $row3['nickname'];
 	$replyToReplyNum = mysql_num_rows($result4);
 	while($row2 = mysql_fetch_assoc($result3)){
+		$username = $row2['replyerId'];
+		$sql6 = "select headImg,nickname from usermsg where username='$username'";
+		$result6 = mysql_query($sql6);
+		$row4 = mysql_fetch_assoc($result6);
+		$row2['nickname'] = $row4['nickname'];
+		$row2['headImg'] = $row4['headImg'];
 		array_push($replyToReplyArr,$row2);
 	}
 	$replyToReplyData->value = $replyToReplyArr;

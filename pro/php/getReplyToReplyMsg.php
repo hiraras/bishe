@@ -16,6 +16,12 @@ $replyToReplyTotalNum = mysql_num_rows($result2);
 //获得的结果数组只能用key值，不能用数字索引
 $arr = array();
 while($row = mysql_fetch_assoc($result)){
+	$username = $row['replyerId'];
+	$sql3 = "select headImg,nickname from usermsg where username='$username'";
+	$result3 = mysql_query($sql3);
+	$row2 = mysql_fetch_assoc($result3);
+	$row['nickname'] = $row2['nickname'];
+	$row['headImg'] = $row2['headImg'];
 	array_push($arr,$row);
 }
 class ResultData{

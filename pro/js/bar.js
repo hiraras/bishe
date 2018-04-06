@@ -530,7 +530,7 @@ function createPostItem(data){
 	$postMsgPeopleImg.attr('src','../img/proImg/people.png');
 	var $masterNameP = $('<p></p>');
 	$masterNameP.addClass('master_name');
-	$masterNameP.html(data.creatorNickName);
+	$masterNameP.html(data.nickname);
 	$masterMsgDiv.append($postMsgPeopleImg);
 	$masterMsgDiv.append($masterNameP);
 

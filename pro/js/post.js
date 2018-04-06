@@ -128,7 +128,7 @@ function getPostReplysMsg(postId, indexNum){
 		success: function(result){
 			try{
 				var data = JSON.parse(result);
-				// console.log(data);
+				console.log(data);
 				freshPageReplyItems(data,indexNum);
 			}catch(e){
 				console.log(result);
@@ -185,7 +185,7 @@ function searchPostMsg(postId){
                 sessionStorage.setItem('barName',data.data.barBelong);
                 $('#postTitle').html(data.data.postName);
                 $('#creatorHeadImg').attr('src',data.data.creatorHeadImg);
-                $('#creatorNickName').html(data.data.creatorNickName);
+                $('#creatorNickName').html(data.data.nickname);
                 $('#commentText').html(data.data.postContent);
                 $('#creatorPostTime').html(isToday(data.data.createTime)?data.data.createTime.substr(11):data.data.createTime.substr(0,10));
                 $('#postTitle').attr('postId',postId);
@@ -688,7 +688,7 @@ function lastPage(barName){
 }
 //回复的回复组件
 function createReplysItem(data){
-	// console.log(data);
+	console.log(data);
 	if(data.value.length == 0){
 		return ;
 	}
@@ -708,14 +708,14 @@ function createReplysItem(data){
 		var $replyItemDiv = $('<div></div>');
 		$replyItemDiv.addClass('reply_item');
 		var $replyItemHeadImg = $('<img />');
-		$replyItemHeadImg.attr('src',data.value[j].replyerHeadImg);
+		$replyItemHeadImg.attr('src',data.value[j].headImg);
 		var $replyContentDiv = $('<div></div>');
 		$replyContentDiv.addClass('reply_content');
 		var $replyTextP = $('<p></p>');
 		$replyTextP.addClass('reply_text');
 		var $replyContentUserNameSpan = $('<span></span>');
 		$replyContentUserNameSpan.addClass('replyer');
-		$replyContentUserNameSpan.html(data.value[j].replyerNickName+':');
+		$replyContentUserNameSpan.html(data.value[j].nickname+':');
 		$replyTextP.html($replyContentUserNameSpan);
 		$replyTextP.html($replyTextP.html() + data.value[j].content);
 		var $replyTimeDiv = $('<div></div>');
@@ -805,7 +805,7 @@ function createCommentItem(data){
 	$userMsgHeadImg.attr('src',data.headImg);
 	var $userNameP = $('<p></p>');
 	$userNameP.addClass('user_name');
-	$userNameP.html(data.creatorNickName);
+	$userNameP.html(data.nickname);
 	$userMsgDiv.append($userMsgHeadImg);
 	$userMsgDiv.append($userNameP);
 

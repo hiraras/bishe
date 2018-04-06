@@ -19,6 +19,11 @@ while($row = mysql_fetch_assoc($result)){
 	$result3 = mysql_query($sql3);
 	$replyNum = mysql_num_rows($result3);
 	$row['replyNum'] = $replyNum;
+	$username = $row['creatorId'];
+	$sql4 = "select headImg,nickname from usermsg where username='$username'";
+	$result4 = mysql_query($sql4);
+	$row2 = mysql_fetch_assoc($result4);
+	$row['nickname'] = $row2['nickname'];
 	array_push($arr,$row);
 }
 class ResultData{
