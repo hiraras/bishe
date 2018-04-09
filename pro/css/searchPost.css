@@ -85,7 +85,7 @@
 	display: inline-block;
 }
 .post .post_msg .post_time{
-	text-align: right;
+	text-align: left;
 }
 .post .post_content_intro{
 	margin: 5px 0;

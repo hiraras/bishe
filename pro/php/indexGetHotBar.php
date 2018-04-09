@@ -1,8 +1,8 @@
 <?php
 require "connect.php";
-$hotStandrad = 50000;
+$hotStandrad = 2;
 $barNum = 21;
-$sql = "select * from bars where concernNum>'$hotStandrad' and status = 1 ORDER BY concernNum DESC limit $barNum";
+$sql = "select * from bars where status = 1 ORDER BY concernNum DESC limit $barNum";
 $result = mysql_query($sql);
 //获得的结果数组只能用数字索引，不能用key值
 //$arr = mysql_fetch_row($result);
@@ -14,6 +14,9 @@ while($row = mysql_fetch_assoc($result)){
 	$sql3 = "select * from posts where barBelong='$barName' and status = 1";
 	$result3 = mysql_query($sql3);
 	$postNum = mysql_num_rows($result3);
+	if($postNum < $hotStandrad){
+		continue;
+	}
 	$row['postNum'] = $postNum;
 	$sql4 = "select * from bar_attention where barName='$barName' and status = 1";
 	$result4 = mysql_query($sql4);

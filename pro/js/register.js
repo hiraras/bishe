@@ -42,6 +42,14 @@ var sendPhoneMsg = function(){
 	});
 }
 
+function init(){
+	var userId = localStorage.getItem('user');
+	if(!!userId){
+		window.history.back();
+	}
+}
+init();
+
 $("#checkCode").on("click",sendPhoneMsg);
 
 var testRegister = function(){

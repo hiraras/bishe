@@ -25,12 +25,8 @@ var domain = "http://localhost";
 	$("#headerRegister").off('click');
 	$("#toIndex").off('click');
 	$("#myMsg").off('click');
-	$("#myRoom").off('click');
 	
 	$("#myMsg").on("click",function(){
-		window.location.href = "";
-	});
-	$("#myRoom").on("click",function(){
 		window.location.href = "";
 	});
 	$("#headerLogin").on("click",function(){
@@ -196,7 +192,12 @@ function getHotBar(){
 				$rowBarDiv.append($barDiv);
 			}
 			//使left和right相同高度，加20是加上right最下面的padding-bottom的高度20px
-			$('#leftContainer').css('height',$('#rightContainer').height()+20);
+			if($('#leftContainer').height() > $('#rightContainer').height()+20){
+				$('#rightContainer').css('height',$('#leftContainer').height()-20);
+			}else{
+				$('#leftContainer').css('height',$('#rightContainer').height()+20);
+			}
+			
 			//点击吧时跳转到对应吧
 			addRightBarJump();
 		}	

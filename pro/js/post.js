@@ -770,12 +770,30 @@ function lastPage(barName){
 //回复的回复组件
 function createReplysItem(data){
 	console.log(data);
-	if(data.value.length == 0){
-		return ;
-	}
 	var $replysDiv = $('<div></div>');
 	$replysDiv.addClass('replys');
 	$replysDiv.attr('index', 0);
+	if(data.value.length == 0){
+		var $replyAreaDiv = $('<div></div>');
+		$replyAreaDiv.addClass('reply_area');
+		var $replyEditorAreaDiv = $('<div></div>');
+		$replyEditorAreaDiv.addClass('reply_editor_area');
+		$replyEditorAreaDiv.attr('contenteditable','true');
+		$replyEditorAreaDiv.focus(replyToReplyNotLoginTip);
+		var $replyToReplySendTipSpan = $('<span></span>');
+		$replyToReplySendTipSpan.html('发布成功');
+		$replyToReplySendTipSpan.addClass('reply_to_reply_send_tip');
+		var $submitReplyBtn = $('<button></button>');
+		$submitReplyBtn.addClass('submit_reply_btn');
+		$submitReplyBtn.html('回复');
+		//点击回复按钮发布评论
+		$submitReplyBtn.click(sendReplyToReply);
+		$replyAreaDiv.append($replyEditorAreaDiv);
+		$replyAreaDiv.append($replyToReplySendTipSpan);
+		$replyAreaDiv.append($submitReplyBtn);
+		$replysDiv.append($replyAreaDiv);
+		return $replysDiv;
+	}
 	var pageNum = data.totalNum / data.pageItemNum;
 	//是否有页面的内容是只有一部分的
 	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;

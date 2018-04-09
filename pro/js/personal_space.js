@@ -154,6 +154,7 @@ function init(){
       }
     });
   }else{
+		$('#btnInformtion').css('display','none');
     $('#editorUserMsgBtn').css('display','none');
   }
   $('#userNickname').html(userData.nickname);
