@@ -1,7 +1,7 @@
 <?php
 require "connect.php";
 $sortName = $_GET['sortName'];
-$hotStandrad = 50000;
+$hotStandrad = 1;
 $limitNum = 40;
 $sql = "select * from bars where themeBelong='$sortName' and concernNum>'$hotStandrad' and status = 1 ORDER BY concernNum DESC limit $limitNum";
 $result = mysql_query($sql);

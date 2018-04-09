@@ -24,6 +24,7 @@
 	height: 80px;
 	margin-top: 20px;
 	border-radius: 4px;
+	cursor: pointer;
 }
 .comment .user_msg .user_name{
 	margin-top: 20px;
@@ -169,6 +170,7 @@
 	width: 50px;
 	float: left;
 	border-radius: 3px;
+	cursor: pointer;
 }
 .comment_content .reply_item .reply_content{
 	float: left;

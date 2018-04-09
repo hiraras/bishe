@@ -188,7 +188,7 @@ function init(){
 					attentionStatus: attentionStatus
 				},
 				success: function(result){
-					// console.log(result);
+					console.log(result);
 					if(result == 'success'){
 						if(attentionStatus == 1){
 							$('#btnAttention').html('关注');

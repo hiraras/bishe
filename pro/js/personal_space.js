@@ -27,7 +27,7 @@ $(function () {
         console.log(e);
       }
       if(data){
-        userData = data;
+				userData = data;
         init();
       }else{
 				console.log('用户不存在');
@@ -159,7 +159,8 @@ function init(){
   }
   $('#userNickname').html(userData.nickname);
   $('#userHeadImg').attr('src',userData.headImg);
-  $('#barAge').html('吧龄:'+barAge(userData.createDate)+'年');
+	$('#barAge').html('吧龄:'+barAge(userData.createDate)+'年');
+	$('#myPostNum').html('发帖数:'+userData.postNum);
   $('#featureList li').each(function(index){
     $(this).click(function(){
       switchContent(index);

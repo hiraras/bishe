@@ -190,6 +190,9 @@ function searchPostMsg(postId){
 					$('#toGreatBtn').click(function(){
 						toGreatBtnPressHandle();
 					});
+					$('#deletePostBtn').click(function(){
+						deletePostBtnPressHandle();
+					});
 					if(Number(data.data.isTop) == 0){
 						$('#toTopBtn').html('置顶');
 						$('#toTopBtn').attr('isTop','0');
@@ -280,6 +283,25 @@ function toGreatBtnPressHandle(){
 					$('#toGreatBtn').html('加精');
 					$('#toGreatBtn').attr('isTop','0');
 				}
+			}else{
+				alert('发生未知错误');
+			}
+		}
+	});
+}
+
+function deletePostBtnPressHandle(){
+	var postId = $('#postTitle').attr('postId');
+	$.ajax({
+		type: 'post',
+		url: domain + '/pro/php/deletePost.php',
+		async: true,
+		data: {
+			postId: postId
+		},
+		success: function(result){
+			if(result == 'success'){
+				window.history.back();
 			}else{
 				alert('发生未知错误');
 			}
@@ -469,8 +491,8 @@ function insertHTML(eleContent,eleContainer){
 				range = range.cloneRange();  
 				range.setStartAfter(lastNode);  
 				range.collapse(true);  
-				sel.removeAllRanges();  
-				sel.addRange(range);  
+				sel.removeAllRanges();
+				sel.addRange(range);
 			}
 		}  
 	}else if(document.selection && document.selection.type !='Control'){  
@@ -808,6 +830,9 @@ function createReplysItem(data){
 		$replyItemDiv.addClass('reply_item');
 		var $replyItemHeadImg = $('<img />');
 		$replyItemHeadImg.attr('src',data.value[j].headImg);
+		$replyItemHeadImg.click(function(){
+			window.location.href = "http://localhost/pro/page/personal_space.html?userId="+data.value[0].replyerId;
+		});
 		var $replyContentDiv = $('<div></div>');
 		$replyContentDiv.addClass('reply_content');
 		var $replyTextP = $('<p></p>');
@@ -894,7 +919,8 @@ function createReplysItem(data){
 
 //创建页面
 function createCommentItem(data){
-	// console.log(data);
+	console.log(data);
+	var userId = localStorage.getItem('user');
 	var $commentDiv = $('<div></div>');
 	$commentDiv.addClass('comment');
 	$commentDiv.attr('position',data.position);
@@ -902,6 +928,9 @@ function createCommentItem(data){
 	$userMsgDiv.addClass('user_msg');
 	var $userMsgHeadImg = $('<img />');
 	$userMsgHeadImg.attr('src',data.headImg);
+	$userMsgHeadImg.click(function(){
+		window.location.href = "http://localhost/pro/page/personal_space.html?userId="+data.creatorId;
+	});
 	var $userNameP = $('<p></p>');
 	$userNameP.addClass('user_name');
 	$userNameP.html(data.nickname);
@@ -917,7 +946,22 @@ function createCommentItem(data){
 	$commentMsgDiv.addClass('comment_msg');
 	var $reportBtn = $('<button></button>');
 	$reportBtn.addClass('report_btn');
-	$reportBtn.html('举报');
+	if(userId == data.creatorId){
+		$reportBtn.html('删除');
+		$reportBtn.click(function(){
+			var position = $(this).closest('.comment').attr('position');
+			position = Number(position);
+			deleteMyReply(position);
+		});
+	}else{
+		$reportBtn.html('举报');
+		$reportBtn.click(function(){
+			var position = $(this).closest('.comment').attr('position');
+			position = Number(position);
+			reportReply(position);
+		});
+	}
+	
 	var $positionSpan = $('<span></span>');
 	$positionSpan.html(data.position+'楼');
 	var $timeSpan = $('<span></span>');
@@ -959,5 +1003,29 @@ function onPressWatchReplyBtnHandler(num){
 	}
 	itemReplys.toggle('normal');
 }
-
+//举报
+function reportReply(position){
+	console.log(position);
+}
+//删除自己的评论
+function deleteMyReply(position){
+	var postId = $('#postTitle').attr('postId');
+	$.ajax({
+		type: 'post',
+		url: domain + '/pro/php/deleteMyReply.php',
+		async: true,
+		data: {
+			postId: postId,
+			position: position
+		},
+		success: function(result){
+			console.log(result);
+			if(result == 'success'){
+				window.location.reload();
+			}else{
+				alert('发生未知错误');
+			}
+		}
+	});
+}
 
