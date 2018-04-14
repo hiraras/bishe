@@ -127,7 +127,23 @@ function init(){
 	initSendAreaBtnsPressEvent();
 	$image = $('#image');
 	$('#submit').click(function(){
-		onSubmitPostMsg();
+		var userId = localStorage.getItem('user');
+		$.ajax({
+			type: 'get',
+			url: domain + '/pro/php/isCantSpeak.php',
+			async: true,
+			data: {
+				userId: userId
+			},
+			success: function(result){
+				result = JSON.parse(result);
+				if(result){
+					alert('您已被禁言!');
+				}else{
+					onSubmitPostMsg();
+				}
+			}
+		});
 	});
 	$('#editorBarImg').click(function(){
 		$('#cropperMask').css('display','block');
@@ -188,7 +204,6 @@ function init(){
 					attentionStatus: attentionStatus
 				},
 				success: function(result){
-					console.log(result);
 					if(result == 'success'){
 						if(attentionStatus == 1){
 							$('#btnAttention').html('关注');

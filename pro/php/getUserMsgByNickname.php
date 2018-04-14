@@ -1,11 +1,13 @@
 <?php
-$username = $_GET["username"];
+$nickname = $_GET["nickname"];
 require "connect.php";
-$sql = "select * from userMsg where username='$username'";
+$sql = "select * from userMsg where nickname='$nickname'";
 $result = mysql_query($sql);
 //获得的结果数组只能用数字索引，不能用key值
 //$arr = mysql_fetch_row($result);
 //获得的结果数组只能用key值，不能用数字索引
+$arr = mysql_fetch_assoc($result);
+$username = $arr['username'];
 $sql2 = "select * from posts where creatorId='$username' and status = 1";
 $result2 = mysql_query($sql2);
 $num2 = mysql_num_rows($result2);
@@ -24,7 +26,6 @@ if($num == 0){
     $obj->result = 'none';
     $obj->data = null;
 }else{
-    $arr = mysql_fetch_assoc($result);
     $arr['postNum'] = $num2;
     $arr['status'] = $status;
     $obj->result = 'success';

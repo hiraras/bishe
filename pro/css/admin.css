@@ -45,7 +45,12 @@ h2{
 table{
 	margin-top: 15px;
 }
-
+table a{
+	cursor: pointer;
+}
+table a:hover{
+	color: #00a9cd;
+}
 
 
 

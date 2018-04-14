@@ -134,11 +134,19 @@ function getUserMsg(){
 			username: userId
 		},
 		success: function(result){
-			var data = JSON.parse(result);
-			var imgSrc = data.headImg.substr(1);
-			$('#headImg').attr('src',imgSrc);
-			$('#headerImg').attr('src',imgSrc);
-			$('#userName').html(data.nickname);
+			try{
+				var data = JSON.parse(result);
+			}catch(e){
+				console.log(e);
+			}
+			if(data.result == 'success'){
+				var imgSrc = data.data.headImg.substr(1);
+				$('#headImg').attr('src',imgSrc);
+				$('#headerImg').attr('src',imgSrc);
+				$('#userName').html(data.data.nickname);
+			}else{
+				alert('用户不存在');
+			}
 		}
 	});
 }

@@ -28,7 +28,23 @@ function init(){
 	initSendAreaBtnsPressEvent();
 
 	$('#submit').click(function(){
-		onSubmitReplyMsg();
+		var userId = localStorage.getItem('user');
+		$.ajax({
+			type: 'get',
+			url: domain + '/pro/php/isCantSpeak.php',
+			async: true,
+			data: {
+				userId: userId
+			},
+			success: function(result){
+				result = JSON.parse(result);
+				if(result){
+					alert('您已被禁言!');
+				}else{
+					onSubmitReplyMsg();
+				}
+			}
+		});
 	});
 	//如果未登录不允许发帖
 	if(!!localStorage.getItem('user')){
@@ -809,7 +825,26 @@ function createReplysItem(data){
 		$submitReplyBtn.addClass('submit_reply_btn');
 		$submitReplyBtn.html('回复');
 		//点击回复按钮发布评论
-		$submitReplyBtn.click(sendReplyToReply);
+		$submitReplyBtn.click(function(){
+			var userId = localStorage.getItem('user');
+			var that = this;
+			$.ajax({
+				type: 'get',
+				url: domain + '/pro/php/isCantSpeak.php',
+				async: true,
+				data: {
+					userId: userId
+				},
+				success: function(result){
+					result = JSON.parse(result);
+					if(result){
+						alert('您已被禁言!');
+					}else{
+						sendReplyToReply.call(that);
+					}
+				}
+			});
+		});
 		$replyAreaDiv.append($replyEditorAreaDiv);
 		$replyAreaDiv.append($replyToReplySendTipSpan);
 		$replyAreaDiv.append($submitReplyBtn);
@@ -877,7 +912,26 @@ function createReplysItem(data){
 	$submitReplyBtn.addClass('submit_reply_btn');
 	$submitReplyBtn.html('回复');
 	//点击回复按钮发布评论
-    $submitReplyBtn.click(sendReplyToReply);
+    $submitReplyBtn.click(function(){
+		var userId = localStorage.getItem('user');
+		var that = this;
+		$.ajax({
+			type: 'get',
+			url: domain + '/pro/php/isCantSpeak.php',
+			async: true,
+			data: {
+				userId: userId
+			},
+			success: function(result){
+				result = JSON.parse(result);
+				if(result){
+					alert('您已被禁言!');
+				}else{
+					sendReplyToReply.call(that);
+				}
+			}
+		});
+	});
 	$replyAreaDiv.append($replyEditorAreaDiv);
 	$replyAreaDiv.append($replyToReplySendTipSpan);
 	$replyAreaDiv.append($submitReplyBtn);

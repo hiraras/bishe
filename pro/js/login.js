@@ -2,6 +2,12 @@ var checkCodeStr = "";
 window.onload = function(){
 	checkCodeStr = createCheckCode();
 }
+function init(){
+	if(localStorage.getItem('user') != null){
+		window.location.href = 'http://localhost/pro/index.html';
+	}
+}
+init();
 function testLogin(){
 	var username = $("#username").val();
 	var psw = $("#psw").val();
@@ -102,8 +108,16 @@ function getUserMsg(userName){
 			username: userName
 		},
 		success: function(result){
-			var data = JSON.parse(result);
-			localStorage.setItem('userNickName',data.nickname);
+			try{
+				var data = JSON.parse(result);
+			}catch(e){
+				console.log(e);
+			}
+			if(data.result == 'success'){
+				localStorage.setItem('userNickName',data.data.nickname);
+			}else{
+				alert('用户不存在');
+			}
 		}
 	});
 }

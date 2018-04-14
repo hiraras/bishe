@@ -26,8 +26,8 @@ $(function () {
       }catch(e){
         console.log(e);
       }
-      if(data){
-				userData = data;
+      if(data.result == 'success'){
+				userData = data.data;
         init();
       }else{
 				console.log('用户不存在');
