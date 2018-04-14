@@ -1,13 +1,13 @@
 var featureNum = 0;
 var domain = 'http://localhost';
 var userInfoArr = ['id','账号','昵称','创号时间','头像','经验值','地址','年龄','学校','发帖数','状态','操作'];
-var sortBarArr = ['id','sortName','status'];
+var sortBarArr = ['id','分类名','状态'];
 var replyToReplyArr = ['id','postBelongId','position','replyTime','replyerId','replyerNickname','replyerHeadImg','content','status'];
 var postsArr = ['id','标题','所属吧','楼主id','发帖时间','置顶','加精','状态','内容','楼主昵称','吧主','操作'];
 var postReply = ['id','所属帖子id','楼层数','发布时间','内容','发布者id','状态','昵称','操作'];
 var barsArr = ['id','barName','master','createTime','themeBelong','concernNum','barDescript','barImg','creatorId','status'];
 var barAttentionArr = ['id','userId','barId','barName','attentionTime','status'];
-var applyBuildBarArr = ['id','barName','themeBelong','applyerId','applyTime'];
+var applyBuildBarArr = ['id','吧名','所属主题','申请者id','申请时间','操作'];
 (function(){
     if(localStorage.getItem('user') != '17826877713'){
         window.location.href = "http://localhost/pro/index.html";
@@ -389,11 +389,368 @@ function changePostReplyStatus(postId, position, currStatus){
     });
 }
 
+//主题分类区域
+function createBarSortItem(){
+    var container = $('<div></div>');
+    var nameInput = $('<input />');
+    nameInput.attr('placeholder','主题名');
+    nameInput.attr('id','inputSortName');
+    nameInput.attr('maxlength',25);
+    var label = $('<label />');
+    label.attr('for','inputSortName');
+    label.html('主题名:');
+    var search = $('<button></button>');
+    search.html('添加');
+    search.attr('id','search');
+    search.click(addBarSort);
+    container.append(label);
+    container.append(nameInput);
+    container.append(search);
+    var indexComponent = createIndex();
+    container.append(indexComponent);
+    getData(0);
+    return container;
+}
+//添加主题分类接口
+function addBarSort(){
+    var sortName = $('#inputSortName').val();
+    if(sortName.trim() == ''){
+        alert('不能为空');
+        return ;
+    }
+    $.ajax({
+        type: 'post',
+        url: domain + '/pro/php/addBarSort.php',
+        async: true,
+        data: {
+            sortName: sortName
+        },
+        success: function(result){
+            if(result == 'isExist'){
+                alert('该主题分类已存在');
+            }else if(result == 'success'){
+                alert('创建成功');
+                window.location.reload();
+            }else{
+                console.log(result);
+                alert('创建失败');
+            }
+        }
+    });
+}
+
+//申请建吧区域
+function createApplyBarItem(){
+    var container = $('<div></div>');
+    var indexComponent = createIndex();
+    container.append(indexComponent);
+    getData(0);
+    return container;
+}
+
+function agreeApply(){
+    var id = $(this).parent().siblings().first().html();
+    id = Number(id);
+    $.ajax({
+        type: 'post',
+        url: domain + '/pro/php/agreeBuildBar.php',
+        async: true,
+        data: {
+            id: id
+        },
+        success: function(result){
+            if(result == 'success'){
+                alert('创建成功');
+                window.location.reload();
+            }else{
+                alert('创建失败');
+                window.location.reload();
+            }
+        }
+    });
+}
+
+function refuseApply(msg){
+    var id = $(this).parent().siblings().first().html();
+    id = Number(id);
+    $.ajax({
+        type: 'post',
+        url: domain + '/pro/php/refuseBuildBar.php',
+        async: true,
+        data: {
+            id: id,
+            refuseMsg: msg
+        },
+        success: function(result){
+            if(result == 'success'){
+                alert('拒绝成功');
+                window.location.reload();
+            }else{
+                console.log(result);
+                alert('未知错误');
+                window.location.reload();
+            }
+        }
+    });
+}
+
+//分页区域
+function getData(currIndex){
+    var type = $('#rightContainer').attr('type');
+    type = Number(type);
+    var fileName;
+    var requsetData = {};
+    requsetData.currIndex = currIndex;
+    //这个变量保存操作的那个单元格，如果没有就不动，以undefind保存，下面进行判断
+    var optionEle;
+    switch(type){
+        case 5:
+            //主题分类
+            fileName = 'getBarSortPage';
+            break;
+        case 2:
+            //创吧申请
+            fileName = 'getApplyBarPage';
+            optionEle = $('<td></td>');
+            optionEle.css({
+                'display': 'flex',
+                'flex-wrap': 'no-wrap',
+                'justify-content': 'space-around'
+            });
+            var agreeOption = $('<a></a>');
+            agreeOption.html('同意');
+            agreeOption.css('margin-right','8px');
+            agreeOption.addClass('agree_option');
+            var refuseOption = $('<a></a>');
+            refuseOption.html('拒绝');
+            refuseOption.addClass('refuse_option');
+            optionEle.append(agreeOption);
+            optionEle.append(refuseOption);
+            break;
+        default:
+            break;
+    }
+    $.ajax({
+        type: 'get',
+        url: domain + '/pro/php/'+fileName+'.php',
+        async: true,
+        data: requsetData,
+        success: function(result){
+            try{
+                var data = JSON.parse(result);
+            }catch(e){
+                console.log(e);
+            }
+            if(data.result == 'none'){
+                alert('没有记录');
+            }else{
+                freshTable(data, currIndex, optionEle);
+            }
+        }
+    });
+}
+
+function freshTable(data, currIndex, optionEle){
+	var pageNum = data.totalNum / data.pageItemNum;
+	//是否有页面的内容是只有一部分的
+	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
+	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
+	if(pageNum == 0){
+		pageNum = 1;
+	}
+	$('#rightContainer table').remove();
+	$('#rightContainer').attr('index', currIndex);
+	$('#rightContainer').attr('totalpagenum', --pageNum);
+	var table = createTable(data, optionEle);
+    $('#rightContainer').find('.index').before(table);
+    initOtherClickEvent();
+	initIndex();
+}
+
+function createTable(data, optionEle){
+    var headData = [];
+    var type = $('#rightContainer').attr('type');
+    type = Number(type);
+    switch(type){
+        case 5:
+            //主题分类
+            headData = sortBarArr;
+            break;
+        case 2:
+            //主题分类
+            headData = applyBuildBarArr;
+            break;
+    }
+    var table = $('<table></table>');
+    var headTr = $('<tr></tr>');
+    for(var i = 0;i<headData.length;i++){
+        var headTd = $('<td></td>');
+        headTd.html(headData[i]);
+        headTr.append(headTd);
+    }
+    table.append(headTr);
+    
+    for(var j=0;j<data.value.length;j++){
+        var tr = $('<tr></tr>');
+        for(var item in data.value[j]){
+            var td = $('<td></td>');
+            td.html(data.value[j][item]);
+            tr.append(td);
+        }
+        if(optionEle != undefined){
+            var optionEleClone = optionEle.clone();
+            tr.append(optionEleClone);
+        }
+
+        table.append(tr);
+    }
+    return table;
+}
+
+function initIndex(){
+	var maxShowIndex = 10;
+	var currIndex = Number($('#rightContainer').attr('index'));
+	var totalNum = Number($('#rightContainer').attr('totalpagenum'));
+	var halfIndexNum = Math.floor(maxShowIndex / 2) + 1;
+	if(currIndex == 0){
+		$('#prevPageBtn').css('display','none');
+		$('#firstPageBtn').css('display','none');
+	}else{
+		$('#prevPageBtn').css('display','inline-block');
+		$('#firstPageBtn').css('display','inline-block');
+	}
+	if(currIndex == totalNum){
+		$('#nextPageBtn').css('display','none');
+		$('#lastPageBtn').css('display','none');
+	}else{
+		$('#nextPageBtn').css('display','inline-block');
+		$('#lastPageBtn').css('display','inline-block');
+	}
+	$('.index_item').removeClass('currIndex');
+	
+	if(totalNum < maxShowIndex){
+		$('.index_item').each(function(index){
+			if(index > totalNum){
+				$(this).css('display','none');
+			}
+			if(index == currIndex){
+				$(this).addClass('currIndex');
+			}
+		});
+	}else{
+		if(currIndex < halfIndexNum){
+			$('.index_item').each(function(index){
+				$(this).html(index + 1);
+			});
+		}else if(currIndex > totalNum - halfIndexNum){
+			$('.index_item').each(function(index){
+				$(this).html(totalNum + 1 - (maxShowIndex - 1 - index));
+			});
+		}else{
+			$('.index_item').each(function(index){
+				$(this).html(currIndex + 1 - (halfIndexNum - index - 1));
+			});
+		}
+		$('.index_item').each(function(index){
+			if($(this).html() == currIndex + 1){
+				$(this).addClass('currIndex');
+			}
+		});
+	}
+}
+//创建分页按钮组件
+function createIndex(){
+    var $indexUl = $('<ul></ul>');
+	$indexUl.addClass('index');
+	var $replyPagingFirstBtnLi = $('<li></li>');
+	$replyPagingFirstBtnLi.addClass('paging_btn');
+	$replyPagingFirstBtnLi.addClass('first_btn');
+    $replyPagingFirstBtnLi.html('首页');
+    $replyPagingFirstBtnLi.attr('id','firstPageBtn');
+	var $replyPagingPrevBtnLi = $('<li></li>');
+	$replyPagingPrevBtnLi.addClass('paging_btn');
+	$replyPagingPrevBtnLi.addClass('prev_btn');
+    $replyPagingPrevBtnLi.html('上一页');
+    $replyPagingPrevBtnLi.attr('id','prevPageBtn');
+	$indexUl.append($replyPagingFirstBtnLi);
+	$indexUl.append($replyPagingPrevBtnLi);
+	for(var i=0;i<10;i++){
+		var $replyPagingIndexBtnLi = $('<li></li>');
+		$replyPagingIndexBtnLi.addClass('index_item');
+		$replyPagingIndexBtnLi.html(i+1);
+		$indexUl.append($replyPagingIndexBtnLi);
+	}
+	var $replyPagingNextBtnLi = $('<li></li>');
+	$replyPagingNextBtnLi.addClass('paging_btn');
+	$replyPagingNextBtnLi.addClass('next_btn');
+    $replyPagingNextBtnLi.html('下一页');
+    $replyPagingNextBtnLi.attr('id','nextPageBtn');
+	var $replyPagingLastBtnLi = $('<li></li>');
+	$replyPagingLastBtnLi.addClass('paging_btn');
+	$replyPagingLastBtnLi.addClass('last_btn');
+    $replyPagingLastBtnLi.html('尾页');
+    $replyPagingLastBtnLi.attr('id','lastPageBtn');
+	$indexUl.append($replyPagingNextBtnLi);
+    $indexUl.append($replyPagingLastBtnLi);
+    return $indexUl;
+}
+
+function initIndexBtnPressEvent(){
+    $('#prevPageBtn').click(function(){
+		prevPage();
+	});
+	$('#nextPageBtn').click(function(){
+		nextPage();
+	});
+	$('#firstPageBtn').click(function(){
+		firstPage();
+	});
+	$('#lastPageBtn').click(function(){
+		lastPage();
+	});
+	$('.index_item').click(function(){
+		var index = Number($(this).html()) - 1;
+		getData(index);
+	});
+}
+
+function prevPage(){
+	var currIndex = Number($('#rightContainer').attr('index'));
+	if(currIndex > 0){
+		getData(--currIndex);
+	}
+}
+
+function nextPage(){
+	var currIndex = Number($('#rightContainer').attr('index'));
+	var totalNum = Number($('#rightContainer').attr('totalPageNum'));
+	if(currIndex < totalNum){
+		getData(++currIndex);
+	}
+}
+
+function firstPage(){
+	var currIndex = Number($('#rightContainer').attr('index'));
+	if(currIndex != 0){
+		getData(0);
+	}
+}
+
+function lastPage(){
+	var currIndex = Number($('#rightContainer').attr('index'));
+	var totalNum = Number($('#rightContainer').attr('totalPageNum'));
+	if(currIndex != totalNum){
+		getData(totalNum);
+	}
+}
+
 function changeFeature(featureNum){
     var headArr = [];
     var content;
     $('#rightContainer').children().remove();
-
+    $('#rightContainer').attr('type', featureNum);
+    $('#rightContainer').attr('index', 0);
+    $('#rightContainer').attr('totalPageNum', 0);
     switch(featureNum){
         case 0:
             content = createUserMsgItem();
@@ -402,6 +759,7 @@ function changeFeature(featureNum){
             
             break;
         case 2:
+            content = createApplyBarItem();
             break;
         case 3:
             content = createPostItem();
@@ -409,12 +767,26 @@ function changeFeature(featureNum){
         case 4:
             content = createPostReplyItem();
             break;
+        case 5:
+            content = createBarSortItem();
+            break;
         default:
             break;
     }
     $('#rightContainer').append(content);
+    initIndexBtnPressEvent();
+    
 }
 
+function initOtherClickEvent(){
+    $('.agree_option').click(function(){
+        agreeApply.call(this);
+    });
+    $('.refuse_option').click(function(){
+        var msg = prompt('请输入拒绝理由');
+        refuseApply.call(this, msg);
+    });
+}
 
 
 

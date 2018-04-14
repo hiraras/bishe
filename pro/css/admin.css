@@ -48,7 +48,6 @@ table{
 }
 table a{
 	cursor: pointer;
-	text-decoration: underline;
 	color: #00a9cd;
 }
 table a:hover{
@@ -57,7 +56,12 @@ table a:hover{
 table img{
 	max-width: 70%;
 }
-
+.index{
+	margin-top: 10px;
+}
+.index li{
+	margin-right: 5px;
+}
 
 
 
