@@ -41,7 +41,7 @@ function init(){
                     },
                     success: function(result){
                         if(result == 'success'){
-                            $('#tip').html('创建成功');
+                            $('#tip').html('申请成功');
                             setTimeout(function(){
                                 window.location.href = "http://localhost/pro/index.html";
                             },300);

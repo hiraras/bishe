@@ -980,6 +980,7 @@ function createCommentItem(data){
 	$commentDiv.attr('position',data.position);
 	var $userMsgDiv = $('<div></div>');
 	$userMsgDiv.addClass('user_msg');
+	$userMsgDiv.attr('replyerId',data.creatorId);
 	var $userMsgHeadImg = $('<img />');
 	$userMsgHeadImg.attr('src',data.headImg);
 	$userMsgHeadImg.click(function(){
@@ -1012,7 +1013,7 @@ function createCommentItem(data){
 		$reportBtn.click(function(){
 			var position = $(this).closest('.comment').attr('position');
 			position = Number(position);
-			reportReply(position);
+			reportReply.call(this,position);
 		});
 	}
 	
@@ -1059,7 +1060,36 @@ function onPressWatchReplyBtnHandler(num){
 }
 //举报
 function reportReply(position){
-	console.log(position);
+	var userId = localStorage.getItem('user');
+	if(userId == null){
+		alert('请先登录');
+		return ;
+	}
+	var replyerId = $(this).closest('.comment_content').siblings('.user_msg').attr('replyerId');
+	var msg = prompt('请输入举报理由:');
+	var postId = $('#postTitle').attr('postId');
+	if(msg == null){
+		return ;
+	}
+	$.ajax({
+		type: 'post',
+		url: domain + '/pro/php/sendReport.php',
+		async: true,
+		data: {
+			postId: postId,
+			position: position,
+			content: msg,
+			reporterId: userId,
+			reportederId: replyerId
+		},
+		success: function(result){
+			if(result == 'success'){
+				alert('已发送举报信息');
+			}else{
+				alert('未知错误');
+			}
+		}
+	});
 }
 //删除自己的评论
 function deleteMyReply(position){

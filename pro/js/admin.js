@@ -8,6 +8,7 @@ var postReply = ['id','所属帖子id','楼层数','发布时间','内容','发�
 var barsArr = ['id','barName','master','createTime','themeBelong','concernNum','barDescript','barImg','creatorId','status'];
 var barAttentionArr = ['id','userId','barId','barName','attentionTime','status'];
 var applyBuildBarArr = ['id','吧名','所属主题','申请者id','申请时间','操作'];
+var reportArr = ['id','帖子id','楼层数','举报内容','举报者id','被举报者id','举报时间','状态','操作'];
 (function(){
     if(localStorage.getItem('user') != '17826877713'){
         window.location.href = "http://localhost/pro/index.html";
@@ -494,6 +495,38 @@ function refuseApply(msg){
     });
 }
 
+//举报区域
+function createReportItem(){
+    var container = $('<div></div>');
+    var indexComponent = createIndex();
+    container.append(indexComponent);
+    getData(0);
+    return container;
+}
+
+function changeReportStatus(){
+    var id = $(this).parent().siblings().first().html();
+    id = Number(id);
+    $.ajax({
+        type: 'post',
+        url: domain + '/pro/php/changeReportStatus.php',
+        async: true,
+        data: {
+            id: id
+        },
+        success: function(result){
+            if(result == 'success'){
+                alert('完成');
+                window.location.reload();
+            }else{
+                console.log(result);
+                alert('未知错误');
+                window.location.reload();
+            }
+        }
+    });
+}
+
 //分页区域
 function getData(currIndex){
     var type = $('#rightContainer').attr('type');
@@ -526,6 +559,20 @@ function getData(currIndex){
             refuseOption.addClass('refuse_option');
             optionEle.append(agreeOption);
             optionEle.append(refuseOption);
+            break;
+        case 1:
+            //举报信息
+            fileName = 'getReportMsgPage';
+            optionEle = $('<td></td>');
+            optionEle.css({
+                'display': 'flex',
+                'flex-wrap': 'no-wrap',
+                'justify-content': 'space-around'
+            });
+            var confirmOption = $('<a></a>');
+            confirmOption.html('确认');
+            confirmOption.addClass('report_confirm');
+            optionEle.append(confirmOption);
             break;
         default:
             break;
@@ -579,6 +626,10 @@ function createTable(data, optionEle){
         case 2:
             //主题分类
             headData = applyBuildBarArr;
+            break;
+        case 1:
+            //举报
+            headData = reportArr;
             break;
     }
     var table = $('<table></table>');
@@ -756,7 +807,7 @@ function changeFeature(featureNum){
             content = createUserMsgItem();
             break;
         case 1:
-            
+            content = createReportItem();
             break;
         case 2:
             content = createApplyBarItem();
@@ -784,7 +835,17 @@ function initOtherClickEvent(){
     });
     $('.refuse_option').click(function(){
         var msg = prompt('请输入拒绝理由');
+        if(msg == null){
+            return ;
+        }
         refuseApply.call(this, msg);
+    });
+    $('.report_confirm').click(function(){
+        var option = confirm('确认审核完成？');
+        if(!option){
+            return ;
+        }
+        changeReportStatus.call(this);
     });
 }
 
