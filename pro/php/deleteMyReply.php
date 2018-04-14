@@ -2,7 +2,7 @@
 require "connect.php";
 $postId = $_POST['postId'];
 $position = $_POST['position'];
-$sql = "UPDATE post_reply SET status=2 WHERE postBelongId = '$postId' and position = '$position'";
+$sql = "UPDATE post_reply SET status=0 WHERE postBelongId = '$postId' and position = '$position'";
 $result = mysql_query($sql);
 $num = mysql_affected_rows();
 

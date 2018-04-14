@@ -1,7 +1,8 @@
 <?php
 require "connect.php";
 $postId = $_POST['postId'];
-$sql = "UPDATE posts SET status=0 WHERE id = '$postId'";
+$status = $_POST['status'];
+$sql = "UPDATE posts SET status='$status' WHERE id = '$postId'";
 $result = mysql_query($sql);
 $num = mysql_affected_rows();
 
