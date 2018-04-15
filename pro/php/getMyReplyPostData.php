@@ -40,11 +40,20 @@ class ResultData{
 	var $value;
 	var $totalNum;
 	var $pageItemNum;
+	var $result;
 }
 $data = new ResultData();
-$data->value = $arr;
-$data->totalNum = $replyTotalNum;
-$data->pageItemNum = $everyPageItemNum;
+if($replyTotalNum == 0){
+    $data->value = null;
+    $data->totalNum = $replyTotalNum;
+    $data->pageItemNum = $everyPageItemNum;
+    $data->result = 'none';
+}else{
+    $data->value = $arr;
+    $data->totalNum = $replyTotalNum;
+    $data->pageItemNum = $everyPageItemNum;
+    $data->result = 'success';
+}
 echo json_encode($data);
 mysql_close($con);
 ?>

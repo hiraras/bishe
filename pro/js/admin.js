@@ -826,7 +826,6 @@ function changeFeature(featureNum){
     }
     $('#rightContainer').append(content);
     initIndexBtnPressEvent();
-    
 }
 
 function initOtherClickEvent(){

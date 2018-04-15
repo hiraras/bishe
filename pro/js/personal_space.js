@@ -2,422 +2,532 @@ var domain = 'http://localhost';
 var userId = '';
 var userData = {};
 $(function () {
-  var pageUrl = window.location.href;
-	var urlParams = pageUrl.substr(pageUrl.indexOf('?')+1).split('&');
-	if(pageUrl.indexOf('userId') == -1){
+	var pageUrl = window.location.href;
+	var urlParams = pageUrl.substr(pageUrl.indexOf('?') + 1).split('&');
+	if (pageUrl.indexOf('userId') == -1) {
 		window.location.href = domain + '/pro/index.html';
-		return ;
+		return;
 	}
-	for(var i=0;i<urlParams.length;i++){
-		if(urlParams[i].indexOf('userId') !== -1){
-			userId = urlParams[i].substr(urlParams[i].indexOf('=')+1);
+	for (var i = 0; i < urlParams.length; i++) {
+		if (urlParams[i].indexOf('userId') !== -1) {
+			userId = urlParams[i].substr(urlParams[i].indexOf('=') + 1);
 		}
-  }
-  $.ajax({
-    type: 'get',
-    url: domain + '/pro/php/getUserMsg.php',
-    async: true,
-    data: {
-      username: userId
-    },
-    success: function(result){
-      try{
-        var data = JSON.parse(result);
-      }catch(e){
-        console.log(e);
-      }
-      if(data.result == 'success'){
+	}
+	$.ajax({
+		type: 'get',
+		url: domain + '/pro/php/getUserMsg.php',
+		async: true,
+		data: {
+			username: userId
+		},
+		success: function (result) {
+			try {
+				var data = JSON.parse(result);
+			} catch (e) {
+				console.log(e);
+			}
+			if (data.result == 'success') {
 				userData = data.data;
-        init();
-      }else{
+				init();
+			} else {
 				console.log('用户不存在');
 				window.location.href = "http://localhost/pro/index.html";
-      }
-    }
-  });
+			}
+		}
+	});
 });
-function initCropper(){
-  'use strict';
-  var console = window.console || { log: function () {} };
-  var URL = window.URL || window.webkitURL;
-  var imgContainer = $('#imgContainer');
-  // Import image
-  var $inputImage = $('#inputImage');
-  var $image = $('#image');
-  $image.attr('src',userData.headImg);
-  var $download = $('#download');
-  var originalImageURL = $image.attr('src');
-  var uploadedImageType = 'image/jpeg';
-  var uploadedImageURL;
-  var options = {
-    aspectRatio: 1 / 1,
-    preview: '.img-preview',
-  };
-  imgContainer.width($image.width());
-  imgContainer.height($image.height());
-  //初始化
-  $image.cropper(options);
-  if (URL) {
-    $inputImage.change(function (){
-      var imgContainer = $('#imgContainer');
-      var files = this.files, file;
-      if(!$image.data('cropper')){
-        return;
-      }
-      if(files && files.length){
-        file = files[0];
-        if(/^image\/\w+$/.test(file.type)){
-          uploadedImageType = file.type;
-          if (uploadedImageURL){
-            URL.revokeObjectURL(uploadedImageURL);
-          }
-          uploadedImageURL = URL.createObjectURL(file);
+function initCropper() {
+	'use strict';
+	var console = window.console || { log: function () { } };
+	var URL = window.URL || window.webkitURL;
+	var imgContainer = $('#imgContainer');
+	// Import image
+	var $inputImage = $('#inputImage');
+	var $image = $('#image');
+	$image.attr('src', userData.headImg);
+	var $download = $('#download');
+	var originalImageURL = $image.attr('src');
+	var uploadedImageType = 'image/jpeg';
+	var uploadedImageURL;
+	var options = {
+		aspectRatio: 1 / 1,
+		preview: '.img-preview',
+	};
+	imgContainer.width($image.width());
+	imgContainer.height($image.height());
+	//初始化
+	$image.cropper(options);
+	if (URL) {
+		$inputImage.change(function () {
+			var imgContainer = $('#imgContainer');
+			var files = this.files, file;
+			if (!$image.data('cropper')) {
+				return;
+			}
+			if (files && files.length) {
+				file = files[0];
+				if (/^image\/\w+$/.test(file.type)) {
+					uploadedImageType = file.type;
+					if (uploadedImageURL) {
+						URL.revokeObjectURL(uploadedImageURL);
+					}
+					uploadedImageURL = URL.createObjectURL(file);
 					imgContainer.height(400);
 					imgContainer.width(400);
-          var tempImg = $image.cropper('destroy').attr('src', uploadedImageURL).on('load',function(){
-          	imgContainer.width($(this).width());
-          	imgContainer.height($(this).height());
-          	tempImg.cropper(options);
-          });
-          $inputImage.val('');
-        }else{
-          window.alert('Please choose an image file.');
-        }
-      }
-    });
-  }else{
-    $inputImage.prop('disabled', true).parent().addClass('disabled');
-  }
-	initBtnEvent();
-}
-
-function init(){
-	var $image = $('#image');
-  var username = localStorage.getItem('user');
-  if(username == userId){
-    $('#userHeadImg').click(function(){
-      $('#cropperMask').css('display','block');
-      initCropper();
-    });
-    $('#editorUserMsgBtn').click(function(){
-      $('#editorMask').css('display','block');
-    });
-    $('#selectImgBtn').click(function(){
-      $('#inputImage').click();
-    });
-    $('#cancelSelectBtn').click(function(){
-			$('#cropperMask').css('display',"none");
-			$image.cropper('destroy');
-    });
-    $('#cancelEditorBtn').click(function(){
-			$('#editorMask').css('display',"none");
-			$image.cropper('destroy');
-    });
-    $('#submitEditorBtn').click(function(){
-      var school = $('#inputSchool').val();
-      var age = $('#inputAge').val();
-      var address = $('#inputAddress').val();
-      if(!(school == '' && age == '' && address == '')){
-        if(school == ''){
-          school = userData.school;
-        }
-        if(age == ''){
-          age = userData.age;
-        }
-        if(address == ''){
-          address = userData.address;
-        }
-        $.ajax({
-          type: 'post',
-          url: domain + '/pro/php/updateUserMsg.php',
-          async: true,
-          data: {
-            username: userId,
-            school: school,
-            age: age,
-            address: address
-          },
-          success: function(result){
-						console.log(result);
-            if(result == 'success'){
-              $('#editResultTip').html('提交成功');
-              setTimeout(function(){
-                window.location.reload();
-              },300);
-            }else{
-              $('#editResultTip').html('未知错误');
-            }
-          }
-        });
-      }else{
-        $('#editResultTip').html('内容为空');
-      }
-    });
-  }else{
-		$('#btnInformtion').css('display','none');
-    $('#editorUserMsgBtn').css('display','none');
-  }
-  $('#userNickname').html(userData.nickname);
-  $('#userHeadImg').attr('src',userData.headImg);
-	$('#barAge').html('吧龄:'+barAge(userData.createDate)+'年');
-	$('#myPostNum').html('发帖数:'+userData.postNum);
-  $('#featureList li').each(function(index){
-    $(this).click(function(){
-      switchContent(index);
-      $('#featureList li').each(function(i){
-        if(i==index){
-          $(this).css('border-bottom','none');
-        }else{
-          $(this).css('border-bottom','1px solid black');
-        }
-      });
-    });
-  });
-  switchContent(0);
-}
-function switchContent(num){
-  $('.content').each(function(index){
-    if(index == num){
-      $(this).css('display','block');
-    }else{
-      $(this).css('display','none');
-    }
-  });
-  switch(num){
-    case 0:
-      getContentUserMsg();
-      break;
-    case 1:
-      initPagingIndexClick(userId);
-      getMyPostData(userId, 0);
-      break;
-		case 2:
-			initMyReplyPostPagingIndexClick(userId);
-      getMyReplyPostData(userId, 0);
-      break;
-    case 3:
-      break;
-		case 4:
-			getMyAttentionBar(userId);
-      break;
-    default:
-      break;
-  }
-}
-
-function getMyAttentionBar(userId){
-		$.ajax({
-			url: domain + "/pro/php/getMyAttentionBar.php",
-			type: 'get',
-			async: true,
-			data: {
-				userId: userId
-			},
-			success: function(result){
-				try{
-					var data = JSON.parse(result);
-				}catch(e){
-					console.log(e);
-				}
-				if(data.result){
-					for(var i=0;i<data.data.length;i++){
-						var $div = $('<div></div>');
-						$div.html(data.data[i].barName+'吧');
-						$div.attr('barId', data.data[i].barId);
-						$div.attr('barName', data.data[i].barName);
-						$div.addClass('my_attention_bar_item');
-						$div.click(function(){
-							window.location.href = "http://localhost/pro/page/bar.html?barName="+$(this).attr('barName');
-						});
-						$('#contentAttendBar').append($div);
-					}
+					var tempImg = $image.cropper('destroy').attr('src', uploadedImageURL).on('load', function () {
+						imgContainer.width($(this).width());
+						imgContainer.height($(this).height());
+						tempImg.cropper(options);
+					});
+					$inputImage.val('');
+				} else {
+					window.alert('Please choose an image file.');
 				}
 			}
 		});
+	} else {
+		$inputImage.prop('disabled', true).parent().addClass('disabled');
+	}
+	initBtnEvent();
 }
 
-function getContentUserMsg(){
-  $('#contentUserMsgSchool').html('学校:'+userData.school);
-  $('#contentUserMsgAge').html('年龄:'+userData.age);
-  $('#contentUserMsgAddress').html('地址:'+userData.address);
-}
-
-function getMyPostData(userId,indexNum){
-	$.ajax({
-		url: domain + "/pro/php/getMyPostData.php",
-		type: 'get',
-		async: true,
-		data: {
-			userId: userId,
-			indexNum: indexNum
-		},
-		success: function(result){
-			var data = JSON.parse(result);
-			if(data.totalNum == 0){
-				$('#notExistMyPostTip').css('display','inline');
-			}else{
-				freshBarItems(data,indexNum);
+function init() {
+	var $image = $('#image');
+	var username = localStorage.getItem('user');
+	if (username == userId) {
+		$('#userHeadImg').click(function () {
+			$('#cropperMask').css('display', 'block');
+			initCropper();
+		});
+		$('#editorUserMsgBtn').click(function () {
+			$('#editorMask').css('display', 'block');
+		});
+		$('#selectImgBtn').click(function () {
+			$('#inputImage').click();
+		});
+		$('#cancelSelectBtn').click(function () {
+			$('#cropperMask').css('display', "none");
+			$image.cropper('destroy');
+		});
+		$('#cancelEditorBtn').click(function () {
+			$('#editorMask').css('display', "none");
+			$image.cropper('destroy');
+		});
+		$('#submitEditorBtn').click(function () {
+			var school = $('#inputSchool').val();
+			var age = $('#inputAge').val();
+			var address = $('#inputAddress').val();
+			if (!(school == '' && age == '' && address == '')) {
+				if (school == '') {
+					school = userData.school;
+				}
+				if (age == '') {
+					age = userData.age;
+				}
+				if (address == '') {
+					address = userData.address;
+				}
+				$.ajax({
+					type: 'post',
+					url: domain + '/pro/php/updateUserMsg.php',
+					async: true,
+					data: {
+						username: userId,
+						school: school,
+						age: age,
+						address: address
+					},
+					success: function (result) {
+						console.log(result);
+						if (result == 'success') {
+							$('#editResultTip').html('提交成功');
+							setTimeout(function () {
+								window.location.reload();
+							}, 300);
+						} else {
+							$('#editResultTip').html('未知错误');
+						}
+					}
+				});
+			} else {
+				$('#editResultTip').html('内容为空');
 			}
-		}
+		});
+	} else {
+		$('#btnInformtion').css('display', 'none');
+		$('#editorUserMsgBtn').css('display', 'none');
+	}
+	$('#userNickname').html(userData.nickname);
+	$('#userHeadImg').attr('src', userData.headImg);
+	$('#barAge').html('吧龄:' + barAge(userData.createDate) + '年');
+	$('#myPostNum').html('发帖数:' + userData.postNum);
+	$('#featureList li').each(function (index) {
+		$(this).click(function () {
+			switchContent(index);
+			$('#featureList li').each(function (i) {
+				if (i == index) {
+					$(this).css('border-bottom', 'none');
+				} else {
+					$(this).css('border-bottom', '1px solid black');
+				}
+			});
+		});
 	});
+	switchContent(0);
+}
+function switchContent(num) {
+	var item;
+	$('#content').children().remove();
+	$('#content').attr('type', num);
+	$('#content').attr('index', 0);
+	$('#content').attr('totalPageNum', 0);
+	switch (num) {
+		case 0:
+			item = getContentUserMsg();
+			break;
+		case 1:
+			item = getPageItem();
+			break;
+		case 2:
+			item = getPageItem();
+			break;
+		case 3:
+			item = getPageItem();
+			break;
+		case 4:
+			item = getMyAttentionBar(userId);
+			break;
+		default:
+			break;
+	}
+	$('#content').append(item);
+	initIndexBtnPressEvent();
 }
 
-function getMyReplyPostData(userId,indexNum){
+function getMyAttentionBar(userId) {
 	$.ajax({
-		url: domain + "/pro/php/getMyReplyPostData.php",
+		url: domain + "/pro/php/getMyAttentionBar.php",
 		type: 'get',
 		async: true,
 		data: {
-			userId: userId,
-			indexNum: indexNum
+			userId: userId
 		},
-		success: function(result){
-      try{
+		success: function (result) {
+			try {
 				var data = JSON.parse(result);
-			}catch(e){
+			} catch (e) {
 				console.log(e);
 			}
-			if(data.value.length == 0){
-				$('#notExistMyReplyTip').css('display','inline');
-			}else{
-				// for(var i=0;i<data.value.length;i++){
-				// 	if(data.value[i].postName == null){
-				// 		data.value.splice(i,1);
-				// 		data.totalNum --;
-				// 		i--;
-				// 	}
-				// }
-				freshReplyPostItem(data, indexNum);
-				console.log(data);
+			if (data.result) {
+				createMyAttentionBar(data.data);
+			} else {
+				console.log(result);
+				alert('未知错误');
 			}
 		}
 	});
 }
 
-function freshReplyPostItem(data, indexNum){
-	var pageNum = data.totalNum / data.pageItemNum;
-	//是否有页面的内容是只有一部分的
-	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
-	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
-	if(pageNum == 0){
-		pageNum = 1;
+function createMyAttentionBar(data) {
+	var $container = $('<div></div>');
+	if (data.length == 0) {
+		var $tip = $('<p></p>');
+		$tip.html('还没有关注任何吧!');
+		$tip.addClass('noAttentionBarTip');
+		$container.append($tip);
+	} else {
+		for (var i = 0; i < data.length; i++) {
+			var $div = $('<div></div>');
+			$div.html(data[i].barName + '吧');
+			$div.attr('barId', data[i].barId);
+			$div.attr('barName', data[i].barName);
+			$div.addClass('my_attention_bar_item');
+			$div.click(function () {
+				window.location.href = "http://localhost/pro/page/bar.html?barName=" + $(this).attr('barName');
+			});
+			$container.append($div);
+		}
 	}
-	$('#myReplyPosts').find('.my_reply_post').remove();
-	$('#myReplyPosts').attr('index', indexNum);
-	$('#myReplyPosts').attr('totalpagenum', --pageNum);
-	for(var i=0;i<data.value.length;i++){
-		var $item = createMyReplyPostItem(data.value[i]);
-		$('#myReplyPosts').find('.myReplyIndex').before($item);
-	}
-	initMyReplyIndex();
+	$('#content').append($container);
 }
 
-function resizeImg(){
-	$(this).siblings("img").each(function(){
-		$(this).css('height','100px');
-		$(this).css('max-width','134px');
-	});
-	if($(this).css('height') == '100px'){
-		$(this).css('height','400px');
-		$(this).css('max-width','900px');
-	}else{
-		$(this).css('height','100px');
-		$(this).css('max-width','134px');
-	}
+function getPageItem() {
+	var container = $('<div></div>');
+	var indexComponent = createIndex();
+	container.append(indexComponent);
+	getData(0);
+	return container;
 }
-function freshBarItems(data, indexNum){
+
+//分页区域
+function getData(currIndex) {
+	var type = $('#content').attr('type');
+	type = Number(type);
+	var fileName;
+	var requsetData = {};
+	requsetData.indexNum = currIndex;
+	switch (type) {
+		case 1:
+			//我发布的帖子
+			fileName = 'getMyPostData';
+			requsetData.userId = userId;
+			break;
+		case 2:
+			//回复过的帖子
+			fileName = 'getMyReplyPostData';
+			requsetData.userId = userId;
+			break;
+		case 3:
+			//通知
+			fileName = 'getMyInform';
+			requsetData.userId = userId;
+			break;
+		default:
+			break;
+	}
+	$.ajax({
+		type: 'get',
+		url: domain + '/pro/php/' + fileName + '.php',
+		async: true,
+		data: requsetData,
+		success: function (result) {
+			try {
+				var data = JSON.parse(result);
+			} catch (e) {
+				console.log(e);
+			}
+			if (data.result == 'none') {
+				alert('没有记录');
+			} else {
+				freshContent(data, currIndex);
+			}
+		}
+	});
+}
+
+function freshContent(data, currIndex) {
+	var item;
 	var pageNum = data.totalNum / data.pageItemNum;
 	//是否有页面的内容是只有一部分的
-	var isComplete = data.totalNum % data.pageItemNum == 0 ? true: false;
+	var isComplete = data.totalNum % data.pageItemNum == 0 ? true : false;
 	pageNum = isComplete ? pageNum : Math.floor(pageNum) + 1;
-	if(pageNum == 0){
+	if (pageNum == 0) {
 		pageNum = 1;
 	}
-	$('#contentMyPosts').find('.post').remove();
-	$('#contentMyPosts').attr('index', indexNum);
-	$('#contentMyPosts').attr('totalpagenum', --pageNum);
-	for(var i=0;i<data.value.length;i++){
-		var $item = createPostItem(data.value[i]);
-		$('#contentMyPosts').find('.myPostsIndex').before($item);
+	$('#content .index').siblings().remove();
+	$('#content').attr('index', currIndex);
+	$('#content').attr('totalpagenum', --pageNum);
+	var type = $('#content').attr('type');
+	type = Number(type);
+	switch (type) {
+		case 1:
+			//我发布的帖子
+			var item = createMyPostItems(data);
+			break;
+		case 2:
+			//我回复的帖子
+			var item = createMyReplyItems(data);
+			break;
+		case 3:
+			//通知
+			var item = createMyInformItems(data);
+			break;
 	}
+	$('#content').find('.index').before(item);
 	initIndex();
 }
 
-function initPagingIndexClick(userId){
-	$('#contentMyPostsPrevBtn').click(function(){
-		prevPage(userId);
+function createMyPostItems(data) {
+	var container = $('<div></div>');
+	container.addClass('posts');
+	for (var k = 0; k < data.value.length; k++) {
+		var item = createPostItem(data.value[k]);
+		container.append(item);
+	}
+	return container;
+}
+
+function createMyReplyItems(data) {
+	var container = $('<div></div>');
+	container.addClass('my_reply_posts');
+	for (var k = 0; k < data.value.length; k++) {
+		var item = createMyReplyPostItem(data.value[k]);
+		container.append(item);
+	}
+	return container;
+}
+
+function createMyInformItems(data) {
+	var container = $('<div></div>');
+	container.addClass('my_informs');
+	for (var k = 0; k < data.value.length; k++) {
+		var item = createMyInformItem(data.value[k]);
+		container.append(item);
+	}
+	return container;
+}
+
+function createMyInformItem(data){
+	console.log(data);
+	var informTimeStr = '';	
+	var container = $('<div></div>');
+	container.addClass('inform');
+	container.attr('informId',data.id);
+	var informer = $('<p></p>');
+	informer.addClass('informer');
+	informer.html(data.informNickname+':');
+	var informContent = $('<p></p>');
+	informContent.addClass('inform_content');
+	informContent.html(data.informContent);
+	var informWrapper = $('<div></div>');
+	informWrapper.addClass('inform_wrapper');
+	var informTime = $('<span></span>');
+	informTime.addClass('inform_time');
+	if(isToday(data.informTime)){
+		informTimeStr = data.informTime.substr(11);
+	}else{
+		informTimeStr = data.informTime.substr(0,10);
+	}
+	informTime.html(informTimeStr);
+	informWrapper.append(informTime);
+	if(data.status == 1){
+		var informBtn = $('<button></button>');
+		informBtn.addClass('inform_btn');
+		informBtn.html('确定');
+		informBtn.click(function(){
+			var optionResult = confirm('确认设置为已读？');
+			if(optionResult){
+				changeInformStatus.call(this);
+			}
+		});
+		informWrapper.append(informBtn);
+	}else{
+		var haveReadTip = $('<span></span>');
+		haveReadTip.addClass('have_read_tip');
+		haveReadTip.html('已读');
+		informWrapper.append(haveReadTip);
+	}
+
+	container.append(informer);
+	container.append(informContent);
+	container.append(informWrapper);
+	return container;
+}
+
+//将通知状态变为已读接口
+function changeInformStatus(){
+	var id = $(this).closest('.inform').attr('informId');
+	id = Number(id);
+	$.ajax({
+		type: 'post',
+		url: domain + '/pro/php/changeInformStatus.php',
+		async: true,
+		data: {
+			id: id
+		},
+		success: function(result){
+			if(result == 'success'){
+				alert('设置成功');
+				window.location.reload();
+			}else{
+				console.log(result);
+				alert('未知错误');
+			}
+		}
 	});
-	$('#contentMyPostsNextBtn').click(function(){
-		nextPage(userId);
+}
+
+function createIndex() {
+	var $indexUl = $('<ul></ul>');
+	$indexUl.addClass('index');
+	var $replyPagingFirstBtnLi = $('<li></li>');
+	$replyPagingFirstBtnLi.addClass('paging_btn');
+	$replyPagingFirstBtnLi.addClass('first_btn');
+	$replyPagingFirstBtnLi.html('首页');
+	$replyPagingFirstBtnLi.attr('id', 'firstPageBtn');
+	var $replyPagingPrevBtnLi = $('<li></li>');
+	$replyPagingPrevBtnLi.addClass('paging_btn');
+	$replyPagingPrevBtnLi.addClass('prev_btn');
+	$replyPagingPrevBtnLi.html('上一页');
+	$replyPagingPrevBtnLi.attr('id', 'prevPageBtn');
+	$indexUl.append($replyPagingFirstBtnLi);
+	$indexUl.append($replyPagingPrevBtnLi);
+	for (var i = 0; i < 10; i++) {
+		var $replyPagingIndexBtnLi = $('<li></li>');
+		$replyPagingIndexBtnLi.addClass('index_item');
+		$replyPagingIndexBtnLi.html(i + 1);
+		$indexUl.append($replyPagingIndexBtnLi);
+	}
+	var $replyPagingNextBtnLi = $('<li></li>');
+	$replyPagingNextBtnLi.addClass('paging_btn');
+	$replyPagingNextBtnLi.addClass('next_btn');
+	$replyPagingNextBtnLi.html('下一页');
+	$replyPagingNextBtnLi.attr('id', 'nextPageBtn');
+	var $replyPagingLastBtnLi = $('<li></li>');
+	$replyPagingLastBtnLi.addClass('paging_btn');
+	$replyPagingLastBtnLi.addClass('last_btn');
+	$replyPagingLastBtnLi.html('尾页');
+	$replyPagingLastBtnLi.attr('id', 'lastPageBtn');
+	$indexUl.append($replyPagingNextBtnLi);
+	$indexUl.append($replyPagingLastBtnLi);
+	return $indexUl;
+}
+
+function getContentUserMsg() {
+	var $container = $('<div></div>');
+	$container.addClass('contentUserMsgItemContainer');
+	var $schoolItem = $('<p></p>');
+	$schoolItem.addClass('contentUserMsgItem');
+	var $ageItem = $('<p></p>');
+	$ageItem.addClass('contentUserMsgItem');
+	var $addressItem = $('<p></p>');
+	$addressItem.addClass('contentUserMsgItem');
+	$schoolItem.html('学校:' + userData.school);
+	$ageItem.html('年龄:' + userData.age);
+	$addressItem.html('地址:' + userData.address);
+	$container.append($schoolItem);
+	$container.append($ageItem);
+	$container.append($addressItem);
+	return $container;
+}
+
+function initIndexBtnPressEvent() {
+	$('#prevPageBtn').click(function () {
+		prevPage();
 	});
-	$('#contentMyPostsFirstPageBtn').click(function(){
-		firstPage(userId);
+	$('#nextPageBtn').click(function () {
+		nextPage();
 	});
-	$('#contentMyPostsLastPageBtn').click(function(){
-		lastPage(userId);
+	$('#firstPageBtn').click(function () {
+		firstPage();
 	});
-	$('#contentMyPosts .index_item').click(function(){
+	$('#lastPageBtn').click(function () {
+		lastPage();
+	});
+	$('.index_item').click(function () {
 		var index = Number($(this).html()) - 1;
-		getMyPostData(userId,index);
+		getData(index);
 	});
 }
 
-function initMyReplyPostPagingIndexClick(userId){
-	$('#contentMyReplyPrevBtn').click(function(){
-		myReplyPrevPage(userId);
+function resizeImg() {
+	$(this).siblings("img").each(function () {
+		$(this).css('height', '100px');
+		$(this).css('max-width', '134px');
 	});
-	$('#contentMyReplyNextBtn').click(function(){
-		myReplyNextPage(userId);
-	});
-	$('#contentMyReplyFirstPageBtn').click(function(){
-		myReplyFirstPage(userId);
-	});
-	$('#contentMyReplyLastPageBtn').click(function(){
-		myReplyLastPage(userId);
-	});
-	$('#myReplyPosts .index_item').click(function(){
-		var index = Number($(this).html()) - 1;
-		getMyReplyPostData(userId,index);
-	});
-}
-
-
-function myReplyPrevPage(userId){
-	var currIndex = Number($('#myReplyPosts').attr('index'));
-	if(currIndex > 0){
-		getMyReplyPostData(userId, --currIndex);
+	if ($(this).css('height') == '100px') {
+		$(this).css('height', '400px');
+		$(this).css('max-width', '900px');
+	} else {
+		$(this).css('height', '100px');
+		$(this).css('max-width', '134px');
 	}
 }
 
-function myReplyNextPage(userId){
-  console.log(userId);
-	var currIndex = Number($('#myReplyPosts').attr('index'));
-	var totalNum = Number($('#myReplyPosts').attr('totalpagenum'));
-	console.log(currIndex, totalNum);
-	if(currIndex < totalNum){
-		getMyReplyPostData(userId, ++currIndex);
-	}
-}
-
-function myReplyFirstPage(userId){
-	var currIndex = Number($('#myReplyPosts').attr('index'));
-	if(currIndex != 0){
-		getMyReplyPostData(userId, 0);
-	}
-}
-
-function myReplyLastPage(userId){
-	var currIndex = Number($('#myReplyPosts').attr('index'));
-	var totalNum = Number($('#myReplyPosts').attr('totalpagenum'));
-	if(currIndex != totalNum){
-		getMyReplyPostData(userId, totalNum);
-	}
-}
-
-function createPostItem(data){
+function createPostItem(data) {
 	// console.log(data);
 	var maxShowImgNum = 4;
-	var imgReg=/<img\b[^>]*postImg[^>]*>/ig;
+	var imgReg = /<img\b[^>]*postImg[^>]*>/ig;
 	var $postDiv = $('<div></div>');
 	$postDiv.addClass('post');
 	var $postContentDiv = $('<div></div>');
@@ -425,43 +535,43 @@ function createPostItem(data){
 	var $postTitleContainerDiv = $('<div></div>');
 	$postTitleContainerDiv.addClass('post_title_container');
 
-	var $isTopP = $('<p></p>');
-	$isTopP.addClass('is_top');
-	if(data.isTop == '0'){
-		$isTopP.css('display','none');
-	}
-	var $isGreatP = $('<p></p>');
-	$isGreatP.addClass('is_great');
-	if(data.isGreat == '0'){
-		$isGreatP.css('display','none');
-	}
+	// var $isTopP = $('<p></p>');
+	// $isTopP.addClass('is_top');
+	// if (data.isTop == '0') {
+	// 	$isTopP.css('display', 'none');
+	// }
+	// var $isGreatP = $('<p></p>');
+	// $isGreatP.addClass('is_great');
+	// if (data.isGreat == '0') {
+	// 	$isGreatP.css('display', 'none');
+	// }
 	var $postTitleTextP = $('<p></p>');
 	$postTitleTextP.addClass('post_title_text');
 	$postTitleTextP.html(data.postName);
-	$postTitleTextP.click(function(){
+	$postTitleTextP.click(function () {
 		var postId = $(this).parents('.post').attr('postId');
-		window.location.href = 'http://localhost/pro/page/post.html?'+'postId='+postId;
+		window.location.href = 'http://localhost/pro/page/post.html?' + 'postId=' + postId;
 	});
-	$postTitleContainerDiv.append($isTopP);
-	$postTitleContainerDiv.append($isGreatP);
+	// $postTitleContainerDiv.append($isTopP);
+	// $postTitleContainerDiv.append($isGreatP);
 	$postTitleContainerDiv.append($postTitleTextP);
 
 	var $postImgContainerDiv = $('<div></div>');
 	$postImgContainerDiv.addClass('post_img_container');
 	var $postContentIntroP = $('<p></p>');
 	$postContentIntroP.addClass('post_content_intro');
-	$postContentIntroP.html(data.postContent.replace(imgReg,''));
+	$postContentIntroP.html(data.postContent.replace(imgReg, ''));
 	$postImgContainerDiv.append($postContentIntroP);
 	var imgArr = data.postContent.match(imgReg);
-	if(imgArr){
-		for(var j=0;j<imgArr.length && j<maxShowImgNum;j++){
+	if (imgArr) {
+		for (var j = 0; j < imgArr.length && j < maxShowImgNum; j++) {
 			var $imgEle = $(imgArr[j]);
 			$imgEle.addClass('post_img');
 			$imgEle.click(resizeImg);
 			$postImgContainerDiv.append($imgEle);
 		}
 	}
-	
+
 	$postContentDiv.append($postTitleContainerDiv);
 	$postContentDiv.append($postImgContainerDiv);
 
@@ -472,7 +582,7 @@ function createPostItem(data){
 	$masterMsgDiv.addClass('master_msg');
 	var $postMsgPeopleImg = $('<img />');
 	$postMsgPeopleImg.addClass('post_msg_people_img');
-	$postMsgPeopleImg.attr('src','../img/proImg/people.png');
+	$postMsgPeopleImg.attr('src', '../img/proImg/people.png');
 	var $masterNameP = $('<p></p>');
 	$masterNameP.addClass('master_name');
 	$masterNameP.html(data.creatorNickName);
@@ -483,7 +593,7 @@ function createPostItem(data){
 	$replyNumMsgDiv.addClass('reply_num_msg');
 	var $postMsgReplyImg = $('<img />');
 	$postMsgReplyImg.addClass('post_msg_reply_img');
-	$postMsgReplyImg.attr('src','../img/proImg/msg.png');
+	$postMsgReplyImg.attr('src', '../img/proImg/msg.png');
 	var $replyNumP = $('<p></p>');
 	$replyNumP.addClass('reply_num');
 	$replyNumP.html(data.replyNum);
@@ -493,10 +603,10 @@ function createPostItem(data){
 	var $postTimeDiv = $('<div></div>');
 	var showCreateTimeStr = '';
 	$postTimeDiv.addClass('post_time');
-	if(isToday(data.createTime)){
+	if (isToday(data.createTime)) {
 		showCreateTimeStr = data.createTime.substr(11);
-	}else{
-		showCreateTimeStr = data.createTime.substr(0,10);
+	} else {
+		showCreateTimeStr = data.createTime.substr(0, 10);
 	}
 	$postTimeDiv.html(showCreateTimeStr);
 
@@ -506,188 +616,134 @@ function createPostItem(data){
 
 	$postDiv.append($postContentDiv);
 	$postDiv.append($postMsgDiv);
-	$postDiv.attr('postId',data.id);
-	$postDiv.attr('postId',data.id);
+	$postDiv.attr('postId', data.id);
+	$postDiv.attr('postId', data.id);
 	return $postDiv;
 }
-function initIndex(){
+function initIndex() {
 	var maxShowIndex = 10;
-	var currIndex = Number($('#contentMyPosts').attr('index'));
-	var totalNum = Number($('#contentMyPosts').attr('totalpagenum'));
+	var currIndex = Number($('#content').attr('index'));
+	var totalNum = Number($('#content').attr('totalpagenum'));
 	var halfIndexNum = Math.floor(maxShowIndex / 2) + 1;
-	if(currIndex == 0){
-		$('#contentMyPostsPrevBtn').css('display','none');
-		$('#contentMyPostsFirstPageBtn').css('display','none');
-	}else{
-		$('#contentMyPostsPrevBtn').css('display','inline-block');
-		$('#contentMyPostsFirstPageBtn').css('display','inline-block');
+	if (currIndex == 0) {
+		$('#prevPageBtn').css('display', 'none');
+		$('#firstPageBtn').css('display', 'none');
+	} else {
+		$('#prevPageBtn').css('display', 'inline-block');
+		$('#firstPageBtn').css('display', 'inline-block');
 	}
-	if(currIndex == totalNum){
-		$('#contentMyPostsNextBtn').css('display','none');
-		$('#contentMyPostsLastPageBtn').css('display','none');
-	}else{
-		$('#contentMyPostsNextBtn').css('display','inline-block');
-		$('#contentMyPostsLastPageBtn').css('display','inline-block');
+	if (currIndex == totalNum) {
+		$('#nextPageBtn').css('display', 'none');
+		$('#lastPageBtn').css('display', 'none');
+	} else {
+		$('#nextPageBtn').css('display', 'inline-block');
+		$('#lastPageBtn').css('display', 'inline-block');
 	}
-	$('#contentMyPosts .index_item').removeClass('currIndex');
-	
-	if(totalNum < maxShowIndex){
-		$('#contentMyPosts .index_item').each(function(index){
-			if(index > totalNum){
-				$(this).css('display','none');
+	$('.index_item').removeClass('currIndex');
+
+	if (totalNum < maxShowIndex) {
+		$('.index_item').each(function (index) {
+			if (index > totalNum) {
+				$(this).css('display', 'none');
 			}
-			if(index == currIndex){
+			if (index == currIndex) {
 				$(this).addClass('currIndex');
 			}
 		});
-	}else{
-		if(currIndex < halfIndexNum){
-			$('#contentMyPosts .index_item').each(function(index){
+	} else {
+		if (currIndex < halfIndexNum) {
+			$('.index_item').each(function (index) {
 				$(this).html(index + 1);
 			});
-		}else if(currIndex > totalNum - halfIndexNum){
-			$('#contentMyPosts .index_item').each(function(index){
+		} else if (currIndex > totalNum - halfIndexNum) {
+			$('.index_item').each(function (index) {
 				$(this).html(totalNum + 1 - (maxShowIndex - 1 - index));
 			});
-		}else{
-			$('#contentMyPosts .index_item').each(function(index){
+		} else {
+			$('.index_item').each(function (index) {
 				$(this).html(currIndex + 1 - (halfIndexNum - index - 1));
 			});
 		}
-		$('#contentMyPosts .index_item').each(function(index){
-			if($(this).html() == currIndex + 1){
+		$('.index_item').each(function (index) {
+			if ($(this).html() == currIndex + 1) {
 				$(this).addClass('currIndex');
 			}
 		});
 	}
 }
 
-function initMyReplyIndex(){
-	var maxShowIndex = 10;
-	var currIndex = Number($('#myReplyPosts').attr('index'));
-	var totalNum = Number($('#myReplyPosts').attr('totalpagenum'));
-	var halfIndexNum = Math.floor(maxShowIndex / 2) + 1;
-	if(currIndex == 0){
-		$('#contentMyReplyPrevBtn').css('display','none');
-		$('#contentMyReplyFirstPageBtn').css('display','none');
-	}else{
-		$('#contentMyReplyPrevBtn').css('display','inline-block');
-		$('#contentMyReplyFirstPageBtn').css('display','inline-block');
-	}
-	if(currIndex == totalNum){
-		$('#contentMyReplyNextBtn').css('display','none');
-		$('#contentMyReplyLastPageBtn').css('display','none');
-	}else{
-		$('#contentMyReplyNextBtn').css('display','inline-block');
-		$('#contentMyReplyLastPageBtn').css('display','inline-block');
-	}
-	$('#myReplyPosts .index_item').removeClass('currIndex');
-	
-	if(totalNum < maxShowIndex){
-		$('#myReplyPosts .index_item').each(function(index){
-			if(index > totalNum){
-				$(this).css('display','none');
-			}
-			if(index == currIndex){
-				$(this).addClass('currIndex');
-			}
-		});
-	}else{
-		if(currIndex < halfIndexNum){
-			$('#myReplyPosts .index_item').each(function(index){
-				$(this).html(index + 1);
-			});
-		}else if(currIndex > totalNum - halfIndexNum){
-			$('#myReplyPosts .index_item').each(function(index){
-				$(this).html(totalNum + 1 - (maxShowIndex - 1 - index));
-			});
-		}else{
-			$('#myReplyPosts .index_item').each(function(index){
-				$(this).html(currIndex + 1 - (halfIndexNum - index - 1));
-			});
-		}
-		$('#myReplyPosts .index_item').each(function(index){
-			if($(this).html() == currIndex + 1){
-				$(this).addClass('currIndex');
-			}
-		});
+function prevPage() {
+	var currIndex = Number($('#content').attr('index'));
+	if (currIndex > 0) {
+		getData(--currIndex);
 	}
 }
 
-function prevPage(userId){
-	var currIndex = Number($('#contentMyPosts').attr('index'));
-	if(currIndex > 0){
-		getMyPostData(userId, --currIndex);
+function nextPage() {
+	var currIndex = Number($('#content').attr('index'));
+	var totalNum = Number($('#content').attr('totalPageNum'));
+	if (currIndex < totalNum) {
+		getData(++currIndex);
 	}
 }
 
-function nextPage(userId){
-  console.log(userId);
-	var currIndex = Number($('#contentMyPosts').attr('index'));
-	var totalNum = Number($('#contentMyPosts').attr('totalpagenum'));
-	console.log(currIndex, totalNum);
-	if(currIndex < totalNum){
-		getMyPostData(userId, ++currIndex);
+function firstPage() {
+	var currIndex = Number($('#content').attr('index'));
+	if (currIndex != 0) {
+		getData(0);
 	}
 }
 
-function firstPage(userId){
-	var currIndex = Number($('#contentMyPosts').attr('index'));
-	if(currIndex != 0){
-		getMyPostData(userId, 0);
+function lastPage() {
+	var currIndex = Number($('#content').attr('index'));
+	var totalNum = Number($('#content').attr('totalPageNum'));
+	if (currIndex != totalNum) {
+		getData(totalNum);
 	}
 }
 
-function lastPage(userId){
-	var currIndex = Number($('#contentMyPosts').attr('index'));
-	var totalNum = Number($('#contentMyPosts').attr('totalpagenum'));
-	if(currIndex != totalNum){
-		getMyPostData(userId, totalNum);
-	}
-}
-
-function initBtnEvent(){
-	$('#btnGetCropper').click(function(){
+function initBtnEvent() {
+	$('#btnGetCropper').click(function () {
 		var $download = $('#download');
-	  var uploadedImageType = 'image/jpeg';
+		var uploadedImageType = 'image/jpeg';
 		var $image = $('#image');
-    var $this = $(this);
-    var data = $this.data();
-    var cropper = $image.data('cropper');
-    var cropped;
-    var result;
-    if(cropper && data.method){
-      data = $.extend({}, data); // Clone a new one
-      cropped = cropper.cropped;
-      if(uploadedImageType === 'image/jpeg'){
-        if (!data.option) {
-          data.option = {};
-        }
-        data.option.fillColor = '#fff';
-      }
-      result = $image.cropper(data.method, data.option, data.secondOption);
-      var imgURL = result.toDataURL();
-      $.ajax({
-        type: 'post',
-        url: domain + '/pro/php/saveUserHeadImg.php',
-        async: true,
-        data: {
-          fileData: imgURL,
-          username: userId
-        },
-        success: function(result){
-          try{
-            var data = JSON.parse(result);
-          }catch(e){
-            console.log(e);
-          }
-          if(data.result == 'success'){
-            window.location.reload();
-          }else{
-            alert('未知错误');
-          }
-        }
-      });
+		var $this = $(this);
+		var data = $this.data();
+		var cropper = $image.data('cropper');
+		var cropped;
+		var result;
+		if (cropper && data.method) {
+			data = $.extend({}, data); // Clone a new one
+			cropped = cropper.cropped;
+			if (uploadedImageType === 'image/jpeg') {
+				if (!data.option) {
+					data.option = {};
+				}
+				data.option.fillColor = '#fff';
+			}
+			result = $image.cropper(data.method, data.option, data.secondOption);
+			var imgURL = result.toDataURL();
+			$.ajax({
+				type: 'post',
+				url: domain + '/pro/php/saveUserHeadImg.php',
+				async: true,
+				data: {
+					fileData: imgURL,
+					username: userId
+				},
+				success: function (result) {
+					try {
+						var data = JSON.parse(result);
+					} catch (e) {
+						console.log(e);
+					}
+					if (data.result == 'success') {
+						window.location.reload();
+					} else {
+						alert('未知错误');
+					}
+				}
+			});
       /*
       if(result){
 				//$('#resultImgContainer').html(result);
@@ -697,41 +753,41 @@ function initBtnEvent(){
         }
       }
       */
-    }
-  });
+		}
+	});
 }
 
-function createMyReplyPostItem(data){
+function createMyReplyPostItem(data) {
 	// console.log(data);
-	var imgReg=/<img\b[^>]*postImg[^>]*>/ig;
+	var imgReg = /<img\b[^>]*postImg[^>]*>/ig;
 	var $myReplyPostDiv = $('<div></div>');
 	$myReplyPostDiv.addClass('my_reply_post');
-	$myReplyPostDiv.attr('postId',data.postBelongId);
+	$myReplyPostDiv.attr('postId', data.postBelongId);
 	var $replyPostFromContainerDiv = $('<div></div>');
 	$replyPostFromContainerDiv.addClass('reply_post_from_container');
 	var $replyPostNameSpan = $('<span></span>');
 	$replyPostNameSpan.addClass('reply_post_name');
 	$replyPostNameSpan.html(data.postName);
-	$replyPostNameSpan.click(function(){
+	$replyPostNameSpan.click(function () {
 		var postId = $(this).closest('.my_reply_post').attr('postId');
-		window.location.href = 'http://localhost/pro/page/post.html?'+'postId='+postId;
+		window.location.href = 'http://localhost/pro/page/post.html?' + 'postId=' + postId;
 	});
 	var $replyPostBarBelongSpan = $('<span></span>');
 	$replyPostBarBelongSpan.addClass('reply_post_bar_belong');
-	$replyPostBarBelongSpan.html('来自:'+data.barBelong+'吧');
+	$replyPostBarBelongSpan.html('来自:' + data.barBelong + '吧');
 	var $replyPostContentP = $('<p></p>');
 	$replyPostContentP.addClass('reply_post_content');
-	var content = data.content.replace(imgReg,'');
-	$replyPostContentP.html('回复内容:'+content);
+	var content = data.content.replace(imgReg, '');
+	$replyPostContentP.html('回复内容:' + content);
 	var $replyPostTimeP = $('<p></p>');
 	$replyPostTimeP.addClass('reply_post_time');
 	var replyTime = data.createTime;
-	if(isToday(replyTime)){
+	if (isToday(replyTime)) {
 		replyTime = replyTime.substr(11);
-	}else{
-		replyTime = replyTime.substr(0,10);
+	} else {
+		replyTime = replyTime.substr(0, 10);
 	}
-	$replyPostTimeP.html('回复时间:'+replyTime);
+	$replyPostTimeP.html('回复时间:' + replyTime);
 
 	$replyPostFromContainerDiv.append($replyPostNameSpan);
 	$replyPostFromContainerDiv.append($replyPostBarBelongSpan);

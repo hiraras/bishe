@@ -4,22 +4,27 @@ $userId = $_GET['userId'];
 $indexNum = $_GET['indexNum'];
 $everyPageItemNum = 3;
 $dataIndex = $indexNum*$everyPageItemNum;
-$sql = "select * from posts where creatorId='$userId' and status = 1 ORDER BY createTime DESC limit $dataIndex,$everyPageItemNum";
-$sql2 = "select * from posts where creatorId='$userId' and status = 1";
+$sql = "select * from inform where informederId='$userId' ORDER BY status DESC limit $dataIndex,$everyPageItemNum";
+$sql2 = "select * from inform where informederId='$userId'";
 $result = mysql_query($sql);
 $result2 = mysql_query($sql2);
-$barTotalNum = mysql_num_rows($result2);
+$informTotalNum = mysql_num_rows($result2);
 //获得的结果数组只能用数字索引，不能用key值
 //$arr = mysql_fetch_row($result);
 //获得的结果数组只能用key值，不能用数字索引
 $arr = array();
 while($row = mysql_fetch_assoc($result)){
-	$postId = $row['id'];
-	$sql3 = "select * from post_reply where postBelongId='$postId' and status = 1";
-	$result3 = mysql_query($sql3);
-	$replyNum = mysql_num_rows($result3);
-	$row['replyNum'] = $replyNum;
-	array_push($arr,$row);
+    $informer = $row['informer'];
+    if($informer == '0'){
+        $row['informNickname'] = '管理员';
+	    array_push($arr,$row);
+    }else{
+        $sql3 = "select * from usermsg where username='$informer'";
+        $result3 = mysql_query($sql3);
+        $informData = mysql_fetch_assoc($result3);
+        $row['informNickname'] = $informData['nickname'];
+        array_push($arr,$row);
+    }
 }
 class ResultData{
 	var $value;
@@ -28,14 +33,14 @@ class ResultData{
 	var $result;
 }
 $data = new ResultData();
-if($barTotalNum == 0){
+if($informTotalNum == 0){
     $data->value = null;
-    $data->totalNum = $barTotalNum;
+    $data->totalNum = $informTotalNum;
     $data->pageItemNum = $everyPageItemNum;
     $data->result = 'none';
 }else{
     $data->value = $arr;
-    $data->totalNum = $barTotalNum;
+    $data->totalNum = $informTotalNum;
     $data->pageItemNum = $everyPageItemNum;
     $data->result = 'success';
 }

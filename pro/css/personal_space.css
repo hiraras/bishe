@@ -203,7 +203,6 @@
 }
 .content{
     padding: 15px 5px;
-    display: none;
 }
 .contentUserMsgItemContainer{
     width: 450px;
@@ -325,12 +324,6 @@
     border-radius: 4px;
     margin-bottom: 15px;
 }
-.my_reply_post .reply_post_from_container{
-
-}
-.my_reply_post .my_reply_post{
-
-}
 .my_reply_post .reply_post_name{
     color: #00a9cd;
     cursor: pointer;
@@ -369,4 +362,42 @@
     border: 1px solid #00a9cd;
     color: #00a9cd;
 }
-
+.noAttentionBarTip{
+    margin-left: 10px;
+    color: #00a9cd;
+}
+.my_informs .inform{
+    border: 1px solid #00a9cd;
+    border-radius: 4px;
+    padding: 10px 8px;
+    margin-bottom: 15px;
+}
+.my_informs .informer{
+    margin-bottom: 10px;
+}
+.my_informs .inform_content{
+    margin-bottom: 10px;
+}
+.my_informs .inform_wrapper{
+    display: flex;
+    justify-content: space-between;
+}
+.my_informs .inform_btn{
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    padding: 5px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.my_informs .inform_btn:hover{
+    color: #00a9cd;
+    border-color: #00a9cd;
+}
+.index li{
+    margin-right: 8px;
+}
+.have_read_tip{
+    color: #cccccc;
+    margin-right: 8px;
+}
