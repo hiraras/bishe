@@ -31,11 +31,11 @@ h2{
 	box-shadow: 0px 0px 5px #000000;
 	padding-bottom: 20px;
 	flex: 1;
+	padding: 8px 5px;
 }
 .left .feature_item{
     text-align: center;
     line-height: 40px;
-    border-top: 1px solid black;
     border-bottom: 1px solid black;
     cursor: pointer;
 }
@@ -56,17 +56,40 @@ table a:hover{
 table img{
 	max-width: 70%;
 }
+table td{
+	padding: 5px 8px;
+}
 .index{
 	margin-top: 10px;
 }
 .index li{
 	margin-right: 5px;
 }
-
-
-
-
-
+label{
+	margin-right: 10px;
+}
+button{
+	border: 1px solid #000000;
+	border-radius: 4px;
+	text-align: center;
+	padding: 5px 10px;
+	cursor: pointer;
+	display: inline-block;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	background-color: white;
+}
+button:hover{
+	border-color: #00a9cd;
+	color: #00a9cd;
+}
+input{
+	height: 30px;
+	margin-right: 10px;
+	font-size: 18px;
+}
 
 
 
