@@ -318,6 +318,10 @@
 	border: 1px solid #00a9cd;
 	color: #00a9cd;
 }
-
+.user_level{
+	text-align: center;
+	margin-bottom: 5px;
+	margin-top: 5px
+}
 
 

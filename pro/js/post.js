@@ -148,7 +148,7 @@ function getPostReplysMsg(postId, indexNum){
 				freshPageReplyItems(data,indexNum);
 			}catch(e){
 				console.log(result);
-				console.log(e);
+				alert('未知错误');
 			}
 
 		}
@@ -192,12 +192,12 @@ function searchPostMsg(postId){
 		success: function(result){
             try{
                 var data = JSON.parse(result);
-                console.log(data);
             }catch(e){
 				console.log(e);
                 return ;
             }
 			if(data.result == 'success'){
+				console.log(data);
 				if(data.data.master == localStorage.getItem('user')){
 					$('#postOptionBtnContainer').css('display','block');
 					$('#toTopBtn').click(function(){
@@ -235,6 +235,7 @@ function searchPostMsg(postId){
 				$('#postTitle').attr('postId',postId);
 				$('#postTitle').attr('postCreatorId',data.data.creatorId);
 				$('.master_comment').attr('position',1);
+				$('#userLevel').html('等级:' + getLv(data.data.exp));
 				getPostReplysMsg(postId, 0);
 				initPagingIndexClick(postId);
 				init();
@@ -1014,8 +1015,13 @@ function createCommentItem(data){
 	var $userNameP = $('<p></p>');
 	$userNameP.addClass('user_name');
 	$userNameP.html(data.nickname);
+
+	var $userLevelP = $('<p></p>');
+	$userLevelP.addClass('user_level');
+	$userLevelP.html('等级:' + getLv(data.exp));
 	$userMsgDiv.append($userMsgHeadImg);
 	$userMsgDiv.append($userNameP);
+	$userMsgDiv.append($userLevelP);
 
 	var $commentContentDiv = $('<div></div>');
 	$commentContentDiv.addClass('comment_content');

@@ -12,11 +12,12 @@ $num = mysql_num_rows($result);
 if($num == 1){
     $arr = mysql_fetch_assoc($result);
     $creatorId = $arr['creatorId'];
-    $sql2 = "select headImg,nickname from usermsg where username='$creatorId'";
+    $sql2 = "select headImg,nickname,exp from usermsg where username='$creatorId'";
     $result2 = mysql_query($sql2);
     $row = mysql_fetch_assoc($result2);
     $arr['creatorHeadImg'] = $row['headImg'];
     $arr['nickname'] = $row['nickname'];
+    $arr['exp'] = $row['exp'];
     $barBelong = $arr['barBelong'];
     $sql3 = "select master from bars where barName='$barBelong'";
     $result3 = mysql_query($sql3);
