@@ -275,7 +275,7 @@ $('#myRoom').click(function(){
 	var username = localStorage.getItem('user');
 	window.location.href = 'http://localhost/pro/page/personal_space.html?userId='+username;
 });
-
+//将时间转化为具体年数，包括小数点
 function barAge(timeStr){
 	var createTime = new Date(timeStr);
 	var now = new Date();
@@ -314,3 +314,79 @@ function barAge(timeStr){
 	  }
 	}
   }
+//加经验接口,有限制每日获得数
+function addExp(userId, expNum, callback){
+	$.ajax({
+		url: domain + "/pro/php/addExp.php",
+		type: 'post',
+		async: true,
+		data: {
+			userId: userId,
+			expNum: expNum
+		},
+		success: function(result){
+			if(result == 'success'){
+				if(!!callback){
+					callback('success');
+				}
+			}else if(result == 'isOver'){
+				if(!!callback){
+					callback('isOver');
+				}
+			}else{
+				console.log(result);
+				alert('未知错误');
+			}
+		}
+	});
+}
+//加经验接口,不限制每日获得数
+function addExpNoLimit(userId, expNum, callback){
+	$.ajax({
+		url: domain + "/pro/php/addExpNoLimit.php",
+		type: 'post',
+		async: true,
+		data: {
+			userId: userId,
+			expNum: expNum
+		},
+		success: function(result){
+			if(result == 'success'){
+				if(!!callback){
+					callback(true);
+				}
+			}else{
+				if(!!callback){
+					callback(false);
+				}
+				console.log(result);
+				alert('未知错误');
+			}
+		}
+	});
+}
+//将经验转化成等级
+function getLv(expNum){
+	var LvArr = getLvArr(15, 0.05, 20);
+	var userLv = 1;
+	expNum = Number(expNum);
+	for(var i=0;i<LvArr.length;i++){
+		if(expNum > LvArr[i]){
+			userLv ++;
+		}else{
+			break;
+		}
+	}
+	return userLv;
+}
+//生成等级所需经验数组,第一个参数为起始等级的经验,第二个为增长率,第三个为最高等级
+function getLvArr(firstNum, speed, maxLv){
+	var arr = [];
+	var num = firstNum;
+	arr.push(num);
+	for(var i=1;i<maxLv;i++){
+		num = Math.round(num*(2 - i * 0.03)) + Math.round(num*speed);
+		arr.push(num);
+	}
+	return arr;
+}

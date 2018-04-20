@@ -192,7 +192,7 @@ function searchPostMsg(postId){
 		success: function(result){
             try{
                 var data = JSON.parse(result);
-                // console.log(data);
+                console.log(data);
             }catch(e){
 				console.log(e);
                 return ;
@@ -232,7 +232,8 @@ function searchPostMsg(postId){
                 $('#creatorNickName').html(data.data.nickname);
                 $('#commentText').html(data.data.postContent);
                 $('#creatorPostTime').html(isToday(data.data.createTime)?data.data.createTime.substr(11):data.data.createTime.substr(0,10));
-                $('#postTitle').attr('postId',postId);
+				$('#postTitle').attr('postId',postId);
+				$('#postTitle').attr('postCreatorId',data.data.creatorId);
 				$('.master_comment').attr('position',1);
 				getPostReplysMsg(postId, 0);
 				initPagingIndexClick(postId);
@@ -470,12 +471,16 @@ function submitReplyMsg(){
             replyContent: replyContent
         },
         success: function(result){
-            console.log(result);
             if(result == 'success'){
-                $('#sendTip').css('display','inline').html('发布成功');
-                setTimeout(function(){
-                    window.location.reload();
-                },300);
+				$('#sendTip').css('display','inline').html('发布成功');
+				setTimeout(function(){
+					window.location.reload();
+				},300);
+				var postCreatorId = $('#postTitle').attr('postCreatorId');
+				addExp(creatorId, 4, replyAddExpResult);
+				if(creatorId != postCreatorId){
+					addExpNoLimit(postCreatorId, 2, replyAddExpNotlimitResult);
+				}
             }else{
                 alert('未知错误,发布失败!');
             }
@@ -485,6 +490,25 @@ function submitReplyMsg(){
         }
     });
 }
+//回复获得经验回调
+function replyAddExpResult(result){
+	if(result == 'success'){
+		console.log('获得经验成功');
+	}else if(result == 'isOver'){
+		console.log('已超过今日可获得经验上限');
+	}else{
+		console.log('未知错误,获得经验失败!');
+	}
+}
+//被回复获得经验回调
+function replyAddExpNotlimitResult(result){
+	if(result){
+		console.log('楼主获得经验成功');
+	}else{
+		console.log('未知错误,楼主获得经验失败!');
+	}
+}
+
 //在可编辑div中光标处插入对象(图片)
 function insertHTML(eleContent,eleContainer){
 	var sel, range;  

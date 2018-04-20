@@ -425,3 +425,27 @@
     bottom: 25px;
     display: none;
 }
+.is_not_sign_btn{
+    position: absolute;
+    right: 55px;
+    bottom: 25px;
+    background: #00a9cd;
+    color: white;
+    border: none;
+    display: none;
+}
+.is_not_sign_btn:hover{
+    color: white;
+}
+.is_sign_btn{
+    position: absolute;
+    right: 55px;
+    bottom: 25px;
+    background: gray;
+    color: white;
+    border: none;
+    display: none;
+}
+.is_sign_btn:hover{
+    color: white;
+}

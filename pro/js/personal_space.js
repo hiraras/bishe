@@ -176,6 +176,17 @@ function init() {
 				}
 			});
 		});
+		$('#signBtn').css('display','inline-block').click(function(){
+			addExpNoLimit(userId, 5, signResult);
+		});
+		if(userData.isSign == 1){
+			$('#signBtn').addClass('is_sign_btn');
+			$('#signBtn').attr('disabled', true);
+			$('#signBtn').html('已签到');
+		}else{
+			$('#signBtn').addClass('is_not_sign_btn');
+			$('#signBtn').html('签到');
+		}
 	} else {
 		$('#btnInformtion').css('display', 'none');
 		$('#editorUserMsgBtn').css('display', 'none');
@@ -262,6 +273,7 @@ function init() {
 	$('#userHeadImg').attr('src', userData.headImg);
 	$('#barAge').html('吧龄:' + barAge(userData.createDate) + '年');
 	$('#myPostNum').html('发帖数:' + userData.postNum);
+	$('#userLv').html('等级:' + getLv(userData.exp));
 	$('#featureList li').each(function (index) {
 		$(this).click(function () {
 			switchContent(index);
@@ -276,6 +288,34 @@ function init() {
 	});
 	switchContent(0);
 }
+//签到回调函数
+function signResult(result){
+	if(result){
+		changeSignStatus();
+	}else{
+		alert('未知错误');
+	}
+}
+function changeSignStatus(){
+	$.ajax({
+		url: domain + "/pro/php/changeSignStatus.php",
+		type: 'post',
+		async: true,
+		data: {
+			userId: userId
+		},
+		success: function (result) {
+			if(result == 'success'){
+				alert('签到成功');
+				window.location.reload();
+			}else{
+				alert('未知错误');
+				window.location.reload();
+			}
+		}
+	});
+}
+
 function switchContent(num) {
 	var item;
 	console.log(num);

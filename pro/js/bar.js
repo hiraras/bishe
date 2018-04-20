@@ -502,6 +502,7 @@ function submitPostMsg(){
 					setTimeout(function(){
 						window.location.reload();
 					},300);
+					addExp(creatorId, 5, addExpResult);
 				}else{
 					alert('未知错误,发布失败!');
 				}
@@ -514,6 +515,18 @@ function submitPostMsg(){
 		$('#sendTip').css('display','inline');
 	}
 }
+
+//发布成功获得经验回调
+function addExpResult(result){
+	if(result == 'success'){
+		console.log('获得经验成功');
+	}else if(result == 'isOver'){
+		console.log('已超过今日可获得经验上限');
+	}else{
+		console.log('未知错误,获得经验失败!');
+	}
+}
+
 //在可编辑div中光标处插入对象(图片)
 function insertHTML(eleContent,eleContainer){
 	var sel, range;  
