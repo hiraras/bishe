@@ -153,6 +153,29 @@ function init() {
 				$('#editResultTip').html('内容为空');
 			}
 		});
+		$('#applyBtn').css('display','inline-block').click(function(){
+			var msg = prompt('请输入申请的内容');
+			if(msg == null || msg == ''){
+				return ;
+			}
+			$.ajax({
+				type: 'post',
+				url: domain + '/pro/php/sendUserApply.php',
+				async: true,
+				data: {
+					content: msg,
+					applyerId: username
+				},
+				success: function(result){
+					if(result == 'success'){
+						alert('已发送申请信息');
+					}else{
+						alert('未知错误');
+					}
+					window.location.reload();
+				}
+			});
+		});
 	} else {
 		$('#btnInformtion').css('display', 'none');
 		$('#editorUserMsgBtn').css('display', 'none');
@@ -179,6 +202,7 @@ function init() {
 					}else{
 						alert('未知错误');
 					}
+					window.location.reload();
 				}
 			});
 		});

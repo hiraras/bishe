@@ -9,6 +9,8 @@ var barsArr = ['id','barName','master','createTime','themeBelong','concernNum','
 var barAttentionArr = ['id','userId','barId','barName','attentionTime','status'];
 var applyBuildBarArr = ['id','吧名','所属主题','申请者id','申请时间','操作'];
 var reportArr = ['id','帖子id','楼层数','举报内容','举报者id','被举报者id','举报时间','状态','操作'];
+var userApply = ['id','申请者id','内容','时间','状态','操作'];
+
 (function(){
     if(sessionStorage.getItem('admin') == null){
         window.location.href = "http://localhost/pro/index.html";
@@ -534,6 +536,38 @@ function changeReportStatus(){
     });
 }
 
+//用户申请区域
+function createUserApplyItem(){
+    var container = $('<div></div>');
+    var indexComponent = createIndex();
+    container.append(indexComponent);
+    getData(0);
+    return container;
+}
+
+function changeUserApplyStatus(){
+    var id = $(this).parent().siblings().first().html();
+    id = Number(id);
+    $.ajax({
+        type: 'post',
+        url: domain + '/pro/php/changeUserApplyStatus.php',
+        async: true,
+        data: {
+            id: id
+        },
+        success: function(result){
+            if(result == 'success'){
+                alert('完成');
+                window.location.reload();
+            }else{
+                console.log(result);
+                alert('未知错误');
+                window.location.reload();
+            }
+        }
+    });
+}
+
 //分页区域
 function getData(currIndex){
     var type = $('#rightContainer').attr('type');
@@ -581,6 +615,19 @@ function getData(currIndex){
             confirmOption.addClass('report_confirm');
             optionEle.append(confirmOption);
             break;
+        case 7: 
+            //申请信息
+            fileName = 'getUserApplyPage';
+            optionEle = $('<td></td>');
+            optionEle.css({
+                'display': 'flex',
+                'flex-wrap': 'no-wrap',
+                'justify-content': 'space-around'
+            });
+            var confirmOption = $('<a></a>');
+            confirmOption.html('确认');
+            confirmOption.addClass('user_apply_confirm');
+            optionEle.append(confirmOption);
         default:
             break;
     }
@@ -637,6 +684,11 @@ function createTable(data, optionEle){
         case 1:
             //举报
             headData = reportArr;
+            break;
+        case 7:
+            headData = userApply;
+            break;
+        default:
             break;
     }
     var table = $('<table></table>');
@@ -832,6 +884,9 @@ function changeFeature(featureNum){
             window.location.href = "http://localhost/pro/page/changePassWord.html";
             return ;
             break;
+        case 7:
+            content = createUserApplyItem();
+            break;
         default:
             break;
     }
@@ -856,6 +911,13 @@ function initOtherClickEvent(){
             return ;
         }
         changeReportStatus.call(this);
+    });
+    $('.user_apply_confirm').click(function(){
+        var option = confirm('确认审核完成？');
+        if(!option){
+            return ;
+        }
+        changeUserApplyStatus.call(this);
     });
 }
 

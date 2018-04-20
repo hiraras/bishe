@@ -5,9 +5,13 @@ var domain = 'http://localhost';
 
 function init(){
     var username = localStorage.getItem('user');
-    if(username == null){
+    var admin = sessionStorage.getItem('admin');
+    if(username == null && admin == null){
         window.location.href = 'http://localhost/pro/index.html';
         return ;
+    }
+    if(admin != null){
+        $('.header').css('display','none');
     }
     $('#findPassWord').click(function(){
         window.location.href = 'http://localhost/pro/page/findPassWord.html';

@@ -419,3 +419,9 @@
     bottom: 25px;
     display: none;
 }
+.apply_btn{
+    position: absolute;
+    right: 8px;
+    bottom: 25px;
+    display: none;
+}
