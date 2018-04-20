@@ -828,6 +828,10 @@ function changeFeature(featureNum){
         case 5:
             content = createBarSortItem();
             break;
+        case 6:
+            window.location.href = "http://localhost/pro/page/changePassWord.html";
+            return ;
+            break;
         default:
             break;
     }
