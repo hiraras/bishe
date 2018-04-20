@@ -117,7 +117,12 @@ function createUserMsgTable(headData, data){
         aOption.html('解除禁言');
     }
     aOption.click(function(){
-        changeUserStatus(data.username, data.status);
+        var reason = data.status == 1 ? '请输入您的禁言理由' : '请输入您的解除禁言的理由';
+        var msg = prompt(reason);
+        if(msg == null || msg == ''){
+            return ;
+        }
+        changeUserStatus(data.username, data.status, msg);
     });
     tdOption.append(aOption);
     tr.append(tdOption);
@@ -126,11 +131,11 @@ function createUserMsgTable(headData, data){
 }
 
 //禁言接口
-function changeUserStatus(id, currStatus){
+function changeUserStatus(id, currStatus, msg){
     var nextStatus;
     currStatus = Number(currStatus);
     if(currStatus == 1){
-        nextStatus = 2
+        nextStatus = 0;
     }else{
         nextStatus = 1;
     }
@@ -140,9 +145,11 @@ function changeUserStatus(id, currStatus){
         async: true,
         data: {
             userId: id,
-            status: nextStatus
+            status: nextStatus,
+            msg: msg
         },
         success: function(result){
+            console.log(result);
             if(result == 'success'){
                 alert('操作成功');
                 window.location.reload();
