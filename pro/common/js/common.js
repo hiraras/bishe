@@ -182,13 +182,13 @@ function getRandomColor(){
 }
 
 $("#headerLogin").on("click",function(){
-	window.location.href = "login.html";
+	window.location.href = "http://localhost/pro/page/login.html";
 });
 $("#headerRegister").on("click",function(){
-	window.location.href = "register.html";
+	window.location.href = "http://localhost/pro/page/register.html";
 });
-$("#toIndex").on("click",function(){
-	window.location.href = "../index.html";
+$(".toIndex").on("click",function(){
+	window.location.href = "http://localhost/pro/index.html";
 });
 $("#myMsg").css('display','none');
 
