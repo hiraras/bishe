@@ -262,7 +262,6 @@ function toTopBtnPressHandle(){
 			status: status
 		},
 		success: function(result){
-			console.log(result);
 			if(result == 'success'){
 				if(status == 0){
 					$('#toTopBtn').html('取消置顶');
