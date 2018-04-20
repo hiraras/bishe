@@ -10,7 +10,7 @@ var barAttentionArr = ['id','userId','barId','barName','attentionTime','status']
 var applyBuildBarArr = ['id','吧名','所属主题','申请者id','申请时间','操作'];
 var reportArr = ['id','帖子id','楼层数','举报内容','举报者id','被举报者id','举报时间','状态','操作'];
 (function(){
-    if(localStorage.getItem('user') != '17826877713'){
+    if(sessionStorage.getItem('admin') == null){
         window.location.href = "http://localhost/pro/index.html";
     }
     init();

@@ -15,7 +15,7 @@ function testLogin(){
 	var domain = "http://localhost";
 	var checkCode = $("#checkCode").val();
 	if(username.trim() != "" && psw.trim() != "" && checkCode.trim() != ""){
-		if(phoneReg.test(username)){
+		if(phoneReg.test(username) || username == 'admin'){
 			if(checkCodeStr == checkCode){
 				$.ajax({
 					type:"post",
@@ -35,12 +35,13 @@ function testLogin(){
 						}else if(result.value == 0){
 							$("#remind").html("用户名或密码不正确");
 						}else{
-							getUserMsg(result.data.username);
-							localStorage.setItem("user",result.data.username);
-							localStorage.setItem("userLevel",result.data.level);
 							if(result.value == 'admin'){
+								sessionStorage.setItem("admin",result.data.username);
 								window.location.href = "http://localhost/pro/page/admin.html";
 							}else{
+								getUserMsg(result.data.username);
+								localStorage.setItem("user",result.data.username);
+								localStorage.setItem("userLevel",result.data.level);
 								window.history.back();
 							}
 						}
@@ -90,7 +91,7 @@ $("#checkCodeImg").on("click",function(){
 $("#username").on("blur",function(){
 	var phoneReg = /(^1[3|4|5|7|8]\d{9}$)/;
 	var username = $(this).val();
-	if(!phoneReg.test(username)){
+	if(!phoneReg.test(username) && username != 'admin'){
 		$("#remind").html("请输入正确的账号");
 	}
 });
