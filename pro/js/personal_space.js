@@ -30,7 +30,7 @@ $(function () {
 				userData = data.data;
 				init();
 			} else {
-				console.log('用户不存在');
+				alert('用户不存在');
 				window.location.href = "http://localhost/pro/index.html";
 			}
 		}
@@ -156,6 +156,58 @@ function init() {
 	} else {
 		$('#btnInformtion').css('display', 'none');
 		$('#editorUserMsgBtn').css('display', 'none');
+		$('#attentionBtn').css('display','inline-block');
+		$.ajax({
+			url: domain + "/pro/php/getAttentionStatus.php",
+			type: 'get',
+			async: true,
+			data: {
+				userId: userId,
+				username: username
+			},
+			success: function (result) {
+				var status = 0;
+				try{
+					var data = JSON.parse(result);
+					if(data.result == 'none'){
+						status = 0;
+						$('#attentionBtn').html('关注');
+					}else{
+						if(data.data.status == 1){
+							status = 1;
+							$('#attentionBtn').html('已关注');
+						}else{
+							status = 0;
+							$('#attentionBtn').html('关注');
+						}
+					}
+					$('#attentionBtn').click(function(){
+						$.ajax({
+							url: domain + "/pro/php/userAttention.php",
+							type: 'post',
+							async: true,
+							data: {
+								userId: userId,
+								username: username,
+								status: status
+							},
+							success: function (result) {
+								if(result == 'success'){
+									$('#attentionTip').css('display','inline-block').html('操作成功');
+									window.location.reload();
+								}else{
+									$('#attentionTip').css('display','inline-block').html('操作失败');
+									window.location.reload();
+								}
+							}
+						});
+					});
+				}catch(e){
+					console.log(e);
+					alert('未知错误');
+				}
+			}
+		});
 	}
 	$('#userNickname').html(userData.nickname);
 	$('#userHeadImg').attr('src', userData.headImg);
@@ -368,7 +420,6 @@ function createMyInformItems(data) {
 }
 
 function createMyInformItem(data){
-	console.log(data);
 	var informTimeStr = '';	
 	var container = $('<div></div>');
 	container.addClass('inform');

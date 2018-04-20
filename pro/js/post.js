@@ -865,9 +865,11 @@ function createReplysItem(data){
 		$replyItemDiv.addClass('reply_item');
 		var $replyItemHeadImg = $('<img />');
 		$replyItemHeadImg.attr('src',data.value[j].headImg);
-		$replyItemHeadImg.click(function(){
-			window.location.href = "http://localhost/pro/page/personal_space.html?userId="+data.value[0].replyerId;
-		});
+		(function(j){
+			$replyItemHeadImg.click(function(){
+				window.location.href = "http://localhost/pro/page/personal_space.html?userId="+data.value[j].replyerId;
+			});
+		})(j);
 		var $replyContentDiv = $('<div></div>');
 		$replyContentDiv.addClass('reply_content');
 		var $replyTextP = $('<p></p>');

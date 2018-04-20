@@ -74,6 +74,12 @@
     color: #00a9cd;
     border-color: #00a9cd;
 }
+.attention_btn{
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    display: none;
+}
 .feature_list{
     display: flex;
     justify-content: space-between;
@@ -400,4 +406,10 @@
 .have_read_tip{
     color: #cccccc;
     margin-right: 8px;
+}
+.attention_tip{
+    position: absolute;
+    display: none;
+    top: 45px;
+    right: 8px;
 }
