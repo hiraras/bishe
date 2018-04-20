@@ -229,6 +229,7 @@ function init() {
 }
 function switchContent(num) {
 	var item;
+	console.log(num);
 	$('#content').children().remove();
 	$('#content').attr('type', num);
 	$('#content').attr('index', 0);
@@ -249,11 +250,63 @@ function switchContent(num) {
 		case 4:
 			item = getMyAttentionBar(userId);
 			break;
+		case 5:
+			item = getMyAttentionUser();
+			break;
 		default:
 			break;
 	}
 	$('#content').append(item);
 	initIndexBtnPressEvent();
+}
+
+function getMyAttentionUser(){
+	$.ajax({
+		url: domain + "/pro/php/getMyAttentionUser.php",
+		type: 'get',
+		async: true,
+		data: {
+			userId: userId
+		},
+		success: function (result) {
+			try {
+				var data = JSON.parse(result);
+			} catch (e) {
+				console.log(e);
+			}
+			if (data.result) {
+				// console.log(data);
+				createMyAttentionUserItem(data.data);
+			} else {
+				console.log(result);
+				alert('未知错误');
+			}
+		}
+	});
+}
+
+function createMyAttentionUserItem(data) {
+	console.log(data);
+	var $container = $('<div></div>');
+	if (data.length == 0) {
+		var $tip = $('<p></p>');
+		$tip.html('还没有关注任何人!');
+		$tip.addClass('noAttentionBarTip');
+		$container.append($tip);
+	} else {
+		for (var i = 0; i < data.length; i++) {
+			var $div = $('<div></div>');
+			$div.html(data[i].nickname);
+			$div.attr('userId', data[i].attentionedId);
+			$div.attr('userName', data[i].nickname);
+			$div.addClass('my_attention_bar_item');
+			$div.click(function () {
+				window.location.href = "http://localhost/pro/page/personal_space.html?userId=" + $(this).attr('userId');
+			});
+			$container.append($div);
+		}
+	}
+	$('#content').append($container);
 }
 
 function getMyAttentionBar(userId) {
