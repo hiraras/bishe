@@ -1,7 +1,7 @@
 <?php
 require "connect.php";
 $currIndex = $_GET['currIndex'];
-$everyPageItemNum = 3;
+$everyPageItemNum = 30;
 $dataIndex = $currIndex*$everyPageItemNum;
 $sql = "select * from report ORDER BY status DESC limit $dataIndex,$everyPageItemNum";
 $sql2 = "select * from report";

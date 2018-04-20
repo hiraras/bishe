@@ -413,3 +413,9 @@
     top: 45px;
     right: 8px;
 }
+.report_btn{
+    position: absolute;
+    right: 8px;
+    bottom: 25px;
+    display: none;
+}

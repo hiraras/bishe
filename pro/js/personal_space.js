@@ -157,6 +157,31 @@ function init() {
 		$('#btnInformtion').css('display', 'none');
 		$('#editorUserMsgBtn').css('display', 'none');
 		$('#attentionBtn').css('display','inline-block');
+		$('#reportBtn').css('display','inline-block').click(function(){
+			var msg = prompt('请输入举报内容');
+			if(msg == null || msg == ''){
+				return;
+			}
+			$.ajax({
+				type: 'post',
+				url: domain + '/pro/php/sendReport.php',
+				async: true,
+				data: {
+					postId: 0,
+					position: 0,
+					content: msg,
+					reporterId: username,
+					reportederId: userId
+				},
+				success: function(result){
+					if(result == 'success'){
+						alert('已发送举报信息');
+					}else{
+						alert('未知错误');
+					}
+				}
+			});
+		});
 		$.ajax({
 			url: domain + "/pro/php/getAttentionStatus.php",
 			type: 'get',
