@@ -39,12 +39,66 @@
 				<p class="feature_item">已读私信</p>
 			</div>
 			<div class="right" id="right">
-				<div class="chat_item">
+				<!-- <div class="chat_item">
 					<p class="send_nickname">hirara</p>
 					<p class="send_content">这是一个聊i天啊啊啊啊 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</p>
 					<p class="send_time">2018-3-03-16</p>
+				</div> -->
+			</div>
+		</div>
+	</div>
+	<div class="mask" id="sendContainer">
+		<div class="send_area send_bg" id="sendArea">
+			<div class="chat_container" id="chatContainer">
+				<p class="chat_msg_title">内容</p>
+				<div id="chatMsg" class="chat_msg">
 				</div>
 			</div>
+			<ul class="menu">
+				<li id="selectImg">图片</li>
+				<form action="" method="post" enctype="multipart/form-data" name="upload_form" style="display: none" id="uploadImgForm">
+					<input type="file" id="inputSelectImg" accept="image/*" onchange="imgChange(event)" />
+				</form>
+				<li id="selectFace">表情</li>
+			</ul>
+			<div class="editor_area" contenteditable="true" id="editorArea">
+
+			</div>
+			<div class="face_container" id="faceContainer">
+				<img src="../img/proImg/face1.png" class="face" />
+				<img src="../img/proImg/face2.png" class="face" />
+				<img src="../img/proImg/face3.png" class="face" />
+				<img src="../img/proImg/face4.png" class="face" />
+				<img src="../img/proImg/face5.png" class="face" />
+				<img src="../img/proImg/face6.png" class="face" />
+				<img src="../img/proImg/face7.png" class="face" />
+				<img src="../img/proImg/face8.png" class="face" />
+				<img src="../img/proImg/face9.png" class="face" />
+				<img src="../img/proImg/face10.png" class="face" />
+				<img src="../img/proImg/face11.png" class="face" />
+				<img src="../img/proImg/face12.png" class="face" />
+				<img src="../img/proImg/face13.png" class="face" />
+				<img src="../img/proImg/face14.png" class="face" />
+				<img src="../img/proImg/face15.png" class="face" />
+				<img src="../img/proImg/face16.png" class="face" />
+				<img src="../img/proImg/face17.png" class="face" />
+				<img src="../img/proImg/face18.png" class="face" />
+				<img src="../img/proImg/face19.png" class="face" />
+				<img src="../img/proImg/face20.png" class="face" />
+				<img src="../img/proImg/face21.png" class="face" />
+				<img src="../img/proImg/face22.png" class="face" />
+				<img src="../img/proImg/face23.png" class="face" />
+				<img src="../img/proImg/face24.png" class="face" />
+				<img src="../img/proImg/face25.png" class="face" />
+				<img src="../img/proImg/face26.png" class="face" />
+				<img src="../img/proImg/face27.png" class="face" />
+				<img src="../img/proImg/face28.png" class="face" />
+				<img src="../img/proImg/face29.png" class="face" />
+				<img src="../img/proImg/face30.png" class="face" />
+			</div>
+			<button class="submit" id="submit">发布</button>
+			<button class="cancel_submit" id="cancelSubmit">取消</button>
+			<span class="send_tip" id="sendTip">内容为空</span>
 		</div>
 	</div>
 </body>

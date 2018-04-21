@@ -401,7 +401,6 @@ function onSubmitChatMsg() {
 
 //发送事件
 function submitChatMsg() {
-	var barBelong = $('#barName').attr('barName');
 	var chatId = localStorage.getItem('user');
 	var chatContent = $('#editorArea').html().trim();
 	var imgReg = /<img\b[^>]*>/ig;
@@ -433,7 +432,6 @@ function submitChatMsg() {
 			console.log(e);
 		}
 	});
-
 }
 
 function isEditorAreaBlur() {

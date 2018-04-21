@@ -1,4 +1,5 @@
 var domain = 'http://localhost';
+var fileDataArr = [];
 (function(){
     var userId = localStorage.getItem('user');
     if(userId == null){
@@ -27,7 +28,117 @@ function init(){
 			});
 		});
 	});
+	$('.feature_item').first().css({
+		'background': '#00a0cd',
+		'color': '#ffffff',
+	});
+	initBtnClick();
 	switchContent(0);
+}
+
+function initBtnClick(){
+	$('.face').click(function () {
+		if (isEditorAreaBlur()) {
+			var $img = $(this).clone();
+			$img.removeAttr('class');
+			insertHTML($img, $('#editorArea'));
+			$('#faceContainer').css('display', 'none');
+		}
+	});
+	//头像框存在时，如果点击外面部分则消失
+	$('html').click(function (e) {
+		e = e || window.event;
+		var target = e.target || window.srcElement;
+		if (!($(target).hasClass('face_container') || $(target).attr('id') === 'selectFace')) {
+			if ($('#faceContainer').css('display') === 'block') {
+				$('#faceContainer').css('display', 'none');
+			}
+		}
+	});
+
+	$('#selectFace').click(function () {
+		if ($('#faceContainer').css('display') === 'block') {
+			$('#faceContainer').css('display', 'none');
+		} else {
+			$('#faceContainer').css('display', 'block');
+		}
+	});
+	$('#selectImg').click(function () {
+		$('#inputSelectImg').click();
+	});
+	$('#submit').click(function () {
+		onSubmitChatMsg();
+	});
+	$('#cancelSubmit').click(function () {
+		$('#sendContainer').css('display', 'none');
+	});
+}
+
+function onSubmitChatMsg() {
+	var content = $('#editorArea').html();
+	if (content.trim() != '') {
+		$('#sendTip').css('display', 'none');
+		if (fileDataArr.length != 0) {
+			$.ajax({
+				url: domain + "/pro/php/saveTempChatImg.php",
+				type: 'post',
+				async: true,
+				data: {
+					imgsData: fileDataArr
+				},
+				success: function (result) {
+					if (result == 'success') {
+						submitChatMsg();
+					} else {
+						console.log(result);
+						alert('未知错误,图片保存失败!');
+					}
+				},
+				error: function (e) {
+					console.log(e);
+				}
+			});
+		} else {
+			submitChatMsg();
+		}
+	} else {
+		$('#sendTip').css('display', 'inline');
+	}
+}
+
+function submitChatMsg() {
+	var chatId = localStorage.getItem('user');
+	var chatContent = $('#editorArea').html().trim();
+	var imgReg = /<img\b[^>]*>/ig;
+	var chatedId = $('#sendContainer').attr('chatId');
+	if (imgReg.test(chatContent)) {
+		var replaceReg = /postTempImg/g;
+		chatContent = chatContent.replace(replaceReg, 'chatImg');
+	}
+	$('#sendTip').css('display', 'none');
+	$.ajax({
+		url: domain + "/pro/php/sendChatMsg.php",
+		type: 'post',
+		async: true,
+		data: {
+			chatedId: chatedId,
+			chatId: chatId,
+			content: chatContent
+		},
+		success: function (result) {
+			if (result == 'success') {
+				$('#sendTip').css('display', 'inline').html('发布成功');
+				setTimeout(function () {
+					window.location.reload();
+				}, 300);
+			} else {
+				alert('未知错误,发布失败!');
+			}
+		},
+		error: function (e) {
+			console.log(e);
+		}
+	});
 }
 
 function switchContent(num) {
@@ -170,6 +281,14 @@ function createChatItem(data){
 	var titleP = $('<p></p>');
 	titleP.addClass('send_content');
 	titleP.html(chatContent);
+	titleP.click(function(){
+		$('#sendContainer').css('display','block');
+		$('#sendContainer').attr('chatId',data.chatId);
+		$('#chatMsg').html(data.content);
+		if(data.status == 2){
+			changeChatStatus(data.id);
+		}
+	});
 	if (isToday(data.chatTime)) {
 		var chatTime = data.chatTime.substr(11);
 	} else {
@@ -182,10 +301,64 @@ function createChatItem(data){
 		nicknameP.addClass('is_read');
 		titleP.addClass('is_read');
 	}
+	var deleteBtn = $('<button></button>');
+	deleteBtn.html('删除');
+	deleteBtn.click(function(){
+		var msg = confirm('确认删除该私信?');
+		if(msg){
+			deleteChat(data.id);
+		}
+	});
 	container.append(nicknameP);
 	container.append(titleP);
 	container.append(timeP);
+	container.append(deleteBtn);
 	return container;
+}
+
+function deleteChat(id){
+	$.ajax({
+		url: domain + "/pro/php/deleteChat.php",
+		type: 'post',
+		async: true,
+		data: {
+			id: id
+		},
+		success: function (result) {
+			if (result == 'success') {
+				alert('删除成功');
+				window.location.reload();
+			} else {
+				console.log(result);
+				alert('未知错误,删除失败!');
+			}
+		},
+		error: function (e) {
+			console.log(e);
+		}
+	});
+}
+
+function changeChatStatus(id){
+	$.ajax({
+		url: domain + "/pro/php/changeChatStatus.php",
+		type: 'post',
+		async: true,
+		data: {
+			id: id
+		},
+		success: function (result) {
+			if (result == 'success') {
+				console.log('设置成功');
+			} else {
+				console.log(result);
+				alert('未知错误,设置已读失败!');
+			}
+		},
+		error: function (e) {
+			console.log(e);
+		}
+	});
 }
 
 function initIndex() {
@@ -325,11 +498,107 @@ function lastPage() {
 	}
 }
 
+function imgChange(e) {
+	if (isEditorAreaBlur()) {
+		var fileType = e.target.files[0].type;
+		if (fileType.indexOf('image') != -1) {
+			var reader = new FileReader();
+			var file = document.getElementById('inputSelectImg').files[0];
+			reader.readAsDataURL(file);
+			reader.onload = function (e) {
+				var fileData = e.target.result;
+				$.ajax({
+					url: domain + "/pro/php/getTempImgFile.php",
+					type: 'post',
+					async: true,
+					data: {
+						fileData: fileData
+					},
+					success: function (result) {
+						var data = JSON.parse(result);
+						if (data.result == 'success') {
+							var $img = $('<img />');
+							fileDataArr.push(data.filePath);
+							$img.attr('src', data.filePath);
+							insertHTML($img, $('#editorArea'));
+							$('#editorArea').focus();
+							$img.bind('DOMNodeRemoved', function () {
+								removeNotNeedImg(data.filePath);
+							});
+						} else {
+							alert('选择图片失败');
+						}
+					},
+					error: function (e) {
+						console.log(e);
+					}
+				});
+			}
+		} else {
+			alert('只能上传图片');
+		}
+	} else {
+		console.log('焦点不是editorarea');
+	}
+}
 
+function isEditorAreaBlur() {
+	var sel, range, checkNode;
+	if (window.getSelection) {
+		// IE9 and non-IE  
+		sel = window.getSelection();
+		if (sel.anchorNode) {
+			//如果是文本节点
+			if (sel.anchorNode.nodeType == 3) {
+				checkNode = sel.anchorNode.parentNode;
+			} else {
+				checkNode = sel.anchorNode;
+			}
+			//当失去焦点的位置为editorArea或其子元素时，返回true
+			if ($(checkNode).closest('#editorArea').length == 1 && $(checkNode).closest('#editorArea').attr('id') == 'editorArea') {
+				return true;
+			} else {
+				//焦点位置不在editorArea，插入失败
+				return false;
+			}
+		} else {
+			console.log('sel.anchorNode为null');
+		}
+	}
+	return true;
+}
 
-
-
-
+function insertHTML(eleContent, eleContainer) {
+	var sel, range;
+	if (window.getSelection) {
+		// IE9 and non-IE  
+		sel = window.getSelection();
+		if (sel.getRangeAt && sel.rangeCount) {
+			range = sel.getRangeAt(0);
+			range.deleteContents();
+			var el = document.createElement('div');
+			var $el = $(el);
+			$el.append(eleContent);
+			var frag = document.createDocumentFragment(), node, lastNode;
+			while ((node = el.firstChild)) {
+				lastNode = frag.appendChild(node);
+			}
+			range.insertNode(frag);
+			if (lastNode) {
+				range = range.cloneRange();
+				range.setStartAfter(lastNode);
+				range.collapse(true);
+				sel.removeAllRanges();
+				sel.addRange(range);
+			}
+		}
+	} else if (document.selection && document.selection.type != 'Control') {
+		eleContainer.focus(); //在非标准浏览器中 要先让你需要插入html的div 获得焦点  
+		ierange = document.selection.createRange();//获取光标位置  
+		ierange.pasteHTML(eleContent);    //在光标位置插入html 如果只是插入text 则就是fus.text="..."  
+		eleContainer.focus();
+	}
+}
 
 
 
