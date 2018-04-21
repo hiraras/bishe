@@ -238,6 +238,7 @@ function searchPostMsg(postId){
                 $('#creatorPostTime').html(isToday(data.data.createTime)?data.data.createTime.substr(11):data.data.createTime.substr(0,10));
 				$('#postTitle').attr('postId',postId);
 				$('#postTitle').attr('postCreatorId',data.data.creatorId);
+				$('#postTitle').attr('barBelong',data.data.barBelong);
 				$('.master_comment').attr('position',1);
 				$('#userLevel').html('等级:' + getLv(data.data.exp));
 				getPostReplysMsg(postId, 0);
@@ -1105,6 +1106,7 @@ function reportReply(position){
 	var replyerId = $(this).closest('.comment_content').siblings('.user_msg').attr('replyerId');
 	var msg = prompt('请输入举报理由:');
 	var postId = $('#postTitle').attr('postId');
+	var barBelong = $('#postTitle').attr('barBelong');
 	if(msg == null){
 		return ;
 	}
@@ -1117,12 +1119,14 @@ function reportReply(position){
 			position: position,
 			content: msg,
 			reporterId: userId,
-			reportederId: replyerId
+			reportederId: replyerId,
+			barBelong: barBelong
 		},
 		success: function(result){
 			if(result == 'success'){
 				alert('已发送举报信息');
 			}else{
+				console.log(result);
 				alert('未知错误');
 			}
 		}

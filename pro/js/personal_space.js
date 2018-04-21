@@ -113,6 +113,7 @@ function init() {
 			$('#editorMask').css('display', "none");
 			$image.cropper('destroy');
 		});
+		$('#myBar').css('display','block');
 		$('#submitEditorBtn').click(function () {
 			var school = $('#inputSchool').val();
 			var age = $('#inputAge').val();
@@ -190,6 +191,7 @@ function init() {
 	} else {
 		$('#btnInformtion').css('display', 'none');
 		$('#editorUserMsgBtn').css('display', 'none');
+		$('#myBar').css('display','none');
 		$('#attentionBtn').css('display','inline-block');
 		$('#reportBtn').css('display','inline-block').click(function(){
 			var msg = prompt('请输入举报内容');
@@ -342,6 +344,9 @@ function switchContent(num) {
 		case 5:
 			item = getMyAttentionUser();
 			break;
+		case 6:
+			item = getMyBarItem();
+			break;
 		default:
 			break;
 	}
@@ -433,7 +438,55 @@ function createMyAttentionBar(data) {
 		for (var i = 0; i < data.length; i++) {
 			var $div = $('<div></div>');
 			$div.html(data[i].barName + '吧');
-			$div.attr('barId', data[i].barId);
+			$div.attr('barId', data[i].id);
+			$div.attr('barName', data[i].barName);
+			$div.addClass('my_attention_bar_item');
+			$div.click(function () {
+				window.location.href = "http://localhost/pro/page/bar.html?barName=" + $(this).attr('barName');
+			});
+			$container.append($div);
+		}
+	}
+	$('#content').append($container);
+}
+
+function getMyBarItem(){
+	$.ajax({
+		url: domain + "/pro/php/getMyBar.php",
+		type: 'get',
+		async: true,
+		data: {
+			userId: userId
+		},
+		success: function (result) {
+			try {
+				var data = JSON.parse(result);
+			} catch (e) {
+				console.log(e);
+			}
+			if (data.result) {
+				console.log(data);
+				createMyBarItem(data.data);
+			} else {
+				console.log(result);
+				alert('未知错误');
+			}
+		}
+	});
+}
+
+function createMyBarItem(data){
+	var $container = $('<div></div>');
+	if (data.length == 0) {
+		var $tip = $('<p></p>');
+		$tip.html('还没有关注任何吧!');
+		$tip.addClass('noAttentionBarTip');
+		$container.append($tip);
+	} else {
+		for (var i = 0; i < data.length; i++) {
+			var $div = $('<div></div>');
+			$div.html(data[i].barName + '吧');
+			$div.attr('barId', data[i].id);
 			$div.attr('barName', data[i].barName);
 			$div.addClass('my_attention_bar_item');
 			$div.click(function () {
