@@ -207,7 +207,11 @@ function searchPostMsg(postId){
 						toGreatBtnPressHandle();
 					});
 					$('#deletePostBtn').click(function(){
-						deletePostBtnPressHandle();
+						var msg = prompt('请输入你删除帖子的理由');
+						if(msg == null || msg == ''){
+							return ;
+						}
+						deletePostBtnPressHandle(msg);
 					});
 					if(Number(data.data.isTop) == 0){
 						$('#toTopBtn').html('置顶');
@@ -307,14 +311,16 @@ function toGreatBtnPressHandle(){
 	});
 }
 
-function deletePostBtnPressHandle(){
+function deletePostBtnPressHandle(msg){
 	var postId = $('#postTitle').attr('postId');
+	var postCreatorId = $('#postTitle').attr('postCreatorId');
 	$.ajax({
 		type: 'post',
 		url: domain + '/pro/php/deletePost.php',
 		async: true,
 		data: {
-			postId: postId
+			postId: postId,
+			msg: msg
 		},
 		success: function(result){
 			if(result == 'success'){

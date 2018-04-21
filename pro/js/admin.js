@@ -259,6 +259,8 @@ function changePostStatus(id, currStatus) {
         var checkSelect = confirm('确定恢复该帖子?');
         if(checkSelect){
             msg = '已被恢复';
+        }else{
+            return ;
         }
     }
     if (currStatus == 1) {
@@ -383,8 +385,21 @@ function createPostReplyMsgTable(headData, data) {
 
 //删除/恢复评论接口
 function changePostReplyStatus(postId, position, currStatus) {
-    var nextStatus;
+    var nextStatus, msg;
     currStatus = Number(currStatus);
+    if(currStatus == 1){
+        msg = prompt('请输入您的删除理由');
+        if(msg == null || msg == ''){
+            return ;
+        }
+    }else{
+        var checkSelect = confirm('确定恢复该评论?');
+        if(checkSelect){
+            msg = '已被恢复';
+        }else{
+            return;
+        }
+    }
     if (currStatus == 1) {
         nextStatus = 0
     } else {
@@ -397,7 +412,8 @@ function changePostReplyStatus(postId, position, currStatus) {
         data: {
             postId: postId,
             position: position,
-            status: nextStatus
+            status: nextStatus,
+            msg: msg
         },
         success: function (result) {
             if (result == 'success') {
