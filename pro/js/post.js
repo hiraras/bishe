@@ -232,7 +232,10 @@ function searchPostMsg(postId){
 				}
                 sessionStorage.setItem('barName',data.data.barBelong);
                 $('#postTitle').html(data.data.postName);
-                $('#creatorHeadImg').attr('src',data.data.creatorHeadImg);
+				$('#creatorHeadImg').attr('src',data.data.creatorHeadImg);
+				$('#creatorHeadImg').click(function(){
+					window.location.href = "http://localhost/pro/page/personal_space.html?userId="+ data.data.creatorId;
+				});
                 $('#creatorNickName').html(data.data.nickname);
                 $('#commentText').html(data.data.postContent);
                 $('#creatorPostTime').html(isToday(data.data.createTime)?data.data.createTime.substr(11):data.data.createTime.substr(0,10));

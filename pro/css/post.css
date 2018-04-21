@@ -93,6 +93,7 @@
 	height: 80px;
 	margin-top: 20px;
 	border-radius: 4px;
+	cursor: pointer;
 }
 .master_comment .user_msg .user_name{
 	margin-top: 20px;
