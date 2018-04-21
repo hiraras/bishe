@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../common/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../css/cropper.css">
+    <link rel="stylesheet" type="text/css" href="../css/barManage.css" />
+</head>
+
+<body>
+    <!--点击主页left内的主题分类进入，此页中的left显示主题名称和推荐贴吧，右边是所有贴吧-->
+    <div class="header">
+        <ul class="have_login" id="haveLogin">
+            <li id="myRoom">个人中心</li>
+            <li id="myMsg">消息</li>
+            <li class="toIndex">首页</li>
+            <li id="headerImgArea">
+                <img src="../img/defaultHeadImg.jpg" id="headerImg" />
+                <ul class="header_img_menu" id="headerImgMenu">
+                    <li class="header_img_menu_item" id="changePassWord">修改密码</li>
+                    <li class="header_img_menu_item" id="exitLogin">退出</li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="not_login" id="notLogin">
+            <li id="headerRegister">注册</li>
+            <li id="headerLogin">登录</li>
+            <li class="toIndex">首页</li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="content">
+            <div class="main">
+                <div class="intro">
+                    <div>
+                        <img src="../img/2.jpg" alt="" id="barImg" />
+                    </div>
+                    <div class="bar_intro_container">
+                        <h2 id='barName'></h2>
+                        <div class="post_status">
+                            <div class="post_status_item" id='concernNum'></div>
+                            <div class="post_status_item" id='postNum'></div>
+                        </div>
+                        <p class="intro_content" id='barIntroduce'>
+
+                        </p>
+                    </div>
+                    <button class="btn_editor_bar_msg" id="btnEditorBarMsg">
+                        编辑吧资料
+                    </button>
+                </div>
+            </div>
+            <ul class="feature_list" id="featureList">
+                <li>举报信息</li>
+            </ul>
+            <div id="msgContent">
+
+            </div>
+        </div>
+    </div>
+    <div class="mask mask_editor_bar_msg">
+        <div class="editor_bar_msg_content" id="editorBarMsgContent">
+            <img src="../img/1.jpg" alt="" class="bar_img" id="editorBarImg">
+            <br />
+            <p class="input_tip">请输入吧描述</p>
+            <textarea class="input_bar_descript" id="inputBarDescript"></textarea>
+            <p class="bar_editor_submit_tip">&nbsp;</p>
+            <button class="submit_editor_btn" id="submitEditorBtn">提交</button>
+            <button class="submit_editor_btn" id="cancelEditorBtn">取消</button>
+        </div>
+    </div>
+    <div class="mask crop_mask" id="cropperMask">
+        <div class="cropper_container">
+            <div class="img_container" id="imgContainer">
+                <img src="" alt="" id="image" />
+            </div>
+            <button class="select_img_btn" id="selectImgBtn">选择图片</button>
+            <button id="btnGetCropper" class="save_img_btn" data-option='{"maxWidth": 4096,"maxHeight": 4096}' data-method="getCroppedCanvas">保存</button>
+            <button class="cancel_select_img_btn" id="cancelSelectBtn">取消</button>
+            <input type="file" id="inputImage" style="display: none" />
+        </div>
+    </div>
+</body>
+<script src="../js/jquery/jquery-1.8.3.min.js"></script>
+<script src="../common/js/common.js"></script>
+<script src="../js/cropper.js"></script>
+<script src="../js/barManage.js"></script>
+
+</html>

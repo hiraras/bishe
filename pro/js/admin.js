@@ -8,7 +8,7 @@ var postReply = ['id', '所属帖子id', '楼层数', '发布时间', '内容', 
 var barsArr = ['id', '吧名', '吧主id', '创吧时间', '所属主题', '关注数', '吧描述', '吧头像', '创吧者id', '状态', '帖子数', '操作'];
 var barAttentionArr = ['id', 'userId', 'barId', 'barName', 'attentionTime', 'status'];
 var applyBuildBarArr = ['id', '吧名', '所属主题', '申请者id', '申请时间', '操作'];
-var reportArr = ['id', '帖子id', '楼层数', '举报内容', '举报者id', '被举报者id', '举报时间', '状态', '所属吧', '操作'];
+var reportArr = ['id', '帖子id', '楼层数', '举报内容', '举报者id', '被举报者id', '举报时间', '状态', '所属吧', '处理人', '操作'];
 var userApply = ['id', '申请者id', '内容', '时间', '状态', '操作'];
 
 (function () {
@@ -549,7 +549,8 @@ function changeReportStatus() {
         url: domain + '/pro/php/changeReportStatus.php',
         async: true,
         data: {
-            id: id
+            id: id,
+            optioner: 0
         },
         success: function (result) {
             if (result == 'success') {

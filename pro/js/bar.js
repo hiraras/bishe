@@ -266,11 +266,14 @@ function getBarMsg(data){
 	if(data.master == localStorage.getItem('user')){
 		$('#btnEditorBarMsg').css('display','inline-block');
 		$('#btnEditorBarMsg').click(function(){
-			console.log(1);
 			$('.mask_editor_bar_msg').css('display','inline-block');
+		});
+		$('#barManage').css('display','inline-block').click(function(){
+			window.location.href = "http://localhost/pro/page/bar_manage.html?barName="+data.barName;
 		});
 	}else{
 		$('#btnEditorBarMsg').css('display','none');
+		$('#barManage').css('display','none');
 	}
 	$('#barName').html(data.barName + '吧');
 	$('#barName').attr('barname',data.barName);

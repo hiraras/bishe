@@ -1,7 +1,9 @@
 <?php
 require "connect.php";
 $id = $_POST['id'];
-$sql = "UPDATE report SET status='0' WHERE id = '$id'";
+$optioner = $_POST['optioner'];
+
+$sql = "UPDATE report SET status='0', optioner='$optioner' WHERE id = '$id'";
 $result = mysql_query($sql);
 $num = mysql_affected_rows();
 

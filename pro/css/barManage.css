@@ -1,22 +1,16 @@
-.index{
-	position: relative;
-	margin: 20px auto 10px;
-}
 .content{
-	width: 100%;
-	padding-bottom: 60px;
+    border-radius: 8px;
+	overflow: hidden;
+    border: 1px solid #000000;
 }
 .main{
 	width: 100%;
-	border-radius: 8px;
 	box-shadow: 0 0 1px #000000;
 	overflow: hidden;
-	border: 1px solid #000000;
-	position: relative;
+    position: relative;
 }
 .main .intro{
-	height: 150px;
-	position: relative;
+    height: 150px;
 }
 .main .intro>div{
 	float: left;
@@ -36,6 +30,9 @@
 	vertical-align: top;
 	margin-top: 10px;
 	margin-left: 20px;
+}
+.intro .bar_intro_container{
+    width: 800px;
 }
 .post_status_item{
 	display: inline-block;
@@ -78,118 +75,6 @@
 	margin-right: 50px;
 	margin-top: 50px;
 	padding: 0 20px;
-}
-.posts{
-	width: 100%;
-	border-top: 2px solid #000000;
-}
-.posts .post{
-	padding: 10px 14px;
-	border-bottom: 1px solid #cccccc;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-}
-.post .post_content{
-	
-}
-.posts .post .is_top{
-	background: #00a9cd;
-	border-radius: 4px;
-	padding: 5px;
-	width: 40px;
-	text-align: center;
-	margin-right: 5px;
-}
-.posts .post .post_title_text{
-	line-height: 30px;
-	height: 30px;
-	overflow: hidden;
-	color: #00a9cd;
-	cursor: pointer;
-}
-.posts .post .post_title_text:hover{
-	text-decoration: underline;
-}
-.posts .post .is_great{
-	background: #FF0000;
-	border-radius: 4px;
-	padding: 5px;
-	margin-right: 5px;
-}
-.posts .post .post_title_container{
-	display: flex;
-	align-items: center;
-}
-.post .post_img_container{
-	margin-top: 10px;
-	min-height: 50px;
-}
-.post .post_img_container .post_img{
-	height: 100px;
-	max-width: 134px;
-	cursor: pointer;
-}
-.post .post_msg{
-	display: flex;
-	justify-content: space-around;
-	flex-direction: column;
-	margin-left: 30px;
-	min-width: 128px;
-}
-.post .post_msg .master_msg{
-	display: flex;
-	align-items: center;
-}
-.post .post_msg .reply_num_msg{
-	display: flex;
-	align-items: center;
-}
-.post .post_msg .post_msg_people_img{
-	width: 24px;
-	height: 24px;
-}
-.post .post_msg .post_msg_reply_img{
-	width: 24px;
-	height: 24px;
-}
-.post .post_msg p{
-	display: inline-block;
-}
-.post .post_msg .post_time{
-	text-align: left;
-}
-.intro .bar_intro_container{
-	height: 100%;
-	width: 740px;
-}
-.post .post_content_intro{
-	margin: 5px 0;
-	height: 25px;
-	overflow: hidden;
-}
-.post .post_content_intro img{
-	height: 21px;
-}
-.no_post_tip{
-	color: blue;
-	padding: 8px 10px;
-	border-bottom: 1px solid black;
-	display: none;
-}
-.btn_editor_bar_msg{
-	padding: 5px 8px;
-	border: 1px solid black;
-	border-radius: 3px;
-	background: white;
-	float: right;
-	margin-top: 10px;
-	margin-right: 50px;
-	cursor: pointer;
-}
-.btn_editor_bar_msg:hover{
-	border: 1px solid #00a9cd;
-	color: #00a9cd;
 }
 .mask{
 	position: absolute;
@@ -313,22 +198,84 @@
 	text-align: center;
 	margin-bottom: 10px;
 }
-.bar_manage{
-	position: absolute;
-	right: 50px;
-	bottom: 10px;
+.btn_editor_bar_msg{
+	padding: 5px 8px;
+	border: 1px solid black;
+	border-radius: 3px;
+	background: white;
+    position: absolute;
+    bottom: 20px;
+    right: 15px;
+	cursor: pointer;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.btn_editor_bar_msg:hover{
+	border: 1px solid #00a9cd;
+	color: #00a9cd;
+}
+.feature_list{
+    display: flex;
+    justify-content: space-between;
+}
+.feature_list li{
+    text-align: center;
+    cursor: pointer;
+    height: 60px;
+    line-height: 60px;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    width: 25%;
+    -ms-touch-action: none;
+    touch-action: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    flex: 1;
+}
+.feature_list li:hover{
+    color: #00a9cd;
+}
+.feature_list li:last-child{
+    border-right: 0px solid #000000;
+}
+.feature_list li:first-child{
+    border-bottom: none;
+}
+.my_reports .report{
+    border: 1px solid #00a9cd;
+    border-radius: 4px;
+    padding: 10px 8px;
+    margin-bottom: 15px;
+}
+.my_reports .reporter{
+    margin-bottom: 10px;
+}
+.my_reports .report_content{
+    margin-bottom: 10px;
+}
+.my_reports .report_wrapper{
+    display: flex;
+    justify-content: space-between;
+}
+.my_reports .report_btn{
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    padding: 5px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.my_reports .report_btn:hover{
+    color: #00a9cd;
+    border-color: #00a9cd;
+}
+.optioner{
+    color: #000000;
+    margin-right: 8px;
+}
+.index li{
+    margin-right: 8px;
+}
+.index{
+    margin-bottom: 10px;
+}
