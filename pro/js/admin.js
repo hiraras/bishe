@@ -1,6 +1,6 @@
 var featureNum = 0;
 var domain = 'http://localhost';
-var userInfoArr = ['id', '账号', '昵称', '创号时间', '头像', '经验值', '地址', '年龄', '学校', '发帖数', '状态', '操作'];
+var userInfoArr = ['id', '账号', '昵称', '创号时间', '头像', '经验值', '地址', '年龄', '学校', '签到状态', '今日经验', '发帖数', '状态', '操作'];
 var sortBarArr = ['id', '分类名', '状态'];
 var replyToReplyArr = ['id', 'postBelongId', 'position', 'replyTime', 'replyerId', 'replyerNickname', 'replyerHeadImg', 'content', 'status'];
 var postsArr = ['id', '标题', '所属吧', '楼主id', '发帖时间', '置顶', '加精', '状态', '内容', '楼主昵称', '吧主', '操作'];
@@ -248,10 +248,21 @@ function createPostMsgTable(headData, data) {
 
 //删除/恢复帖子接口
 function changePostStatus(id, currStatus) {
-    var nextStatus;
+    var nextStatus, msg;
     currStatus = Number(currStatus);
+    if(currStatus == 1){
+        msg = prompt('请输入您的删帖理由');
+        if(msg == null || msg == ''){
+            return ;
+        }
+    }else{
+        var checkSelect = confirm('确定恢复该帖子?');
+        if(checkSelect){
+            msg = '已被恢复';
+        }
+    }
     if (currStatus == 1) {
-        nextStatus = 0
+        nextStatus = 0;
     } else {
         nextStatus = 1;
     }
@@ -261,7 +272,8 @@ function changePostStatus(id, currStatus) {
         async: true,
         data: {
             postId: id,
-            status: nextStatus
+            status: nextStatus,
+            msg: msg
         },
         success: function (result) {
             if (result == 'success') {
