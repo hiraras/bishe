@@ -1,6 +1,7 @@
 var domain = 'http://localhost';
 var userId = '';
 var userData = {};
+var fileDataArr = [];
 $(function () {
 	var pageUrl = window.location.href;
 	var urlParams = pageUrl.substr(pageUrl.indexOf('?') + 1).split('&');
@@ -35,7 +36,28 @@ $(function () {
 			}
 		}
 	});
+	//测试页面刷新或关闭，删除掉已经保存到本地的图片文件
+	//结果直接关闭浏览器的话不会执行
+	window.onbeforeunload = function () {
+		for (var i = 0; i < fileDataArr.length; i++) {
+			removeNotNeedImg(fileDataArr[i]);
+		}
+	}
 });
+
+function removeNotNeedImg(imgPath) {
+	$.ajax({
+		type: 'get',
+		url: domain + "/pro/php/removeTempImg.php",
+		async: true,
+		data: {
+			imgPath: imgPath
+		},
+		success: function (result) {
+			console.log('remove ' + result);
+		}
+	});
+}
 function initCropper() {
 	'use strict';
 	var console = window.console || { log: function () { } };
@@ -113,7 +135,7 @@ function init() {
 			$('#editorMask').css('display', "none");
 			$image.cropper('destroy');
 		});
-		$('#myBar').css('display','block');
+		$('#myBar').css('display', 'block');
 		$('#submitEditorBtn').click(function () {
 			var school = $('#inputSchool').val();
 			var age = $('#inputAge').val();
@@ -154,10 +176,10 @@ function init() {
 				$('#editResultTip').html('内容为空');
 			}
 		});
-		$('#applyBtn').css('display','inline-block').click(function(){
+		$('#applyBtn').css('display', 'inline-block').click(function () {
 			var msg = prompt('请输入申请的内容');
-			if(msg == null || msg == ''){
-				return ;
+			if (msg == null || msg == '') {
+				return;
 			}
 			$.ajax({
 				type: 'post',
@@ -167,35 +189,53 @@ function init() {
 					content: msg,
 					applyerId: username
 				},
-				success: function(result){
-					if(result == 'success'){
+				success: function (result) {
+					if (result == 'success') {
 						alert('已发送申请信息');
-					}else{
+					} else {
 						alert('未知错误');
 					}
 					window.location.reload();
 				}
 			});
 		});
-		$('#signBtn').css('display','inline-block').click(function(){
+		$('#signBtn').css('display', 'inline-block').click(function () {
 			addExpNoLimit(userId, 5, signResult);
 		});
-		if(userData.isSign == 1){
+		if (userData.isSign == 1) {
 			$('#signBtn').addClass('is_sign_btn');
 			$('#signBtn').attr('disabled', true);
 			$('#signBtn').html('已签到');
-		}else{
+		} else {
 			$('#signBtn').addClass('is_not_sign_btn');
 			$('#signBtn').html('签到');
 		}
+		$('#chatBtn').css('display', 'none');
 	} else {
 		$('#btnInformtion').css('display', 'none');
 		$('#editorUserMsgBtn').css('display', 'none');
-		$('#myBar').css('display','none');
-		$('#attentionBtn').css('display','inline-block');
-		$('#reportBtn').css('display','inline-block').click(function(){
+		$('#myBar').css('display', 'none');
+		$('#attentionBtn').css('display', 'inline-block');
+		$('#chatBtn').css('display', 'inline-block').click(function () {
+			$('#sendContainer').css('display', 'inline-block');
+		});
+		$('#cancelSubmit').click(function () {
+			$('#sendContainer').css('display', 'none');
+		});
+		initSendAreaBtnsPressEvent();
+		//头像框存在时，如果点击外面部分则消失
+		$('html').click(function (e) {
+			e = e || window.event;
+			var target = e.target || window.srcElement;
+			if (!($(target).hasClass('face_container') || $(target).attr('id') === 'selectFace')) {
+				if ($('#faceContainer').css('display') === 'block') {
+					$('#faceContainer').css('display', 'none');
+				}
+			}
+		});
+		$('#reportBtn').css('display', 'inline-block').click(function () {
 			var msg = prompt('请输入举报内容');
-			if(msg == null || msg == ''){
+			if (msg == null || msg == '') {
 				return;
 			}
 			$.ajax({
@@ -209,10 +249,10 @@ function init() {
 					reporterId: username,
 					reportederId: userId
 				},
-				success: function(result){
-					if(result == 'success'){
+				success: function (result) {
+					if (result == 'success') {
 						alert('已发送举报信息');
-					}else{
+					} else {
 						alert('未知错误');
 					}
 					window.location.reload();
@@ -229,21 +269,21 @@ function init() {
 			},
 			success: function (result) {
 				var status = 0;
-				try{
+				try {
 					var data = JSON.parse(result);
-					if(data.result == 'none'){
+					if (data.result == 'none') {
 						status = 0;
 						$('#attentionBtn').html('关注');
-					}else{
-						if(data.data.status == 1){
+					} else {
+						if (data.data.status == 1) {
 							status = 1;
 							$('#attentionBtn').html('已关注');
-						}else{
+						} else {
 							status = 0;
 							$('#attentionBtn').html('关注');
 						}
 					}
-					$('#attentionBtn').click(function(){
+					$('#attentionBtn').click(function () {
 						$.ajax({
 							url: domain + "/pro/php/userAttention.php",
 							type: 'post',
@@ -254,17 +294,17 @@ function init() {
 								status: status
 							},
 							success: function (result) {
-								if(result == 'success'){
-									$('#attentionTip').css('display','inline-block').html('操作成功');
+								if (result == 'success') {
+									$('#attentionTip').css('display', 'inline-block').html('操作成功');
 									window.location.reload();
-								}else{
-									$('#attentionTip').css('display','inline-block').html('操作失败');
+								} else {
+									$('#attentionTip').css('display', 'inline-block').html('操作失败');
 									window.location.reload();
 								}
 							}
 						});
 					});
-				}catch(e){
+				} catch (e) {
 					console.log(e);
 					alert('未知错误');
 				}
@@ -290,15 +330,224 @@ function init() {
 	});
 	switchContent(0);
 }
+
+function initSendAreaBtnsPressEvent() {
+	$('.face').click(function () {
+		if (isEditorAreaBlur()) {
+			var $img = $(this).clone();
+			$img.removeAttr('class');
+			insertHTML($img, $('#editorArea'));
+			$('#faceContainer').css('display', 'none');
+		}
+	});
+	//头像框存在时，如果点击外面部分则消失
+	$('html').click(function (e) {
+		e = e || window.event;
+		var target = e.target || window.srcElement;
+		if (!($(target).hasClass('face_container') || $(target).attr('id') === 'selectFace')) {
+			if ($('#faceContainer').css('display') === 'block') {
+				$('#faceContainer').css('display', 'none');
+			}
+		}
+	});
+
+	$('#selectFace').click(function () {
+		if ($('#faceContainer').css('display') === 'block') {
+			$('#faceContainer').css('display', 'none');
+		} else {
+			$('#faceContainer').css('display', 'block');
+		}
+	});
+	$('#selectImg').click(function () {
+		$('#inputSelectImg').click();
+	});
+	$('#submit').click(function () {
+		onSubmitChatMsg();
+	});
+}
+
+//点击发送按钮事件
+function onSubmitChatMsg() {
+	var content = $('#editorArea').html();
+	if (content.trim() != '') {
+		$('#sendTip').css('display', 'none');
+		if (fileDataArr.length != 0) {
+			$.ajax({
+				url: domain + "/pro/php/saveTempChatImg.php",
+				type: 'post',
+				async: true,
+				data: {
+					imgsData: fileDataArr
+				},
+				success: function (result) {
+					if (result == 'success') {
+						submitChatMsg();
+					} else {
+						console.log(result);
+						alert('未知错误,图片保存失败!');
+					}
+				},
+				error: function (e) {
+					console.log(e);
+				}
+			});
+		} else {
+			submitChatMsg();
+		}
+	} else {
+		$('#sendTip').css('display', 'inline');
+	}
+}
+
+//发送事件
+function submitChatMsg() {
+	var barBelong = $('#barName').attr('barName');
+	var chatId = localStorage.getItem('user');
+	var chatContent = $('#editorArea').html().trim();
+	var imgReg = /<img\b[^>]*>/ig;
+	if (imgReg.test(chatContent)) {
+		var replaceReg = /postTempImg/g;
+		chatContent = chatContent.replace(replaceReg, 'chatImg');
+	}
+	$('#sendTip').css('display', 'none');
+	$.ajax({
+		url: domain + "/pro/php/sendChatMsg.php",
+		type: 'post',
+		async: true,
+		data: {
+			chatedId: userId,
+			chatId: chatId,
+			content: chatContent
+		},
+		success: function (result) {
+			if (result == 'success') {
+				$('#sendTip').css('display', 'inline').html('发布成功');
+				setTimeout(function () {
+					window.location.reload();
+				}, 300);
+			} else {
+				alert('未知错误,发布失败!');
+			}
+		},
+		error: function (e) {
+			console.log(e);
+		}
+	});
+
+}
+
+function isEditorAreaBlur() {
+	var sel, range, checkNode;
+	if (window.getSelection) {
+		// IE9 and non-IE  
+		sel = window.getSelection();
+		if (sel.anchorNode) {
+			//如果是文本节点
+			if (sel.anchorNode.nodeType == 3) {
+				checkNode = sel.anchorNode.parentNode;
+			} else {
+				checkNode = sel.anchorNode;
+			}
+			//当失去焦点的位置为editorArea或其子元素时，返回true
+			if ($(checkNode).closest('#editorArea').length == 1 && $(checkNode).closest('#editorArea').attr('id') == 'editorArea') {
+				return true;
+			} else {
+				//焦点位置不在editorArea，插入失败
+				return false;
+			}
+		} else {
+			console.log('sel.anchorNode为null');
+		}
+	}
+	return true;
+}
+
+//在可编辑div中光标处插入对象(图片)
+function insertHTML(eleContent, eleContainer) {
+	var sel, range;
+	if (window.getSelection) {
+		// IE9 and non-IE  
+		sel = window.getSelection();
+		if (sel.getRangeAt && sel.rangeCount) {
+			range = sel.getRangeAt(0);
+			range.deleteContents();
+			var el = document.createElement('div');
+			var $el = $(el);
+			$el.append(eleContent);
+			var frag = document.createDocumentFragment(), node, lastNode;
+			while ((node = el.firstChild)) {
+				lastNode = frag.appendChild(node);
+			}
+			range.insertNode(frag);
+			if (lastNode) {
+				range = range.cloneRange();
+				range.setStartAfter(lastNode);
+				range.collapse(true);
+				sel.removeAllRanges();
+				sel.addRange(range);
+			}
+		}
+	} else if (document.selection && document.selection.type != 'Control') {
+		eleContainer.focus(); //在非标准浏览器中 要先让你需要插入html的div 获得焦点  
+		ierange = document.selection.createRange();//获取光标位置  
+		ierange.pasteHTML(eleContent);    //在光标位置插入html 如果只是插入text 则就是fus.text="..."  
+		eleContainer.focus();
+	}
+}
+
+function imgChange(e) {
+	if (isEditorAreaBlur()) {
+		var fileType = e.target.files[0].type;
+		if (fileType.indexOf('image') != -1) {
+			var reader = new FileReader();
+			var file = document.getElementById('inputSelectImg').files[0];
+			reader.readAsDataURL(file);
+			reader.onload = function (e) {
+				var fileData = e.target.result;
+				$.ajax({
+					url: domain + "/pro/php/getTempImgFile.php",
+					type: 'post',
+					async: true,
+					data: {
+						fileData: fileData
+					},
+					success: function (result) {
+						var data = JSON.parse(result);
+						if (data.result == 'success') {
+							var $img = $('<img />');
+							fileDataArr.push(data.filePath);
+							$img.attr('src', data.filePath);
+							insertHTML($img, $('#editorArea'));
+							$('#editorArea').focus();
+							$img.bind('DOMNodeRemoved', function () {
+								removeNotNeedImg(data.filePath);
+							});
+						} else {
+							alert('选择图片失败');
+						}
+					},
+					error: function (e) {
+						console.log(e);
+					}
+				});
+			}
+		} else {
+			alert('只能上传图片');
+		}
+	} else {
+		console.log('焦点不是editorarea');
+	}
+}
+
 //签到回调函数
-function signResult(result){
-	if(result){
+function signResult(result) {
+	if (result) {
 		changeSignStatus();
-	}else{
+	} else {
 		alert('未知错误');
 	}
 }
-function changeSignStatus(){
+function changeSignStatus() {
 	$.ajax({
 		url: domain + "/pro/php/changeSignStatus.php",
 		type: 'post',
@@ -307,10 +556,10 @@ function changeSignStatus(){
 			userId: userId
 		},
 		success: function (result) {
-			if(result == 'success'){
+			if (result == 'success') {
 				alert('签到成功');
 				window.location.reload();
-			}else{
+			} else {
 				alert('未知错误');
 				window.location.reload();
 			}
@@ -320,7 +569,6 @@ function changeSignStatus(){
 
 function switchContent(num) {
 	var item;
-	console.log(num);
 	$('#content').children().remove();
 	$('#content').attr('type', num);
 	$('#content').attr('index', 0);
@@ -354,7 +602,7 @@ function switchContent(num) {
 	initIndexBtnPressEvent();
 }
 
-function getMyAttentionUser(){
+function getMyAttentionUser() {
 	$.ajax({
 		url: domain + "/pro/php/getMyAttentionUser.php",
 		type: 'get',
@@ -450,7 +698,7 @@ function createMyAttentionBar(data) {
 	$('#content').append($container);
 }
 
-function getMyBarItem(){
+function getMyBarItem() {
 	$.ajax({
 		url: domain + "/pro/php/getMyBar.php",
 		type: 'get',
@@ -475,7 +723,7 @@ function getMyBarItem(){
 	});
 }
 
-function createMyBarItem(data){
+function createMyBarItem(data) {
 	var $container = $('<div></div>');
 	if (data.length == 0) {
 		var $tip = $('<p></p>');
@@ -614,14 +862,14 @@ function createMyInformItems(data) {
 	return container;
 }
 
-function createMyInformItem(data){
-	var informTimeStr = '';	
+function createMyInformItem(data) {
+	var informTimeStr = '';
 	var container = $('<div></div>');
 	container.addClass('inform');
-	container.attr('informId',data.id);
+	container.attr('informId', data.id);
 	var informer = $('<p></p>');
 	informer.addClass('informer');
-	informer.html(data.informNickname+':');
+	informer.html(data.informNickname + ':');
 	var informContent = $('<p></p>');
 	informContent.addClass('inform_content');
 	informContent.html(data.informContent);
@@ -629,25 +877,25 @@ function createMyInformItem(data){
 	informWrapper.addClass('inform_wrapper');
 	var informTime = $('<span></span>');
 	informTime.addClass('inform_time');
-	if(isToday(data.informTime)){
+	if (isToday(data.informTime)) {
 		informTimeStr = data.informTime.substr(11);
-	}else{
-		informTimeStr = data.informTime.substr(0,10);
+	} else {
+		informTimeStr = data.informTime.substr(0, 10);
 	}
 	informTime.html(informTimeStr);
 	informWrapper.append(informTime);
-	if(data.status == 1){
+	if (data.status == 1) {
 		var informBtn = $('<button></button>');
 		informBtn.addClass('inform_btn');
 		informBtn.html('确定');
-		informBtn.click(function(){
+		informBtn.click(function () {
 			var optionResult = confirm('确认设置为已读？');
-			if(optionResult){
+			if (optionResult) {
 				changeInformStatus.call(this);
 			}
 		});
 		informWrapper.append(informBtn);
-	}else{
+	} else {
 		var haveReadTip = $('<span></span>');
 		haveReadTip.addClass('have_read_tip');
 		haveReadTip.html('已读');
@@ -661,7 +909,7 @@ function createMyInformItem(data){
 }
 
 //将通知状态变为已读接口
-function changeInformStatus(){
+function changeInformStatus() {
 	var id = $(this).closest('.inform').attr('informId');
 	id = Number(id);
 	$.ajax({
@@ -671,11 +919,11 @@ function changeInformStatus(){
 		data: {
 			id: id
 		},
-		success: function(result){
-			if(result == 'success'){
+		success: function (result) {
+			if (result == 'success') {
 				alert('设置成功');
 				window.location.reload();
-			}else{
+			} else {
 				console.log(result);
 				alert('未知错误');
 			}
@@ -990,15 +1238,15 @@ function initBtnEvent() {
 					}
 				}
 			});
-      /*
-      if(result){
-				//$('#resultImgContainer').html(result);
-				//点击下载(通过设置a标签href为文件url)
-        if(!$download.hasClass('disabled')){
-          $download.attr('href', result.toDataURL(uploadedImageType));
-        }
-      }
-      */
+			/*
+			if(result){
+					  //$('#resultImgContainer').html(result);
+					  //点击下载(通过设置a标签href为文件url)
+			  if(!$download.hasClass('disabled')){
+				$download.attr('href', result.toDataURL(uploadedImageType));
+			  }
+			}
+			*/
 		}
 	});
 }

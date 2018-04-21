@@ -252,6 +252,9 @@ $('#exitLogin').click(function(){
 $('#changePassWord').click(function(){
 	window.location.href = 'http://localhost/pro/page/changePassWord.html';
 });
+$('#chat').click(function(){
+	window.location.href = 'http://localhost/pro/page/chat.html';
+});
 
 
 //判断所日期是否为今天
@@ -275,6 +278,7 @@ $('#myRoom').click(function(){
 	var username = localStorage.getItem('user');
 	window.location.href = 'http://localhost/pro/page/personal_space.html?userId='+username;
 });
+
 //将时间转化为具体年数，包括小数点
 function barAge(timeStr){
 	var createTime = new Date(timeStr);

@@ -449,3 +449,18 @@
 .is_sign_btn:hover{
     color: white;
 }
+.chat_btn{
+    position: absolute;
+    right: 55px;
+    bottom: 25px;
+    display: none;
+}
+.send_bg{
+    background: white;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 130px;
+}
+.send_bg .face_container{
+    top: 55px;
+}

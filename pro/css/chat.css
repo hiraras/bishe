@@ -1,0 +1,63 @@
+.container{
+    border: 1px solid black;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.page_title{
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 10px;
+    color: white;
+    background: #00a0cd;
+    height: 40px;
+    line-height: 40px;
+}
+.content{
+    display: flex;
+}
+.content .left{
+    border-right: 1px solid black;
+}
+.content .right{
+    flex: 1;
+}
+.feature_item{
+    border-bottom: 1px solid black;
+    cursor: pointer;
+    padding: 10px 8px;
+}
+.feature_item:hover{
+    color: #00a0cd;
+}
+.chat_item{
+    display: flex;
+    justify-content: space-around;
+    flex: 1;
+    padding: 8px 0px;
+    border-bottom: 1px solid black;
+}
+.send_content{
+    width: 740px;
+    height: 21px;
+    overflow: hidden;
+    color: #00a0cd;
+    cursor: pointer;
+}
+.send_nickname{
+    color: #00a0cd;
+    cursor: pointer;
+}
+.is_read{
+    color: gray;
+}
+.index li{
+    margin-right: 10px;
+}
+.index{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+
+

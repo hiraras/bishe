@@ -1,65 +1,64 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>个人中心</title>
-		<link rel="stylesheet" type="text/css" href="../common/css/common.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/cropper.css">
-		<link rel="stylesheet" type="text/css" href="../css/personal_space.css"/>
-	</head>
-	<body>
-		<div class="header">
-			<ul class="have_login" id="haveLogin">
-				<li id="myRoom">个人中心</li>
-				<li id="myMsg">消息</li>
-				<li class="toIndex">首页</li>
-				<li id="headerImgArea">
-					<img src="../img/defaultHeadImg.jpg" id="headerImg"/>
-					<ul class="header_img_menu" id="headerImgMenu">
-						<li class="header_img_menu_item" id="changePassWord">修改密码</li>
-						<li class="header_img_menu_item" id="exitLogin">退出</li>
-					</ul>
-				</li>
-			</ul>
-			<ul class="not_login" id="notLogin">
-				<li id="headerRegister">注册</li>
-				<li id="headerLogin">登录</li>
-				<li class="toIndex">首页</li>
-			</ul>
+
+<head>
+	<meta charset="UTF-8">
+	<title>个人中心</title>
+	<link rel="stylesheet" type="text/css" href="../common/css/common.css" />
+	<link rel="stylesheet" type="text/css" href="../css/cropper.css">
+	<link rel="stylesheet" type="text/css" href="../css/personal_space.css" />
+</head>
+
+<body>
+	<div class="header">
+		<ul class="have_login" id="haveLogin">
+			<li id="myRoom">个人中心</li>
+			<li id="myMsg">消息</li>
+			<li class="toIndex">首页</li>
+			<li id="headerImgArea">
+				<img src="../img/defaultHeadImg.jpg" id="headerImg" />
+				<ul class="header_img_menu" id="headerImgMenu">
+					<li class="header_img_menu_item" id="chat">私信</li>
+					<li class="header_img_menu_item" id="changePassWord">修改密码</li>
+					<li class="header_img_menu_item" id="exitLogin">退出</li>
+				</ul>
+			</li>
+		</ul>
+		<ul class="not_login" id="notLogin">
+			<li id="headerRegister">注册</li>
+			<li id="headerLogin">登录</li>
+			<li class="toIndex">首页</li>
+		</ul>
+	</div>
+	<div class="container">
+		<div class="user_msg">
+			<img src="../img/1.jpg" alt="" class="user_head_img" id="userHeadImg">
+			<p class="user_nickname" id="userNickname"></p>
+			<div class="user_data_container">
+				<span id="myPostNum">发帖数:</span>
+				<span id="barAge">吧龄:</span>
+				<span id="userLv">用户等级:</span>
+			</div>
+			<button class="editor_user_msg_btn" id="editorUserMsgBtn">编辑个人信息</button>
+			<button class="attention_btn" id="attentionBtn">关注</button>
+			<button id="reportBtn" class="report_btn">举报</button>
+			<button id="applyBtn" class="apply_btn">申请</button>
+			<button id="signBtn" class="is_not_sign_btn">签到</button>
+			<button id="chatBtn" class="chat_btn">私信</button>
+			<span id="attentionTip" class="attention_tip">操作成功</span>
 		</div>
-		<div class="container">
-			<div class="user_msg">
-				<img src="../img/1.jpg" alt="" class="user_head_img" id="userHeadImg">
-				<p class="user_nickname" id="userNickname"></p>
-				<div class="user_data_container">
-					<span id="myPostNum">发帖数:</span>
-					<span id="barAge">吧龄:</span>
-					<span id="userLv">用户等级:</span>
-				</div>
-				<button class="editor_user_msg_btn" id="editorUserMsgBtn">编辑个人信息</button>
-				<button class="attention_btn" id="attentionBtn">关注</button>
-				<button id="reportBtn" class="report_btn">举报</button>
-				<button id="applyBtn" class="apply_btn">申请</button>
-				<button id="signBtn" class="is_not_sign_btn">签到</button>
-				<span id="attentionTip" class="attention_tip">操作成功</span>
-			</div>
-			<ul class="feature_list" id="featureList">
-				<li>我的信息</li>
-				<li>我发布的帖子</li>
-				<li>回复过的帖子</li>
-				<li id="btnInformtion">通知</li>
-				<li>关注的吧</li>
-				<li>关注的人</li>
-				<li id="myBar">我的贴吧</li>
-			</ul>
-			<div class="content" id="content">
-				<!-- <div class="contentUserMsgItemContainer">
-					<p id="contentUserMsgSchool" class="contentUserMsgItem">学校:</p>
-					<p id="contentUserMsgAge" class="contentUserMsgItem">年龄:</p>
-					<p id="contentUserMsgAddress" class="contentUserMsgItem">地址:</p>
-				</div> -->
-			</div>
-			<!-- <div class="content posts" id="contentMyPosts">
+		<ul class="feature_list" id="featureList">
+			<li>我的信息</li>
+			<li>我发布的帖子</li>
+			<li>回复过的帖子</li>
+			<li id="btnInformtion">通知</li>
+			<li>关注的吧</li>
+			<li>关注的人</li>
+			<li id="myBar">我的贴吧</li>
+		</ul>
+		<div class="content" id="content">
+		</div>
+		<!-- <div class="content posts" id="contentMyPosts">
 				<span class="not_exist_tip" id="notExistMyPostTip">还没有发表过帖子!</span>
 				<ul class="index myPostsIndex">
 					<li class="paging_btn" id="contentMyPostsFirstPageBtn">首页</li>
@@ -113,34 +112,87 @@
 			<div class="content" id="contentAttendBar">
 				<div class="my_attention_bar_item">跳远吧</div>
 			</div> -->
-		</div>
-		<div class="mask" id="cropperMask">
-			<div class="cropper_container">
-				<div class="img_container" id="imgContainer">
-					<img src="" alt="" id="image" />
-				</div>
-				<button class="select_img_btn" id="selectImgBtn">选择图片</button>
-				<button id="btnGetCropper" class="save_img_btn" data-option='{"maxWidth": 4096,"maxHeight": 4096}' data-method="getCroppedCanvas">保存</button>
-				<button class="cancel_select_img_btn" id="cancelSelectBtn">取消</button>
-				<input type="file" id="inputImage" style="display: none" />
+	</div>
+	<div class="mask" id="cropperMask">
+		<div class="cropper_container">
+			<div class="img_container" id="imgContainer">
+				<img src="" alt="" id="image" />
 			</div>
+			<button class="select_img_btn" id="selectImgBtn">选择图片</button>
+			<button id="btnGetCropper" class="save_img_btn" data-option='{"maxWidth": 4096,"maxHeight": 4096}' data-method="getCroppedCanvas">保存</button>
+			<button class="cancel_select_img_btn" id="cancelSelectBtn">取消</button>
+			<input type="file" id="inputImage" style="display: none" />
 		</div>
-		<div class="mask" id="editorMask">
-			<div class="user_msg_editor_container">
-				<label for="inputSchool">学校:</label>
-				<input type="text" id="inputSchool" placeholder="请输入学校"><br />
-				<label for="age">年龄:</label>
-				<input type="number" id="inputAge" placeholder="请输入年领"><br />
-				<label for="address">居住地:</label>
-				<input type="text" id="inputAddress" placeholder="请输入地址"><br />
-				<span id='editResultTip' class="edit_result_tip"></span>
-				<button class="cancel_submit_btn" id="cancelEditorBtn">取消</button>
-				<button class="submit_editor_btn" id="submitEditorBtn">提交</button>
+	</div>
+	<div class="mask" id="editorMask">
+		<div class="user_msg_editor_container">
+			<label for="inputSchool">学校:</label>
+			<input type="text" id="inputSchool" placeholder="请输入学校">
+			<br />
+			<label for="age">年龄:</label>
+			<input type="number" id="inputAge" placeholder="请输入年领">
+			<br />
+			<label for="address">居住地:</label>
+			<input type="text" id="inputAddress" placeholder="请输入地址">
+			<br />
+			<span id='editResultTip' class="edit_result_tip"></span>
+			<button class="cancel_submit_btn" id="cancelEditorBtn">取消</button>
+			<button class="submit_editor_btn" id="submitEditorBtn">提交</button>
+		</div>
+	</div>
+	<div class="mask" id="sendContainer">
+		<div class="send_area send_bg" id="sendArea">
+			<ul class="menu">
+				<li id="selectImg">图片</li>
+				<form action="" method="post" enctype="multipart/form-data" name="upload_form" style="display: none" id="uploadImgForm">
+					<input type="file" id="inputSelectImg" accept="image/*" onchange="imgChange(event)" />
+				</form>
+				<li id="selectFace">表情</li>
+			</ul>
+			<div class="editor_area" contenteditable="true" id="editorArea">
+
 			</div>
+			<div class="face_container" id="faceContainer">
+				<img src="../img/proImg/face1.png" class="face" />
+				<img src="../img/proImg/face2.png" class="face" />
+				<img src="../img/proImg/face3.png" class="face" />
+				<img src="../img/proImg/face4.png" class="face" />
+				<img src="../img/proImg/face5.png" class="face" />
+				<img src="../img/proImg/face6.png" class="face" />
+				<img src="../img/proImg/face7.png" class="face" />
+				<img src="../img/proImg/face8.png" class="face" />
+				<img src="../img/proImg/face9.png" class="face" />
+				<img src="../img/proImg/face10.png" class="face" />
+				<img src="../img/proImg/face11.png" class="face" />
+				<img src="../img/proImg/face12.png" class="face" />
+				<img src="../img/proImg/face13.png" class="face" />
+				<img src="../img/proImg/face14.png" class="face" />
+				<img src="../img/proImg/face15.png" class="face" />
+				<img src="../img/proImg/face16.png" class="face" />
+				<img src="../img/proImg/face17.png" class="face" />
+				<img src="../img/proImg/face18.png" class="face" />
+				<img src="../img/proImg/face19.png" class="face" />
+				<img src="../img/proImg/face20.png" class="face" />
+				<img src="../img/proImg/face21.png" class="face" />
+				<img src="../img/proImg/face22.png" class="face" />
+				<img src="../img/proImg/face23.png" class="face" />
+				<img src="../img/proImg/face24.png" class="face" />
+				<img src="../img/proImg/face25.png" class="face" />
+				<img src="../img/proImg/face26.png" class="face" />
+				<img src="../img/proImg/face27.png" class="face" />
+				<img src="../img/proImg/face28.png" class="face" />
+				<img src="../img/proImg/face29.png" class="face" />
+				<img src="../img/proImg/face30.png" class="face" />
+			</div>
+			<button class="submit" id="submit">发布</button>
+			<button class="cancel_submit" id="cancelSubmit">取消</button>
+			<span class="send_tip" id="sendTip">内容为空</span>
 		</div>
-	</body>
-	<script src="../js/jquery/jquery-1.9.1.min.js"></script>
-	<script src="../common/js/common.js"></script>
-	<script src="../js/cropper.js"></script>
-	<script src="../js/personal_space.js"></script>
+	</div>
+</body>
+<script src="../js/jquery/jquery-1.9.1.min.js"></script>
+<script src="../common/js/common.js"></script>
+<script src="../js/cropper.js"></script>
+<script src="../js/personal_space.js"></script>
+
 </html>
