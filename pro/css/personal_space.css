@@ -464,3 +464,7 @@
 .send_bg .face_container{
     top: 55px;
 }
+.inform_post_title{
+    color: #00a9cd;
+    cursor: pointer;
+}

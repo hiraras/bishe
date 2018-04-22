@@ -507,6 +507,7 @@ function submitPostMsg(){
 					},300);
 					addExp(creatorId, 5, addExpResult);
 				}else{
+					console.log(result);
 					alert('未知错误,发布失败!');
 				}
 			},

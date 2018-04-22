@@ -4,7 +4,7 @@ $userId = $_GET['userId'];
 $indexNum = $_GET['indexNum'];
 $everyPageItemNum = 3;
 $dataIndex = $indexNum*$everyPageItemNum;
-$sql = "select * from inform where informederId='$userId' ORDER BY status DESC limit $dataIndex,$everyPageItemNum";
+$sql = "select * from inform where informederId='$userId' ORDER BY status DESC,informTime DESC limit $dataIndex,$everyPageItemNum";
 $sql2 = "select * from inform where informederId='$userId'";
 $result = mysql_query($sql);
 $result2 = mysql_query($sql2);

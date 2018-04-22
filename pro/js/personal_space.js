@@ -870,7 +870,42 @@ function createMyInformItem(data) {
 	informer.html(data.informNickname + ':');
 	var informContent = $('<p></p>');
 	informContent.addClass('inform_content');
-	informContent.html(data.informContent);
+	var isReplyInform = data.informContent.indexOf('?postTitle') != -1;
+	var content = $('<span></span>');
+	if (isReplyInform) {
+		if (data.informContent.indexOf('$postTitle') == -1) {
+			var paramsStr = data.informContent.substr(data.informContent.indexOf('?postTitle'));
+			var params = getStrToParams(paramsStr);
+			content.html(data.informContent.substring(0, data.informContent.indexOf('?postTitle')));
+			var postTitleSpan = $('<span></span>');
+			postTitleSpan.html(params.postTitle);
+			postTitleSpan.addClass('inform_post_title');
+			postTitleSpan.click(function () {
+				window.location.href = "http://localhost/pro/page/post.html?postId=" + params.postId;
+			});
+			content.append(postTitleSpan);
+		}else{
+			var paramsStr = data.informContent.substr(data.informContent.indexOf('?postTitle'));
+			var params = getStrToParams(paramsStr);
+			var contentStr = data.informContent.substring(0, data.informContent.indexOf('?postTitle'));
+			var str1 = contentStr.substring(0, contentStr.indexOf('$postTitle'));
+			var str2 = contentStr.substr(contentStr.indexOf('$postTitle') + '$postTitle'.length);
+			content.html(str1);
+			var postTitleSpan = $('<span></span>');
+			postTitleSpan.html(params.postTitle);
+			postTitleSpan.addClass('inform_post_title');
+			postTitleSpan.click(function () {
+				window.location.href = "http://localhost/pro/page/post.html?postId=" + params.postId;
+			});
+			content.append(postTitleSpan);
+			var lastContent = $('<span></span>');
+			lastContent.html(str2 + params.replyContent);
+			content.append(lastContent);
+		}
+	} else {
+		content.html(data.informContent);
+	}
+	informContent.append(content);
 	var informWrapper = $('<div></div>');
 	informWrapper.addClass('inform_wrapper');
 	var informTime = $('<span></span>');

@@ -20,6 +20,19 @@ $result2 = mysql_query($sql2);
 //获得上一次操作数据库时，影响的记录数，不需要参数
 $num2 = mysql_affected_rows();
 if($num2 == 1){
+    $sql3 = "select * from posts where id = '$postId'";
+    $result3 = mysql_query($sql3);
+    $row3 = mysql_fetch_assoc($result3);
+    $postCreatorId = $row3['creatorId'];
+    $postTitle = $row3['postName'];
+    $sql4 = "select * from usermsg where username = '$creatorId'";
+    $result4 = mysql_query($sql4);
+    $row4 = mysql_fetch_assoc($result4);
+    $replyerNickname = $row4['nickname'];
+    $informeder = $postCreatorId;
+    $informContent = $replyerNickname."在".'$postTitle'."回复了你:".'?postTitle='.$postTitle.'&postId='.$postId.'&replyContent='.$replyContent;
+    $informSql = "insert into inform (informer, informederId, informTime, informContent) values (0, '$informeder' , '$now', '$informContent')";
+    $result3 = mysql_query($informSql);
     echo 'success';
 }else{
     echo 'fail';
