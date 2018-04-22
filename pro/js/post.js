@@ -213,6 +213,9 @@ function searchPostMsg(postId){
 						}
 						deletePostBtnPressHandle(msg);
 					});
+					$('#addToCompetitiveBtn').click(function(){
+						toCompetitiveBtnPressHandle();
+					});
 					if(Number(data.data.isTop) == 0){
 						$('#toTopBtn').html('置顶');
 						$('#toTopBtn').attr('isTop','0');
@@ -226,6 +229,13 @@ function searchPostMsg(postId){
 					}else{
 						$('#toGreatBtn').html('取消加精');
 						$('#toGreatBtn').attr('isGreat','1');
+					}
+					if(Number(data.data.isBelongCompetitive) == 0){
+						$('#addToCompetitiveBtn').html('加入精品区');
+						$('#addToCompetitiveBtn').attr('isBelongCompetitive','0');
+					}else{
+						$('#addToCompetitiveBtn').html('从精品区删除');
+						$('#addToCompetitiveBtn').attr('isBelongCompetitive','1');
 					}
 				}else{
 					$('#postOptionBtnContainer').css('display','none');
@@ -273,6 +283,7 @@ function toTopBtnPressHandle(){
 		},
 		success: function(result){
 			if(result == 'success'){
+				alert('操作成功');
 				if(status == 0){
 					$('#toTopBtn').html('取消置顶');
 					$('#toTopBtn').attr('isTop','1');
@@ -281,6 +292,7 @@ function toTopBtnPressHandle(){
 					$('#toTopBtn').attr('isTop','0');
 				}
 			}else{
+				console.log(result);
 				alert('发生未知错误');
 			}
 		}
@@ -299,16 +311,46 @@ function toGreatBtnPressHandle(){
 			status: status
 		},
 		success: function(result){
-			console.log(result);
 			if(result == 'success'){
+				alert('操作成功');
 				if(status == 0){
 					$('#toGreatBtn').html('取消加精');
-					$('#toGreatBtn').attr('isTop','1');
+					$('#toGreatBtn').attr('isGreat','1');
 				}else{
 					$('#toGreatBtn').html('加精');
-					$('#toGreatBtn').attr('isTop','0');
+					$('#toGreatBtn').attr('isGreat','0');
 				}
 			}else{
+				console.log(result);
+				alert('发生未知错误');
+			}
+		}
+	});
+}
+
+function toCompetitiveBtnPressHandle(){
+	var postId = $('#postTitle').attr('postId');
+	var status = Number($('#addToCompetitiveBtn').attr('isBelongCompetitive'));
+	$.ajax({
+		type: 'post',
+		url: domain + '/pro/php/setPostIsCompetitiveStatus.php',
+		async: true,
+		data: {
+			postId: postId,
+			status: status
+		},
+		success: function(result){
+			if(result == 'success'){
+				alert('操作成功');
+				if(status == 0){
+					$('#addToCompetitiveBtn').html('从精品区删除');
+					$('#addToCompetitiveBtn').attr('isBelongCompetitive','1');
+				}else{
+					$('#addToCompetitiveBtn').html('加入精品区');
+					$('#addToCompetitiveBtn').attr('isBelongCompetitive','0');
+				}
+			}else{
+				console.log(result);
 				alert('发生未知错误');
 			}
 		}

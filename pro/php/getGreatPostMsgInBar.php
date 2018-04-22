@@ -6,11 +6,11 @@ $watchType = $_GET['watchType'];
 $everyPageItemNum = 3;
 $dataIndex = $indexNum*$everyPageItemNum;
 if($watchType == 0){
-	$sql = "select * from posts where barBelong='$barName' and isTop=0 and isGreat=0 and status = 1 ORDER BY createTime DESC limit $dataIndex,$everyPageItemNum";
-	$sql2 = "select * from posts where barBelong='$barName' and isTop=0 and isGreat=0 and status = 1";
+	$sql = "select * from posts where barBelong='$barName' and isTop=0 and isGreat=0 and status = 1 and isBelongCompetitive = 1 ORDER BY createTime DESC limit $dataIndex,$everyPageItemNum";
+	$sql2 = "select * from posts where barBelong='$barName' and isTop=0 and isGreat=0 and status = 1 and isBelongCompetitive = 1";
 }else{
-	$sql = "select * from posts where barBelong='$barName' and isTop=0 and isGreat=0 and status = 1 ORDER BY agreeNum DESC,createTime DESC limit $dataIndex,$everyPageItemNum";
-	$sql2 = "select * from posts where barBelong='$barName' and isTop=0 and isGreat=0 and status = 1";
+	$sql = "select * from posts where barBelong='$barName' and isTop=0 and isGreat=0 and status = 1 and isBelongCompetitive = 1 ORDER BY agreeNum DESC,createTime DESC limit $dataIndex,$everyPageItemNum";
+	$sql2 = "select * from posts where barBelong='$barName' and isTop=0 and isGreat=0 and status = 1 and isBelongCompetitive = 1";
 }
 $result = mysql_query($sql);
 $result2 = mysql_query($sql2);

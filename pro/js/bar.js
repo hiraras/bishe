@@ -246,6 +246,34 @@ function init() {
 			removeNotNeedImg(fileDataArr[i]);
 		}
 	}
+	$('.page_feature_item').each(function(index){
+		$(this).click(function(){
+			var barName = $('#barName').attr('barname');
+			$('#postsContainer').attr('pageType', index);
+			getPostPageMsg(barName, 0);
+			$('.page_feature_item').each(function(i){
+				if(index == i){
+					$(this).addClass('is_page_selected');
+				}else{
+					$(this).removeClass('is_page_selected');
+				}
+			});
+		});
+	});
+	$('.watch_model_btn').each(function(index){
+		$(this).click(function(){
+			var barName = $('#barName').attr('barname');
+			$('#postsContainer').attr('watchType', index);
+			getPostPageMsg(barName, 0);
+			$('.watch_model_btn').each(function(i){
+				if(index == i){
+					$(this).addClass('is_btn_selected');
+				}else{
+					$(this).removeClass('is_btn_selected');
+				}
+			});
+		});
+	});
 }
 
 function resizeImg() {
@@ -310,6 +338,8 @@ function searchBarMsg(barName) {
 					$('.index').css('display', 'none');
 				} else {
 					$('#noPostTip').css('display', 'none');
+					$('#postsContainer').attr('pageType', 0);
+					$('#postsContainer').attr('watchType', 0);
 					getPostPageMsg(barName, 0);
 					initPagingIndexClick(barName);
 				}
@@ -591,14 +621,36 @@ function isEditorAreaBlur() {
 }
 
 function getPostPageMsg(barName, indexNum) {
+	var pageType = Number($('#postsContainer').attr('pageType'));
+	var watchType = Number($('#postsContainer').attr('watchType'));
+	var fileName = '';
+	var requestData = {};
+	requestData.barName = barName;
+	requestData.indexNum = indexNum;
+	if(pageType == 0 && watchType == 0){
+		fileName = 'getPostMsgInBar';
+		requestData.watchType = 0;
+	}
+	if(pageType == 0 && watchType == 1){
+		fileName = 'getPostMsgInBar';
+		requestData.watchType = 1;
+	}
+	if(pageType == 1 && watchType == 0){
+		//精品区
+		fileName = 'getGreatPostMsgInBar';
+		requestData.watchType = 0;
+	}
+	if(pageType == 1 && watchType == 1){
+		//精品区
+		fileName = 'getGreatPostMsgInBar';
+		requestData.watchType = 1;
+	}
+	console.log(requestData);
 	$.ajax({
-		url: domain + "/pro/php/getPostMsgInBar.php",
+		url: domain + "/pro/php/"+fileName+".php",
 		type: 'get',
 		async: true,
-		data: {
-			barName: barName,
-			indexNum: indexNum
-		},
+		data: requestData,
 		success: function (result) {
 			var data = JSON.parse(result);
 			if (data.totalNum == 0) {
@@ -633,13 +685,16 @@ function initIndex() {
 	var maxShowIndex = 10;
 	var currIndex = Number($('#postsContainer').attr('index'));
 	var totalNum = Number($('#postsContainer').attr('totalpagenum'));
+	var pageType = Number($('#postsContainer').attr('pageType'));
 	var halfIndexNum = Math.floor(maxShowIndex / 2) + 1;
 	var barName = $('#barName').attr('barName');
 	if (currIndex == 0) {
 		$('#prevBtn').css('display', 'none');
 		$('#firstPageBtn').css('display', 'none');
 		$('#topAndGreatPostContainer').css('display', 'block');
-		getTopAndGreatPostMsg(barName);
+		if(pageType == 0){
+			getTopAndGreatPostMsg(barName);
+		}
 	} else {
 		$('#prevBtn').css('display', 'inline-block');
 		$('#firstPageBtn').css('display', 'inline-block');
@@ -658,6 +713,8 @@ function initIndex() {
 		$('.index_item').each(function (index) {
 			if (index > totalNum) {
 				$(this).css('display', 'none');
+			}else{
+				$(this).css('display', 'inline-block');
 			}
 			if (index == currIndex) {
 				$(this).addClass('currIndex');
@@ -734,7 +791,6 @@ function lastPage(barName) {
 }
 
 function createPostItem(data) {
-	console.log(data);
 	var maxShowImgNum = 4;
 	var imgReg = /<img\b[^>]*postImg[^>]*>/ig;
 	var $postDiv = $('<div></div>');
