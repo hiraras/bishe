@@ -787,6 +787,7 @@ function getData(currIndex) {
 			try {
 				var data = JSON.parse(result);
 			} catch (e) {
+				console.log(result);
 				console.log(e);
 			}
 			if (data.result == 'none') {
@@ -796,6 +797,61 @@ function getData(currIndex) {
 			}
 		}
 	});
+}
+
+function haveAgree(postId, $ele) {
+	var userId = localStorage.getItem('user');
+	if (userId == null) {
+		$ele.click(function () {
+			alert('请先登录');
+		}).html('点赞');
+		return;
+	} else {
+		$.ajax({
+			url: domain + '/pro/php/isHaveAgree.php',
+			data: {
+				userId: userId,
+				postId: postId
+			},
+			async: true,
+			type: 'get',
+			success: function (result) {
+				try {
+					var data = JSON.parse(result);
+					if (data) {
+						$ele.attr('disabled', true);
+						$ele.addClass('have_agree');
+						$ele.html('已点赞');
+					} else {
+						$ele.click(function () {
+							$.ajax({
+								url: domain + '/pro/php/setAgree.php',
+								data: {
+									userId: userId,
+									postId: postId
+								},
+								async: true,
+								type: 'post',
+								success: function (result2) {
+									if (result2 == 'success') {
+										alert('点赞成功');
+										window.location.reload();
+									} else {
+										console.log(result);
+										alert('未知错误,点赞失败');
+										window.location.reload();
+									}
+								}
+							});
+						});
+					}
+				} catch (e) {
+					console.log(result);
+					console.log(e);
+				}
+			}
+		});
+	}
 }
 
 function freshContent(data, currIndex) {
@@ -884,7 +940,7 @@ function createMyInformItem(data) {
 				window.location.href = "http://localhost/pro/page/post.html?postId=" + params.postId;
 			});
 			content.append(postTitleSpan);
-		}else{
+		} else {
 			var paramsStr = data.informContent.substr(data.informContent.indexOf('?postTitle'));
 			var params = getStrToParams(paramsStr);
 			var contentStr = data.informContent.substring(0, data.informContent.indexOf('?postTitle'));
@@ -1136,10 +1192,19 @@ function createPostItem(data) {
 		showCreateTimeStr = data.createTime.substr(0, 10);
 	}
 	$postTimeDiv.html(showCreateTimeStr);
+	var $agreeBtn = $('<button></button>');
+	$agreeBtn.addClass('agree_btn');
+	$agreeBtn.html('点赞');
+	haveAgree(data.id, $agreeBtn);
+	var $agreeNumP = $('<p></p>');
+	// $agreeBtn.addClass('agree_btn');
+	$agreeNumP.html('点赞数:' + data.agreeNum);
 
 	$postMsgDiv.append($masterMsgDiv);
 	$postMsgDiv.append($replyNumMsgDiv);
 	$postMsgDiv.append($postTimeDiv);
+	$postMsgDiv.append($agreeNumP);
+	$postMsgDiv.append($agreeBtn);
 
 	$postDiv.append($postContentDiv);
 	$postDiv.append($postMsgDiv);

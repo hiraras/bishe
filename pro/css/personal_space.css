@@ -278,7 +278,8 @@
 	justify-content: space-around;
 	flex-direction: column;
 	margin-left: 30px;
-	min-width: 128px;
+    min-width: 128px;
+    min-height: 170px;
 }
 .post .post_msg .master_msg{
 	display: flex;
@@ -300,7 +301,7 @@
 	display: inline-block;
 }
 .post .post_msg .post_time{
-	text-align: right;
+	text-align: left;
 }
 .intro .bar_intro_container{
 	height: 100%;
@@ -467,4 +468,16 @@
 .inform_post_title{
     color: #00a9cd;
     cursor: pointer;
+}
+.agree_btn{
+	align-self: flex-start;
+	margin-top: 5px;
+}
+.have_agree{
+	background: gray;
+	color: white;
+}
+.have_agree:hover{
+	background: gray;
+	color: white;
 }

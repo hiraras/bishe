@@ -24,6 +24,10 @@ while($row = mysql_fetch_assoc($result)){
 	$result4 = mysql_query($sql4);
 	$row2 = mysql_fetch_assoc($result4);
 	$row['nickname'] = $row2['nickname'];
+	$sql5 = "select * from agree_post where postId='$postId'";
+	$result5 = mysql_query($sql5);
+	$agreeNum = mysql_num_rows($result5);
+	$row['agreeNum'] = $agreeNum;
 	array_push($arr,$row);
 }
 class ResultData{

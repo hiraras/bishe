@@ -64,6 +64,7 @@
 	flex-direction: column;
 	margin-left: 30px;
 	min-width: 128px;
+	min-height: 170px;
 }
 .post .post_msg .master_msg{
 	display: flex;
@@ -98,4 +99,16 @@
 .index{
 	position: relative;
 	margin: 20px auto 10px;
+}
+.agree_btn{
+	align-self: flex-start;
+	margin-top: 5px;
+}
+.have_agree{
+	background: gray;
+	color: white;
+}
+.have_agree:hover{
+	background: gray;
+	color: white;
 }
