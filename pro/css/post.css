@@ -34,6 +34,8 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	position: relative;
+	min-height: 250px;
 }
 .comment .comment_content .comment_text{
 	padding: 5px;
@@ -41,7 +43,7 @@
 .comment .comment_msg{
 	position: relative;
 	text-align: right;
-	margin-top: 10px;
+	margin-top: 30px;
 	margin-bottom: 10px;
 	margin-right: 20px;
 }
@@ -103,6 +105,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	position: relative;
 }
 .master_comment .comment_content .comment_text{
 	padding: 5px;
@@ -324,5 +327,67 @@
 	margin-bottom: 5px;
 	margin-top: 5px
 }
-
+.edit_btn{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+.mask{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+    display: none;
+}
+.edit_container{
+	position: relative;
+	margin-top: 70px;
+}
+.send_area .editor_area{
+	min-height: 150px;
+	max-height: 200px;
+}
+.send_bg{
+    background: white;
+    width: 80%;
+    margin: 0 auto;
+}
+.send_bg .face_container{
+    top: 55px;
+}
+.history_container{
+	min-height: 100px;
+	max-height: 350px;
+	width: 80%;
+	overflow-y: scroll;
+	background: white;
+	margin: 0 auto;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+.history_container img{
+	max-height: 300px;
+}
+.history_item{
+	padding: 5px 8px 5px 8px;
+	border-bottom: 1px solid black;
+}
+.history_item_time{
+	text-align: right;
+	margin-top: 10px;
+}
+.only_watch_area{
+	width: 80%;
+	margin: 0 auto;
+	background: white;
+	border-top: 1px solid black;
+	padding: 8px 0;
+	display: none;
+}
+.only_watch_area .cancel_submit{
+	margin-left: 10px;
+}
 

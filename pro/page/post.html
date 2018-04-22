@@ -1,146 +1,208 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-		<link rel="stylesheet" type="text/css" href="../common/css/common.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/post.css"/>		
-	</head>
-	<body>
-		<div class="header">
-			<ul class="have_login" id="haveLogin">
-				<li id="myRoom">个人中心</li>
-				<li id="myMsg">消息</li>
-				<li class="toIndex">首页</li>
-				<li id="headerImgArea">
-					<img src="../img/defaultHeadImg.jpg" id="headerImg"/>
-					<ul class="header_img_menu" id="headerImgMenu">
-						<li class="header_img_menu_item" id="chat">私信</li>
-						<li class="header_img_menu_item" id="changePassWord">修改密码</li>
-						<li class="header_img_menu_item" id="exitLogin">退出</li>
-					</ul>
-				</li>
-			</ul>
-			<ul class="not_login" id="notLogin">
-				<li id="headerRegister">注册</li>
-				<li id="headerLogin">登录</li>
-				<li class="toIndex">首页</li>
-			</ul>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../common/css/common.css" />
+	<link rel="stylesheet" type="text/css" href="../css/post.css" />
+</head>
+
+<body>
+	<div class="header">
+		<ul class="have_login" id="haveLogin">
+			<li id="myRoom">个人中心</li>
+			<li id="myMsg">消息</li>
+			<li class="toIndex">首页</li>
+			<li id="headerImgArea">
+				<img src="../img/defaultHeadImg.jpg" id="headerImg" />
+				<ul class="header_img_menu" id="headerImgMenu">
+					<li class="header_img_menu_item" id="chat">私信</li>
+					<li class="header_img_menu_item" id="changePassWord">修改密码</li>
+					<li class="header_img_menu_item" id="exitLogin">退出</li>
+				</ul>
+			</li>
+		</ul>
+		<ul class="not_login" id="notLogin">
+			<li id="headerRegister">注册</li>
+			<li id="headerLogin">登录</li>
+			<li class="toIndex">首页</li>
+		</ul>
+	</div>
+	<div class="container">
+		<div class="search">
+			<input type="text" id="search" class="search_text_insert" />
+			<button class="btn_search">
+				<img src="../img/search.png" />
+			</button>
+			<div class="search_method_container" id="searchMethodContainer" searchType='0'>
+				<button class="select_bar_btn" id="searchMethodBar">吧</button>
+				<button class="select_post_btn unselect_btn" id="searchMethodPost">贴</button>
+			</div>
 		</div>
-		<div class="container">
-			<div class="search">
-				<input type="text" id="search" class="search_text_insert" />
-				<button class="btn_search">
-					<img src="../img/search.png"/>
-				</button>
-				<div class="search_method_container" id="searchMethodContainer" searchType='0'>
-					<button class="select_bar_btn" id="searchMethodBar">吧</button>
-					<button class="select_post_btn unselect_btn" id="searchMethodPost">贴</button>
+		<div id="postOptionBtnContainer">
+			<span class="post_option_btn" id="toTopBtn">置顶</span>
+			<span class="post_option_btn" id="toGreatBtn">加精</span>
+			<span class="post_option_btn" id="deletePostBtn">删除</span>
+			<span class="post_option_btn" id="addToCompetitiveBtn">添加到精品区</span>
+		</div>
+		<div class="main" id="main">
+			<div class="content">
+				<div class="post_msg" id="postTitle">
+
 				</div>
-			</div>
-			<div id="postOptionBtnContainer">
-				<span class="post_option_btn" id="toTopBtn">置顶</span>
-				<span class="post_option_btn" id="toGreatBtn">加精</span>
-				<span class="post_option_btn" id="deletePostBtn">删除</span>
-				<span class="post_option_btn" id="addToCompetitiveBtn">添加到精品区</span>
-			</div>
-			<div class="main" id="main">
-				<div class="content">
-					<div class="post_msg" id="postTitle">
-						
-					</div>
-					<div id="comments">
-						<div class="master_comment" id="masterComment">
-							<div class="user_msg">
-								<img src="../img/2.jpg" id="creatorHeadImg"/>
-								<p class="user_name" id="creatorNickName">hirara</p>
-								<p class="user_level" id="userLevel">等级:</p>
+				<div id="comments">
+					<div class="master_comment" id="masterComment">
+						<div class="user_msg">
+							<img src="../img/2.jpg" id="creatorHeadImg" />
+							<p class="user_name" id="creatorNickName">hirara</p>
+							<p class="user_level" id="userLevel">等级:</p>
+						</div>
+						<div class="comment_content">
+							<div class="comment_text" id="commentText">
 							</div>
-							<div class="comment_content">
-								<div class="comment_text" id="commentText">
-								</div>
-								<div class="comment_msg">
-									<span>1楼</span><span id="creatorPostTime"></span>
-								</div>
+							<div class="comment_msg">
+								<span>1楼</span>
+								<span id="creatorPostTime"></span>
 							</div>
+							<button class="edit_btn" id="masterEditBtn">编辑</button>
 						</div>
 					</div>
 				</div>
-				<ul class="index">
-					<li class="paging_btn" id="firstPageBtn">首页</li>
-					<li class="paging_btn" id="prevBtn">上一页</li>
-					<li class="index_item">1</li>
-					<li class="index_item">2</li>
-					<li class="index_item">3</li>
-					<li class="index_item">4</li>
-					<li class="index_item">5</li>
-					<li class="index_item">6</li>
-					<li class="index_item">7</li>
-					<li class="index_item">8</li>
-					<li class="index_item">9</li>
-					<li class="index_item">10</li>
-					<li class="paging_btn" id="nextBtn">下一页</li>
-					<li class="paging_btn" id="lastPageBtn">尾页</li>
-				</ul>
-				<div class="send_area" id="sendArea">
-					<p class="send_area_title">发表回复</p>
-					<ul class="menu">
-						<li id="selectImg">图片</li>
-						<form action="" method="post" enctype="multipart/form-data" name="upload_form" style="display: none" id="uploadImgForm">
-							<input type="file" id="inputSelectImg" accept="image/*" onchange="imgChange(event)" />
-						</form>
-						<li id="selectFace">表情</li>
-					</ul>
-					<div class="editor_area" contenteditable="true" id="editorArea">
-						
-					</div>
-					<div class="not_login_tip" id="notLoginTip">
-						<a href="http://localhost/pro/page/login.html">请先登录</a>
-					</div>
-					<div class="face_container" id="faceContainer">
-						<img src="../img/proImg/face1.png" class = "face" />
-						<img src="../img/proImg/face2.png" class = "face" />
-						<img src="../img/proImg/face3.png" class = "face" />
-						<img src="../img/proImg/face4.png" class = "face" />
-						<img src="../img/proImg/face5.png" class = "face" />
-						<img src="../img/proImg/face6.png" class = "face" />
-						<img src="../img/proImg/face7.png" class = "face" />
-						<img src="../img/proImg/face8.png" class = "face" />
-						<img src="../img/proImg/face9.png" class = "face" />
-						<img src="../img/proImg/face10.png" class = "face" />
-						<img src="../img/proImg/face11.png" class = "face" />
-						<img src="../img/proImg/face12.png" class = "face" />
-						<img src="../img/proImg/face13.png" class = "face" />
-						<img src="../img/proImg/face14.png" class = "face" />
-						<img src="../img/proImg/face15.png" class = "face" />
-						<img src="../img/proImg/face16.png" class = "face" />
-						<img src="../img/proImg/face17.png" class = "face" />
-						<img src="../img/proImg/face18.png" class = "face" />
-						<img src="../img/proImg/face19.png" class = "face" />
-						<img src="../img/proImg/face20.png" class = "face" />
-						<img src="../img/proImg/face21.png" class = "face" />
-						<img src="../img/proImg/face22.png" class = "face" />
-						<img src="../img/proImg/face23.png" class = "face" />
-						<img src="../img/proImg/face24.png" class = "face" />
-						<img src="../img/proImg/face25.png" class = "face" />
-						<img src="../img/proImg/face26.png" class = "face" />
-						<img src="../img/proImg/face27.png" class = "face" />
-						<img src="../img/proImg/face28.png" class = "face" />
-						<img src="../img/proImg/face29.png" class = "face" />
-						<img src="../img/proImg/face30.png" class = "face" />
-					</div>
-					<button class="submit" id="submit">发布</button>
-					<span class="send_tip" id="sendTip">内容不能为空</span>
-				</div>
 			</div>
-			<h2 id="postNotExistTip" class="post_not_exist_tip">
-				该帖子帖子不存在!
-			</h2>
+			<ul class="index">
+				<li class="paging_btn" id="firstPageBtn">首页</li>
+				<li class="paging_btn" id="prevBtn">上一页</li>
+				<li class="index_item">1</li>
+				<li class="index_item">2</li>
+				<li class="index_item">3</li>
+				<li class="index_item">4</li>
+				<li class="index_item">5</li>
+				<li class="index_item">6</li>
+				<li class="index_item">7</li>
+				<li class="index_item">8</li>
+				<li class="index_item">9</li>
+				<li class="index_item">10</li>
+				<li class="paging_btn" id="nextBtn">下一页</li>
+				<li class="paging_btn" id="lastPageBtn">尾页</li>
+			</ul>
+			<div class="send_area" id="sendArea">
+				<p class="send_area_title">发表回复</p>
+				<ul class="menu">
+					<li id="selectImg">图片</li>
+					<form action="" method="post" enctype="multipart/form-data" name="upload_form" style="display: none" id="uploadImgForm">
+						<input type="file" id="inputSelectImg" accept="image/*" onchange="imgChange(event)" />
+					</form>
+					<li id="selectFace">表情</li>
+				</ul>
+				<div class="editor_area" contenteditable="true" id="editorArea">
+
+				</div>
+				<div class="not_login_tip" id="notLoginTip">
+					<a href="http://localhost/pro/page/login.html">请先登录</a>
+				</div>
+				<div class="face_container" id="faceContainer">
+					<img src="../img/proImg/face1.png" class="face" />
+					<img src="../img/proImg/face2.png" class="face" />
+					<img src="../img/proImg/face3.png" class="face" />
+					<img src="../img/proImg/face4.png" class="face" />
+					<img src="../img/proImg/face5.png" class="face" />
+					<img src="../img/proImg/face6.png" class="face" />
+					<img src="../img/proImg/face7.png" class="face" />
+					<img src="../img/proImg/face8.png" class="face" />
+					<img src="../img/proImg/face9.png" class="face" />
+					<img src="../img/proImg/face10.png" class="face" />
+					<img src="../img/proImg/face11.png" class="face" />
+					<img src="../img/proImg/face12.png" class="face" />
+					<img src="../img/proImg/face13.png" class="face" />
+					<img src="../img/proImg/face14.png" class="face" />
+					<img src="../img/proImg/face15.png" class="face" />
+					<img src="../img/proImg/face16.png" class="face" />
+					<img src="../img/proImg/face17.png" class="face" />
+					<img src="../img/proImg/face18.png" class="face" />
+					<img src="../img/proImg/face19.png" class="face" />
+					<img src="../img/proImg/face20.png" class="face" />
+					<img src="../img/proImg/face21.png" class="face" />
+					<img src="../img/proImg/face22.png" class="face" />
+					<img src="../img/proImg/face23.png" class="face" />
+					<img src="../img/proImg/face24.png" class="face" />
+					<img src="../img/proImg/face25.png" class="face" />
+					<img src="../img/proImg/face26.png" class="face" />
+					<img src="../img/proImg/face27.png" class="face" />
+					<img src="../img/proImg/face28.png" class="face" />
+					<img src="../img/proImg/face29.png" class="face" />
+					<img src="../img/proImg/face30.png" class="face" />
+				</div>
+				<button class="submit" id="submit">发布</button>
+				<span class="send_tip" id="sendTip">内容不能为空</span>
+			</div>
 		</div>
-	</body>
-	<script src="../js/jquery/jquery-1.8.3.min.js"></script>
-	<script src="../common/js/common.js"></script>
-	<script src="../js/post.js"></script>
+		<h2 id="postNotExistTip" class="post_not_exist_tip">
+			该帖子不存在!
+		</h2>
+	</div>
+	<div class="mask" id="editMask">
+		<div class="edit_container">
+			<div class="history_container" id="historyContainer">
+
+			</div>
+			<div class="only_watch_area" id="onlyWatchArea">
+				<button class="cancel_submit" id="closeHistory">关闭</button>
+			</div>
+			<div class="send_area send_bg" id="sendArea2">
+				<ul class="menu">
+					<li id="selectImg2">图片</li>
+					<form action="" method="post" enctype="multipart/form-data" name="upload_form" style="display: none" id="uploadImgForm2">
+						<input type="file" id="inputSelectImg2" accept="image/*" onchange="imgChange2(event)" />
+					</form>
+					<li id="selectFace2">表情</li>
+				</ul>
+				<div class="editor_area" contenteditable="true" id="editorArea2">
+
+				</div>
+				<div class="face_container" id="faceContainer2">
+					<img src="../img/proImg/face1.png" class="face" />
+					<img src="../img/proImg/face2.png" class="face" />
+					<img src="../img/proImg/face3.png" class="face" />
+					<img src="../img/proImg/face4.png" class="face" />
+					<img src="../img/proImg/face5.png" class="face" />
+					<img src="../img/proImg/face6.png" class="face" />
+					<img src="../img/proImg/face7.png" class="face" />
+					<img src="../img/proImg/face8.png" class="face" />
+					<img src="../img/proImg/face9.png" class="face" />
+					<img src="../img/proImg/face10.png" class="face" />
+					<img src="../img/proImg/face11.png" class="face" />
+					<img src="../img/proImg/face12.png" class="face" />
+					<img src="../img/proImg/face13.png" class="face" />
+					<img src="../img/proImg/face14.png" class="face" />
+					<img src="../img/proImg/face15.png" class="face" />
+					<img src="../img/proImg/face16.png" class="face" />
+					<img src="../img/proImg/face17.png" class="face" />
+					<img src="../img/proImg/face18.png" class="face" />
+					<img src="../img/proImg/face19.png" class="face" />
+					<img src="../img/proImg/face20.png" class="face" />
+					<img src="../img/proImg/face21.png" class="face" />
+					<img src="../img/proImg/face22.png" class="face" />
+					<img src="../img/proImg/face23.png" class="face" />
+					<img src="../img/proImg/face24.png" class="face" />
+					<img src="../img/proImg/face25.png" class="face" />
+					<img src="../img/proImg/face26.png" class="face" />
+					<img src="../img/proImg/face27.png" class="face" />
+					<img src="../img/proImg/face28.png" class="face" />
+					<img src="../img/proImg/face29.png" class="face" />
+					<img src="../img/proImg/face30.png" class="face" />
+				</div>
+				<button class="submit" id="submit2">发布</button>
+				<button class="cancel_submit" id="cancelSubmit2">取消</button>
+				<span class="send_tip" id="sendTip2">内容为空</span>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="../js/jquery/jquery-1.8.3.min.js"></script>
+<script src="../common/js/common.js"></script>
+<script src="../js/post.js"></script>
+
 </html>
 <!-- <div class="comment" position='6'>
 	<div class="user_msg">

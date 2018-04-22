@@ -1,5 +1,6 @@
 var domain = 'http://localhost';
 var fileDataArr = [];
+var fileDataArr2 = [];
 (function(){
 	var pageUrl = window.location.href;
 	var postId = '';
@@ -46,6 +47,26 @@ function init(){
 			}
 		});
 	});
+
+	$('#submit2').click(function(){
+		var userId = localStorage.getItem('user');
+		$.ajax({
+			type: 'get',
+			url: domain + '/pro/php/isCantSpeak.php',
+			async: true,
+			data: {
+				userId: userId
+			},
+			success: function(result){
+				result = JSON.parse(result);
+				if(result){
+					alert('您已被禁言!');
+				}else{
+					onSubmitReplyMsg2();
+				}
+			}
+		});
+	});
 	//如果未登录不允许发帖
 	if(!!localStorage.getItem('user')){
 		$('#editorArea').attr('contenteditable','true');
@@ -63,6 +84,14 @@ function init(){
 	window.onbeforeunload = function(){
 		for(var i=0;i<fileDataArr.length;i++){
 			removeNotNeedImg(fileDataArr[i]);
+		}
+	}
+	
+	//测试页面刷新或关闭，删除掉已经保存到本地的图片文件
+	//结果直接关闭浏览器的话不会执行
+	window.onbeforeunload = function(){
+		for(var i=0;i<fileDataArr2.length;i++){
+			removeNotNeedImg(fileDataArr2[i]);
 		}
     }
     
@@ -171,7 +200,6 @@ function getPostReplyToReplyMsg(postId, indexNum, position){
 			try{
 				var data = JSON.parse(result);
 				// console.log(data);
-				// freshPageReplyToReplyItems.call(that, data, indexNum);
 			}catch(e){
 				console.log(result);
 				console.log(e);
@@ -254,6 +282,13 @@ function searchPostMsg(postId){
 				$('#postTitle').attr('barBelong',data.data.barBelong);
 				$('.master_comment').attr('position',1);
 				$('#userLevel').html('等级:' + getLv(data.data.exp));
+				$('#cancelSubmit2').click(function(){
+					$('#editMask').css('display','none');
+				});
+				$('#closeHistory').click(function(){
+					$('#editMask').css('display','none');
+				});
+				getEditBtnStatus(data.data.creatorId, 1, $('#masterEditBtn'), 0);
 				getPostReplysMsg(postId, 0);
 				initPagingIndexClick(postId);
 				init();
@@ -268,6 +303,83 @@ function searchPostMsg(postId){
 			}
 		}
 	});
+}
+
+function getEditBtnStatus(creatorId, position, ele, type){
+	var postId = $('#postTitle').attr('postId');
+	var userId = localStorage.getItem('user');
+	position = Number(position);
+	$.ajax({
+		type: 'get',
+		url: domain + '/pro/php/getEditStatus.php',
+		async: true,
+		data: {
+			postId: postId,
+			position: position,
+			type: type
+		},
+		success: function(result){
+			try{
+				var data = JSON.parse(result);
+				if(creatorId == userId){
+					ele.html('编辑');
+					ele.click(function(){
+						$('#editMask').css('display','block');
+						$('#sendArea2').css('display','block');
+						$('#editMask').attr('position', position);
+						$('#editMask').attr('type', type);
+						$('#onlyWatchArea').css('display','none');
+						createHistoryEditContent(data);
+					});
+				}else{
+					if(data.num == 0){
+						ele.css('display','none');
+					}else{
+						ele.html('查看历史('+data.num+')');
+						ele.click(function(){
+							$('#editMask').css('display','block');
+							$('#sendArea2').css('display','none');
+							$('#onlyWatchArea').css('display','block');
+							createHistoryEditContent(data);
+						});
+					}
+				}
+			}catch(e){
+				console.log(result);
+				alert('未知错误');
+			}
+		}
+	});
+}
+
+function createHistoryEditContent(data){
+	$('#historyContainer').children().remove();
+	for(var i=0;data.num != 0 && i<data.data.length;i++){
+		var item = createHistoryEditItem(data.data[i]);
+		$('#historyContainer').append(item);
+	}
+	var positionItem = createHistoryEditItem(data.positionData);
+	$('#historyContainer').append(positionItem);
+}
+
+function createHistoryEditItem(data){
+	var div = $('<div></div>');
+	div.addClass('history_item');
+	var content = $('<p></p>');
+	content.addClass('history_item_content');
+	content.html(data.editContent);
+	var time = $('<p></p>');
+	time.addClass('history_item_time');
+	var timeStr = '';
+	if (isToday(data.editTime)) {
+		timeStr = data.editTime.substr(11);
+	} else {
+		timeStr = data.editTime.substr(0, 10);
+	}
+	time.html(timeStr);
+	div.append(content);
+	div.append(time);
+	return div;
 }
 
 function toTopBtnPressHandle(){
@@ -387,6 +499,14 @@ function initSendAreaBtnsPressEvent(){
 			$('#faceContainer').css('display','none');
 		}
 	});
+	$('#sendArea2 .face').click(function(){
+		if(isEditorAreaBlur2()){
+			var $img = $(this).clone();
+			$img.removeAttr('class');
+			insertHTML($img,$('#editorArea2'));
+			$('#faceContainer2').css('display','none');
+		}
+	});
 	//头像框存在时，如果点击外面部分则消失
 	$('html').click(function(e){
 		e = e || window.event;
@@ -394,6 +514,17 @@ function initSendAreaBtnsPressEvent(){
 		if(!($(target).hasClass('face_container') || $(target).attr('id') === 'selectFace')){
 			if($('#faceContainer').css('display') === 'block'){
 				$('#faceContainer').css('display','none');
+			}
+		}
+	});
+
+	//头像框存在时，如果点击外面部分则消失
+	$('html').click(function(e){
+		e = e || window.event;
+		var target = e.target || window.srcElement;
+		if(!($(target).hasClass('face_container') || $(target).attr('id') === 'selectFace2')){
+			if($('#faceContainer2').css('display') === 'block'){
+				$('#faceContainer2').css('display','none');
 			}
 		}
 	});
@@ -408,6 +539,21 @@ function initSendAreaBtnsPressEvent(){
 	$('#selectImg').click(function(){
 		if(!!localStorage.getItem('user')){
 			$('#inputSelectImg').click();
+		}else{
+			alert('请先登录');
+		}
+	});
+
+	$('#selectFace2').click(function(){
+		if($('#faceContainer2').css('display') === 'block'){
+			$('#faceContainer2').css('display','none');
+		}else{
+			$('#faceContainer2').css('display','block');
+		}
+	});
+	$('#selectImg2').click(function(){
+		if(!!localStorage.getItem('user')){
+			$('#inputSelectImg2').click();
 		}else{
 			alert('请先登录');
 		}
@@ -457,6 +603,50 @@ function imgChange(e){
 	}
 }
 
+function imgChange2(e){
+	if(isEditorAreaBlur2()){
+		var fileType = e.target.files[0].type;
+		if(fileType.indexOf('image') != -1){
+			var reader = new FileReader();
+			var file = document.getElementById('inputSelectImg2').files[0];
+			reader.readAsDataURL(file);
+			reader.onload = function(e){
+				var fileData = e.target.result;
+				$.ajax({
+					url: domain + "/pro/php/getTempImgFile.php",
+					type: 'post',
+					async: true,
+					data: {
+						fileData: fileData
+					},
+					success: function(result){
+						var data = JSON.parse(result);
+						if(data.result == 'success'){
+							var $img = $('<img />');
+							fileDataArr2.push(data.filePath);
+							$img.attr('src',data.filePath);
+							insertHTML($img,$('#editorArea2'));
+							$('#editorArea2').focus();
+							$img.bind('DOMNodeRemoved',function(){
+								removeNotNeedImg(data.filePath);
+							});
+						}else{
+							alert('选择图片失败');
+						}
+					},
+					error: function(e){
+						console.log(e);
+					}
+				});
+			}
+		}else{
+			alert('只能上传图片');
+		}
+	}else{
+		console.log('焦点不是editorarea2');
+	}
+}
+
 function removeNotNeedImg(imgPath){
 	$.ajax({
 		type: 'get',
@@ -501,6 +691,37 @@ function onSubmitReplyMsg(){
 		$('#sendTip').css('display','inline');
 	}
 }
+
+function onSubmitReplyMsg2(){
+    var replyContent = $('#editorArea2').html();
+	if(replyContent.trim() != ''){
+		$('#sendTip2').css('display','none');
+		if(fileDataArr2.length != 0){
+			$.ajax({
+				url: domain + "/pro/php/saveTempReplyImg.php",
+				type: 'post',
+				async: true,
+				data: {
+					imgsData: fileDataArr2
+				},
+				success: function(result){
+					if(result == 'success'){
+						submitReplyMsg2();
+					}else{
+						alert('未知错误,图片保存失败!');
+					}
+				},
+				error: function(e){
+					console.log(e);
+				}
+			});
+		}else{
+			submitReplyMsg2();
+		}
+	}else{
+		$('#sendTip2').css('display','inline');
+	}
+}
 //发送事件
 function submitReplyMsg(){
 	var postId = $('#postTitle').attr('postId');
@@ -534,6 +755,49 @@ function submitReplyMsg(){
 				if(creatorId != postCreatorId){
 					addExpNoLimit(postCreatorId, 2, replyAddExpNotlimitResult);
 				}
+            }else{
+                alert('未知错误,发布失败!');
+            }
+        },
+        error: function(e){
+            console.log(e);
+        }
+    });
+}
+
+function submitReplyMsg2(){
+	var postId = $('#postTitle').attr('postId');
+	var creatorId = localStorage.getItem('user');
+	var nickName = localStorage.getItem('userNickName');
+	var replyContent = $('#editorArea2').html().trim();
+	var position = $('#editMask').attr('position');
+	var type = $('#editMask').attr('type');
+	position = Number(position);
+	type = Number(type);
+	var imgReg=/<img\b[^>]*>/ig;
+	if(imgReg.test(replyContent)){
+		var replaceReg = /postTempImg/g;
+		replyContent = replyContent.replace(replaceReg, 'replyImg');
+	}
+    $('#sendTip2').css('display','none');
+    $.ajax({
+        url: domain + "/pro/php/sendPostReplyMsg2.php",
+        type: 'post',
+        async: true,
+        data: {
+            postId: postId,
+            creatorId: creatorId,
+            nickName: nickName,
+			replyContent: replyContent,
+			position: position,
+			type: type
+        },
+        success: function(result){
+            if(result == 'success'){
+				$('#sendTip2').css('display','inline').html('发布成功');
+				setTimeout(function(){
+					window.location.reload();
+				},300);
             }else{
                 alert('未知错误,发布失败!');
             }
@@ -609,6 +873,32 @@ function isEditorAreaBlur(){
 			}
 			//当失去焦点的位置为editorArea或其子元素时，返回true
 			if($(checkNode).closest('#editorArea').length == 1 && $(checkNode).closest('#editorArea').attr('id') == 'editorArea'){
+				return true;
+			}else{
+				//焦点位置不在editorArea，插入失败
+				return false;
+			}
+		}else{
+			console.log('sel.anchorNode为null');
+		}
+	}
+	return true;
+}
+
+function isEditorAreaBlur2(){
+	var sel, range, checkNode;  
+	if (window.getSelection){  
+		// IE9 and non-IE  
+		sel = window.getSelection();
+		if(sel.anchorNode){
+			//如果是文本节点
+			if(sel.anchorNode.nodeType == 3){
+				checkNode = sel.anchorNode.parentNode;
+			}else{
+				checkNode = sel.anchorNode;
+			}
+			//当失去焦点的位置为editorArea或其子元素时，返回true
+			if($(checkNode).closest('#editorArea2').length == 1 && $(checkNode).closest('#editorArea2').attr('id') == 'editorArea2'){
 				return true;
 			}else{
 				//焦点位置不在editorArea，插入失败
@@ -1077,6 +1367,10 @@ function createCommentItem(data){
 
 	var $commentContentDiv = $('<div></div>');
 	$commentContentDiv.addClass('comment_content');
+	var $editBtn = $('<button></button>');
+	$editBtn.addClass('edit_btn');
+	$commentContentDiv.append($editBtn);
+	getEditBtnStatus(data.creatorId, data.position, $editBtn, 1)
 	var $commentTextDiv = $('<div></div>');
 	$commentTextDiv.addClass('comment_text');
 	$commentTextDiv.html(data.content);

@@ -246,29 +246,29 @@ function init() {
 			removeNotNeedImg(fileDataArr[i]);
 		}
 	}
-	$('.page_feature_item').each(function(index){
-		$(this).click(function(){
+	$('.page_feature_item').each(function (index) {
+		$(this).click(function () {
 			var barName = $('#barName').attr('barname');
 			$('#postsContainer').attr('pageType', index);
 			getPostPageMsg(barName, 0);
-			$('.page_feature_item').each(function(i){
-				if(index == i){
+			$('.page_feature_item').each(function (i) {
+				if (index == i) {
 					$(this).addClass('is_page_selected');
-				}else{
+				} else {
 					$(this).removeClass('is_page_selected');
 				}
 			});
 		});
 	});
-	$('.watch_model_btn').each(function(index){
-		$(this).click(function(){
+	$('.watch_model_btn').each(function (index) {
+		$(this).click(function () {
 			var barName = $('#barName').attr('barname');
 			$('#postsContainer').attr('watchType', index);
 			getPostPageMsg(barName, 0);
-			$('.watch_model_btn').each(function(i){
-				if(index == i){
+			$('.watch_model_btn').each(function (i) {
+				if (index == i) {
 					$(this).addClass('is_btn_selected');
-				}else{
+				} else {
 					$(this).removeClass('is_btn_selected');
 				}
 			});
@@ -333,13 +333,13 @@ function searchBarMsg(barName) {
 			var data = JSON.parse(result);
 			console.log(data);
 			if (data.code == 0) {
+				$('#postsContainer').attr('pageType', 0);
+				$('#postsContainer').attr('watchType', 0);
 				if (data.data.postNum == 0) {
 					$('#noPostTip').css('display', 'block');
 					$('.index').css('display', 'none');
 				} else {
 					$('#noPostTip').css('display', 'none');
-					$('#postsContainer').attr('pageType', 0);
-					$('#postsContainer').attr('watchType', 0);
 					getPostPageMsg(barName, 0);
 					initPagingIndexClick(barName);
 				}
@@ -627,35 +627,44 @@ function getPostPageMsg(barName, indexNum) {
 	var requestData = {};
 	requestData.barName = barName;
 	requestData.indexNum = indexNum;
-	if(pageType == 0 && watchType == 0){
+	if (pageType == 0 && watchType == 0) {
 		fileName = 'getPostMsgInBar';
 		requestData.watchType = 0;
 	}
-	if(pageType == 0 && watchType == 1){
+	if (pageType == 0 && watchType == 1) {
 		fileName = 'getPostMsgInBar';
 		requestData.watchType = 1;
 	}
-	if(pageType == 1 && watchType == 0){
+	if (pageType == 1 && watchType == 0) {
 		//精品区
 		fileName = 'getGreatPostMsgInBar';
 		requestData.watchType = 0;
 	}
-	if(pageType == 1 && watchType == 1){
+	if (pageType == 1 && watchType == 1) {
 		//精品区
 		fileName = 'getGreatPostMsgInBar';
 		requestData.watchType = 1;
 	}
-	console.log(requestData);
 	$.ajax({
-		url: domain + "/pro/php/"+fileName+".php",
+		url: domain + "/pro/php/" + fileName + ".php",
 		type: 'get',
 		async: true,
 		data: requestData,
 		success: function (result) {
 			var data = JSON.parse(result);
 			if (data.totalNum == 0) {
+				if (pageType == 0) {
+					$('#noPostTip').css('display', 'block');
+					$('#noGreatPostTip').css('display', 'none');
+				} else {
+					$('#noPostTip').css('display', 'none');
+					$('#noGreatPostTip').css('display', 'block');
+				}
+				freshBarItems(data, 0);
 				console.log('当前还没有帖子');
 			} else {
+				$('#noPostTip').css('display', 'none');
+				$('#noGreatPostTip').css('display', 'none');
 				freshBarItems(data, indexNum);
 			}
 		}
@@ -692,7 +701,7 @@ function initIndex() {
 		$('#prevBtn').css('display', 'none');
 		$('#firstPageBtn').css('display', 'none');
 		$('#topAndGreatPostContainer').css('display', 'block');
-		if(pageType == 0){
+		if (pageType == 0) {
 			getTopAndGreatPostMsg(barName);
 		}
 	} else {
@@ -713,7 +722,7 @@ function initIndex() {
 		$('.index_item').each(function (index) {
 			if (index > totalNum) {
 				$(this).css('display', 'none');
-			}else{
+			} else {
 				$(this).css('display', 'inline-block');
 			}
 			if (index == currIndex) {
@@ -933,10 +942,10 @@ function haveAgree(postId, $ele) {
 								async: true,
 								type: 'post',
 								success: function (result2) {
-									if(result2 == 'success'){
+									if (result2 == 'success') {
 										alert('点赞成功');
 										window.location.reload();
-									}else{
+									} else {
 										console.log(result);
 										alert('未知错误,点赞失败');
 										window.location.reload();
@@ -945,11 +954,11 @@ function haveAgree(postId, $ele) {
 							});
 						});
 					}
-				}catch (e) {
-						console.log(result);
-						console.log(e);
-					}
+				} catch (e) {
+					console.log(result);
+					console.log(e);
 				}
+			}
 		});
 	}
 }
