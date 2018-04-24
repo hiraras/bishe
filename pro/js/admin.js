@@ -112,6 +112,9 @@ function createUserMsgTable(headData, data) {
         tr.append(td);
     }
     var tdOption = $('<td></td>');
+    tdOption.css({
+        'display': 'flex',
+    });
     var aOption = $('<a></a>');
     if (data.status == 1) {
         aOption.html('禁言');
@@ -126,7 +129,18 @@ function createUserMsgTable(headData, data) {
         }
         changeUserStatus(data.username, data.status, msg);
     });
+    var aOption2  = $('<a></a>');
+    aOption2.html('发送通知');
+    aOption2.css('margin-left','10px');
+    aOption2.click(function(){
+        var msg = prompt('请输入通知的内容');
+        if(msg == null || msg == ''){
+            return ;
+        }
+        sendInform(data.username, msg);
+    });
     tdOption.append(aOption);
+    tdOption.append(aOption2);
     tr.append(tdOption);
     table.append(tr);
     return table;
@@ -162,6 +176,30 @@ function changeUserStatus(id, currStatus, msg) {
         }
     });
 }
+
+//发送通知接口
+function sendInform(id, msg){
+    $.ajax({
+        type: 'post',
+        url: domain + '/pro/php/sendInform.php',
+        async: true,
+        data: {
+            userId: id,
+            msg: msg
+        },
+        success: function (result) {
+            console.log(result);
+            if (result == 'success') {
+                alert('操作成功');
+                window.location.reload();
+            } else {
+                alert('操作失败');
+                window.location.reload();
+            }
+        }
+    });
+}
+
 //帖子管理区域
 function createPostItem() {
     var container = $('<div></div>');

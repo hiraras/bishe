@@ -51,5 +51,8 @@
 	margin-left: 15px;
 	color: red;
 }
+.btn_submit:hover{
+	color: white;
+}
 
 
