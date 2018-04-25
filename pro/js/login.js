@@ -28,12 +28,22 @@ function testLogin(){
 							result = JSON.parse(result);
 						}catch(e){
 							$("#remind").html("发生未知错误，请稍后再试!");
-							console.log(e);
+							console.log(result);
+							$('#checkCode').val('');
+							$('#psw').val('');
+							$('#username').val('');
 						}
 						if(result.value == 2){
 							$("#remind").html("用户名不存在");
+							checkCodeStr = createCheckCode();
+							$('#checkCode').val('');
+							$('#psw').val('');
+							$('#username').val('');
 						}else if(result.value == 0){
 							$("#remind").html("用户名或密码不正确");
+							checkCodeStr = createCheckCode();
+							$('#checkCode').val('');
+							$('#psw').val('');
 						}else{
 							if(result.value == 'admin'){
 								sessionStorage.setItem("admin",result.data.username);
@@ -54,12 +64,19 @@ function testLogin(){
 				$("#remind").html("验证码错误");
 				$("#checkCode").val("");
 				checkCodeStr = createCheckCode();
+				$('#psw').val('');
 			}
 		}else{
 			$("#remind").html("用户名格式不正确");
+			checkCodeStr = createCheckCode();
+			$('#checkCode').val('');
+			$('#psw').val('');
 		}
 	}else{
 		$("#remind").html("您有未填写的信息");
+		checkCodeStr = createCheckCode();
+		$('#checkCode').val('');
+		$('#psw').val('');
 	}
 }
 $("#username").on("keydown",function(e){

@@ -251,7 +251,6 @@ function searchPostMsg() {
 }
 
 function createPostMsgTable(headData, data) {
-    console.log(data);
     delete data.creatorHeadImg;
     delete data.creatorNickName;
     var table = $('<table></table>');

@@ -1,7 +1,7 @@
 <?php
 require "connect.php";
 $barName = $_GET['barName'];
-$sql = "select * from posts where barBelong='$barName' and (isTop=1 or isGreat=1) and status = 1 ORDER BY isTop DESC";
+$sql = "select * from posts where barBelong='$barName' and (isTop=1 or isGreat=1) and status = 1 ORDER BY isTop DESC,isGreat DESC";
 $result = mysql_query($sql);
 $arr = array();
 while($row = mysql_fetch_assoc($result)){
