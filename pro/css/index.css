@@ -9,10 +9,10 @@
 	width: 3300px;
 	position: absolute;
 	left: 0;
-	transition: left 1s;
-	-moz-transition: left 1s; /* Firefox 4 */
-	-webkit-transition: left 1s; /* Safari 和 Chrome */
-	-o-transition: left 1s; /* Opera */
+	/*transition: left 1s;
+	-moz-transition: left 1s; 
+	-webkit-transition: left 1s; 
+	-o-transition: left 1s; Opera*/
 }
 .banner img{
 	width: 1100px;

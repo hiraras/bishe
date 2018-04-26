@@ -8,8 +8,8 @@ var domain = "http://localhost";
 		getUserMsg();
 	}
 	var bannerLeft = 0;
-	var bannerImgNum = 3;
-	var containerWidth = 1100;
+	var bannerImgNum = $('#bannerWrapper').children('img').length;
+	var containerWidth = $('#bannerWrapper img').first().width();
 	//banner当前位置
 	var pointIndex = 0;
 	//获得所有分类，并添加到网页
@@ -45,8 +45,11 @@ var domain = "http://localhost";
 			pointIndex ++;
 		}
 		$('#bannerPoint li').eq(pointIndex).addClass('to_blue');
-		$('#bannerWrapper').css('left',-pointIndex*containerWidth+'px');
-	},4000)
+		$('#bannerWrapper').animate({left: -containerWidth+'px'},1000,function(){
+			$(this).css('left', '0px');
+			$('#bannerWrapper img').first().insertAfter($('#bannerWrapper img').last());
+		});
+	},4000);
 	$('#bannerPoint li').each(function(index){
 		$(this).on('click',function(){
 			$('#bannerPoint li').each(function(index,ele){
