@@ -203,6 +203,22 @@ function sendInform(id, msg){
 //帖子管理区域
 function createPostItem() {
     var container = $('<div></div>');
+
+    var barNameInput = $('<input />');
+    barNameInput.attr('placeholder', '吧名');
+    barNameInput.attr('id', 'inputBarName');
+    barNameInput.attr('maxlength', 16);
+    var BarNameLabel = $('<label />');
+    BarNameLabel.attr('for', 'inputBarName');
+    BarNameLabel.html('吧名:');
+    var titleInput = $('<input />');
+    titleInput.attr('placeholder', '帖子标题');
+    titleInput.attr('id', 'inputPostTitle');
+    titleInput.attr('maxlength', 80);
+    var postTitleLabel = $('<label />');
+    postTitleLabel.attr('for', 'inputPostTitle');
+    postTitleLabel.html('帖子标题:');
+
     var idInput = $('<input />');
     idInput.attr('placeholder', '帖子id');
     idInput.attr('id', 'inputPostId');
@@ -214,6 +230,10 @@ function createPostItem() {
     search.html('搜索');
     search.attr('id', 'search');
     search.click(searchPostMsg);
+    container.append(BarNameLabel);
+    container.append(barNameInput);
+    container.append(postTitleLabel);
+    container.append(titleInput);
     container.append(postIdLabel);
     container.append(idInput);
     container.append(search);
@@ -222,21 +242,32 @@ function createPostItem() {
 
 function searchPostMsg() {
     var postId = $('#inputPostId').val();
-    if (postId.trim() == '') {
+    var barName = $('#inputBarName').val();
+    var postTitle = $('#inputPostTitle').val();
+    if (postId.trim() == '' && barName.trim() == '' && postTitle.trim() == '') {
         alert('不能为空');
         return;
+    }else if(barName.trim() == '' && postTitle.trim() != ''){
+        alert('请输入吧名');
+        return ;
+    }else if(barName.trim() != '' && postTitle.trim() == ''){
+        alert('请输入帖子标题');
+        return ;
     }
     $.ajax({
         type: 'get',
         url: domain + '/pro/php/getPostMsgIgnoreStatus.php',
         async: true,
         data: {
-            postId: postId
+            postId: postId,
+            barName: barName,
+            postTitle: postTitle
         },
         success: function (result) {
             try {
                 var data = JSON.parse(result);
             } catch (e) {
+                console.log(result);
                 console.log(e);
             }
             if (data.result == 'success') {
@@ -251,8 +282,7 @@ function searchPostMsg() {
 }
 
 function createPostMsgTable(headData, data) {
-    delete data.creatorHeadImg;
-    delete data.creatorNickName;
+    console.log(data);
     var table = $('<table></table>');
     var headTr = $('<tr></tr>');
     for (var i = 0; i < headData.length; i++) {
@@ -261,25 +291,29 @@ function createPostMsgTable(headData, data) {
         headTr.append(headTd);
     }
     table.append(headTr);
-    var tr = $('<tr></tr>');
-    for (var item in data) {
-        var td = $('<td></td>');
-        td.html(data[item]);
-        tr.append(td);
+    for(var j=0;j<data.length;j++){
+        delete data[j].creatorHeadImg;
+        delete data[j].creatorNickName;
+        var tr = $('<tr></tr>');
+        for (var item in data[j]) {
+            var td = $('<td></td>');
+            td.html(data[j][item]);
+            tr.append(td);
+        }
+        var tdOption = $('<td></td>');
+        var aOption = $('<a></a>');
+        if (data[j].status == 1) {
+            aOption.html('删除');
+        } else {
+            aOption.html('恢复');
+        }
+        aOption.click(function () {
+            changePostStatus(data[j].id, data[j].status);
+        });
+        tdOption.append(aOption);
+        tr.append(tdOption);
+        table.append(tr);
     }
-    var tdOption = $('<td></td>');
-    var aOption = $('<a></a>');
-    if (data.status == 1) {
-        aOption.html('删除');
-    } else {
-        aOption.html('恢复');
-    }
-    aOption.click(function () {
-        changePostStatus(data.id, data.status);
-    });
-    tdOption.append(aOption);
-    tr.append(tdOption);
-    table.append(tr);
     return table;
 }
 
@@ -359,7 +393,7 @@ function searchPostReplyMsg() {
     var postId = $('#inputPostId').val();
     var position = $('#inputPosition').val();
     if (postId.trim() == '' || position.trim() == '') {
-        alert('不能为空');
+        alert('有未填写的信息');
         return;
     }
     $.ajax({
