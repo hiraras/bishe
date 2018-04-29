@@ -6,7 +6,7 @@ $type = $_GET['type'];
 $everyPageItemNum = 3;
 $dataIndex = $indexNum*$everyPageItemNum;
 if($type == 0){
-    $sql = "select * from chat where chatedId = '$userId' and status != 0 ORDER BY status DESC limit $dataIndex,$everyPageItemNum";
+    $sql = "select * from chat where chatedId = '$userId' and status != 0 ORDER BY status DESC,chatTime DESC limit $dataIndex,$everyPageItemNum";
     $sql2 = "select * from chat where chatedId = '$userId' and status != 0";
 }else if($type == 1){
     $sql = "select * from chat where chatedId = '$userId' and status = 2 ORDER BY chatTime DESC limit $dataIndex,$everyPageItemNum";

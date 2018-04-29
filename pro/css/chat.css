@@ -2,6 +2,7 @@
     border: 1px solid black;
     border-radius: 6px;
     overflow: hidden;
+    position: relative;
 }
 .page_title{
     font-size: 20px;
@@ -11,6 +12,7 @@
     background: #00a0cd;
     height: 40px;
     line-height: 40px;
+    border-bottom: 1px solid black;
 }
 .content{
     display: flex;
@@ -110,6 +112,10 @@
 .chat_container .chat_msg img {
     max-height: 300px;
 }
-
+.search_chat{
+    position: absolute;
+    right: 10px;
+    top: 6px;
+}
 
 

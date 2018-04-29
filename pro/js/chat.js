@@ -32,6 +32,9 @@ function init(){
 		'background': '#00a0cd',
 		'color': '#ffffff',
 	});
+	$('#searchBtn').click(function(){
+		switchContent(3);
+	});
 	initBtnClick();
 	switchContent(0);
 }
@@ -157,6 +160,9 @@ function switchContent(num) {
 		case 2:
 			item = getPageItem();
 			break;
+		case 3:
+			item = getPageItem();
+			break;
 		default:
 			break;
 	}
@@ -197,6 +203,14 @@ function getData(currIndex) {
 			fileName = 'getChatMsgPage';
             requsetData.userId = userId;
             requsetData.type = 2;
+			break;
+		case 3:
+			fileName = 'searchChatMsgPage';
+			var searchContent = $('#searchInput').val();
+			var searchMethod = $("input[type='radio']:checked").val();
+			requsetData.userId = userId;
+			requsetData.searchContent = searchContent;
+			requsetData.searchMethod = searchMethod;
 			break;
 		default:
 			break;
@@ -248,6 +262,12 @@ function freshContent(data, currIndex) {
 			//已读私信
 			var item = createChatItems(data);
 			break;
+		case 3:
+			//搜索私信
+			var item = createChatItems(data);
+			break;
+		default:
+			break;
 	}
 	$('#right').find('.index').before(item);
 	initIndex();
@@ -264,7 +284,6 @@ function createChatItems(data){
 }
 
 function createChatItem(data){
-	console.log(data);
 	var container = $('<div></div>');
 	container.addClass('chat_item');
 	var nicknameP = $('<p></p>');
