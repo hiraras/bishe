@@ -185,7 +185,7 @@ function createPostItem(data) {
 	$postContentDiv.addClass('post_content');
 	var $postTitleContainerDiv = $('<div></div>');
 	$postTitleContainerDiv.addClass('post_title_container');
-
+	/*
 	var $isTopP = $('<p></p>');
 	$isTopP.addClass('is_top');
 	if (data.isTop == '0') {
@@ -195,7 +195,7 @@ function createPostItem(data) {
 	$isGreatP.addClass('is_great');
 	if (data.isGreat == '0') {
 		$isGreatP.css('display', 'none');
-	}
+	}*/
 	var $postTitleTextP = $('<p></p>');
 	$postTitleTextP.addClass('post_title_text');
 	$postTitleTextP.html(data.postName);
@@ -203,8 +203,8 @@ function createPostItem(data) {
 		var postId = $(this).parents('.post').attr('postId');
 		window.location.href = 'http://localhost/pro/page/post.html?' + 'postId=' + postId;
 	});
-	$postTitleContainerDiv.append($isTopP);
-	$postTitleContainerDiv.append($isGreatP);
+	// $postTitleContainerDiv.append($isTopP);
+	// $postTitleContainerDiv.append($isGreatP);
 	$postTitleContainerDiv.append($postTitleTextP);
 
 	var $postImgContainerDiv = $('<div></div>');

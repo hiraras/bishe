@@ -54,15 +54,15 @@
 	background: #00a9cd;
 	color: #FFFFFF;
 	text-align: center;
-	height: 50px;
-	line-height: 50px;
+	height: 30px;
+	line-height: 26px;
 	border: none;
-	font-size: 24px;
+	font-size: 16px;
 	border-radius: 5px;
 	float: right;
 	margin-right: 50px;
 	margin-top: 50px;
-	padding: 0 20px;
+	padding: 3px 8px;
 	cursor: pointer;
 }
 .intro .btn_public{
@@ -324,11 +324,13 @@
 	margin-top: 5px;
 }
 .have_agree{
-	background: gray;
+	background: #cccccc;
+	color: white;
+	border: none;
 	color: white;
 }
 .have_agree:hover{
-	background: gray;
+	background: #cccccc;
 	color: white;
 }
 .switch_bar{

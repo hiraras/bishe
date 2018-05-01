@@ -250,6 +250,10 @@
 .my_reports .reporter{
     margin-bottom: 10px;
 }
+.my_reports .reporter .post_title{
+    cursor: pointer;
+    color: #00a9cd;
+}
 .my_reports .report_content{
     margin-bottom: 10px;
 }

@@ -165,6 +165,7 @@ function getData(currIndex) {
 		success: function (result) {
 			try {
 				var data = JSON.parse(result);
+				console.log(data);
 			} catch (e) {
 				console.log(e);
 			}
@@ -359,7 +360,18 @@ function createReportItem(data){
 	container.attr('reportId',data.id);
 	var reporter = $('<p></p>');
 	reporter.addClass('reporter');
-	reporter.html(data.reporterNickname+'在帖子:'+data.postTitle+',楼层:'+data.position+',举报了'+data.reportederNickname+':');
+	reporter.html(data.reporterNickname+'在帖子:');
+	var postTitleSpan = $('<span></span>');
+	postTitleSpan.html(data.postTitle);
+	postTitleSpan.click(function(){
+		window.location.href = domain + '/pro/page/post.html?postId='+data.postId;
+	});
+	postTitleSpan.addClass('post_title');
+	reporter.append(postTitleSpan);
+	var reportTitleSpan = $('<span></span>');
+	reportTitleSpan.html(',楼层:'+data.position+',举报了'+data.reportederNickname+':');
+	reporter.append(reportTitleSpan);
+
 	var reportContent = $('<p></p>');
 	reportContent.addClass('report_content');
 	reportContent.html(data.content);

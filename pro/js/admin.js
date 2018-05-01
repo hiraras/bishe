@@ -310,7 +310,19 @@ function createPostMsgTable(headData, data) {
         aOption.click(function () {
             changePostStatus(data[j].id, data[j].status);
         });
+        var aOption2 = $('<a></a>');
+        aOption2.css({
+            'margin-left': '10px',
+            'margin-right': '1px'
+        });
+        aOption2.html('进入');
+        (function(postId){
+            aOption2.click(function(){
+                window.location.href = domain + '/pro/page/post.html?postId=' + postId;
+            });
+        })(data[j].id);
         tdOption.append(aOption);
+        tdOption.append(aOption2);
         tr.append(tdOption);
         table.append(tr);
     }
@@ -498,20 +510,27 @@ function changePostReplyStatus(postId, position, currStatus) {
     });
 }
 
-//主题分类区域
+//贴吧分类区域
 function createBarSortItem() {
     var container = $('<div></div>');
     var nameInput = $('<input />');
-    nameInput.attr('placeholder', '主题名');
+    nameInput.attr('placeholder', '贴吧分类名');
     nameInput.attr('id', 'inputSortName');
     nameInput.attr('maxlength', 25);
     var label = $('<label />');
     label.attr('for', 'inputSortName');
-    label.html('主题名:');
+    label.html('贴吧分类名:');
     var search = $('<button></button>');
     search.html('添加');
     search.attr('id', 'search');
-    search.click(addBarSort);
+    search.click(function(){
+        var result = confirm('确定创建该贴吧分类?');
+        if(!!result){
+            addBarSort();
+        }else{
+            return ;
+        }
+    });
     container.append(label);
     container.append(nameInput);
     container.append(search);
@@ -520,7 +539,7 @@ function createBarSortItem() {
     getData(0);
     return container;
 }
-//添加主题分类接口
+//添加贴吧分类接口
 function addBarSort() {
     var sortName = $('#inputSortName').val();
     if (sortName.trim() == '') {
@@ -536,7 +555,7 @@ function addBarSort() {
         },
         success: function (result) {
             if (result == 'isExist') {
-                alert('该主题分类已存在');
+                alert('该贴吧分类已存在');
             } else if (result == 'success') {
                 alert('创建成功');
                 window.location.reload();
@@ -826,7 +845,7 @@ function getData(currIndex) {
     var optionEle;
     switch (type) {
         case 5:
-            //主题分类
+            //贴吧分类
             fileName = 'getBarSortPage';
             break;
         case 2:
@@ -921,11 +940,11 @@ function createTable(data, optionEle) {
     type = Number(type);
     switch (type) {
         case 5:
-            //主题分类
+            //贴吧分类
             headData = sortBarArr;
             break;
         case 2:
-            //主题分类
+            //创吧申请
             headData = applyBuildBarArr;
             break;
         case 1:
@@ -933,6 +952,7 @@ function createTable(data, optionEle) {
             headData = reportArr;
             break;
         case 7:
+            //用户申请
             headData = userApply;
             break;
         default:

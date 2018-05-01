@@ -268,7 +268,7 @@ function searchPostMsg(postId){
 				}else{
 					$('#postOptionBtnContainer').css('display','none');
 				}
-                sessionStorage.setItem('barName',data.data.barBelong);
+                // sessionStorage.setItem('barName',data.data.barBelong);
                 $('#postTitle').html(data.data.postName);
 				$('#creatorHeadImg').attr('src',data.data.creatorHeadImg);
 				$('#creatorHeadImg').click(function(){
@@ -280,6 +280,7 @@ function searchPostMsg(postId){
 				$('#postTitle').attr('postId',postId);
 				$('#postTitle').attr('postCreatorId',data.data.creatorId);
 				$('#postTitle').attr('barBelong',data.data.barBelong);
+				$('#postTitle').attr('barMaster',data.data.master);
 				$('.master_comment').attr('position',1);
 				$('#userLevel').html('等级:' + getLv(data.data.exp));
 				$('#cancelSubmit2').click(function(){
@@ -1342,6 +1343,7 @@ function createReplysItem(data){
 //创建页面
 function createCommentItem(data){
 	console.log(data);
+	var barMaster = $('#postTitle').attr('barMaster');
 	var userId = localStorage.getItem('user');
 	var $commentDiv = $('<div></div>');
 	$commentDiv.addClass('comment');
@@ -1378,12 +1380,17 @@ function createCommentItem(data){
 	$commentMsgDiv.addClass('comment_msg');
 	var $reportBtn = $('<button></button>');
 	$reportBtn.addClass('report_btn');
-	if(userId == data.creatorId){
+	if(userId == data.creatorId || userId == barMaster){
 		$reportBtn.html('删除');
 		$reportBtn.click(function(){
-			var position = $(this).closest('.comment').attr('position');
-			position = Number(position);
-			deleteMyReply(position);
+			var result = confirm('确定删除该回复?');
+			if(!!result){
+				var position = $(this).closest('.comment').attr('position');
+				position = Number(position);
+				deleteMyReply(position);
+			}else{
+				return ;
+			}
 		});
 	}else{
 		$reportBtn.html('举报');
