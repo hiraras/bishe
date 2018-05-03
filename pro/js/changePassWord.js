@@ -12,6 +12,7 @@ function init(){
     }
     if(admin != null){
         $('.header').css('display','none');
+        $('#findPassWord').css('display', 'none');
     }
     $('#findPassWord').click(function(){
         window.location.href = 'http://localhost/pro/page/findPassWord.html';
@@ -52,12 +53,12 @@ function changePassWordBtnPressHandle(){
                         success: function(result){
                             if(result == 'success'){
                                 $('#remind').html('修改成功');
-                                localStorage.removeItem("user");
-                                localStorage.removeItem("userLevel");
-                                localStorage.removeItem("userNickName");
-                                localStorage.removeItem("headImg");
+                                // localStorage.removeItem("user");
+                                // localStorage.removeItem("userLevel");
+                                // localStorage.removeItem("userNickName");
+                                // localStorage.removeItem("headImg");
                                 setTimeout(function(){
-                                    window.location.href = 'http://localhost/pro/page/login.html';
+                                    window.history.back();
                                 },300);
                             }else if(result == 'fail'){
                                 $('#remind').html('原密码错误');

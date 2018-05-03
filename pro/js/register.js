@@ -1,4 +1,5 @@
 var randomNum = -getRandom(100000,999999);
+// var randomNum = 1111;
 //验证码有效时间(倒计时时间)
 var timeNum = 60;
 var domain = "http://localhost";

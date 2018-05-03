@@ -4,7 +4,7 @@ $currIndex = $_GET['indexNum'];
 $barName = $_GET['barName'];
 $everyPageItemNum = 3;
 $dataIndex = $currIndex*$everyPageItemNum;
-$sql = "select * from report where barBelong = '$barName' ORDER BY status DESC limit $dataIndex,$everyPageItemNum";
+$sql = "select * from report where barBelong = '$barName' ORDER BY status DESC,reportTime DESC limit $dataIndex,$everyPageItemNum";
 $sql2 = "select * from report where barBelong = '$barName'";
 $result = mysql_query($sql);
 $result2 = mysql_query($sql2);

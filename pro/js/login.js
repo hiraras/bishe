@@ -64,7 +64,6 @@ function testLogin(){
 				$("#remind").html("验证码错误");
 				$("#checkCode").val("");
 				checkCodeStr = createCheckCode();
-				$('#psw').val('');
 			}
 		}else{
 			$("#remind").html("用户名格式不正确");

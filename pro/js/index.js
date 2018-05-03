@@ -50,17 +50,16 @@ var domain = "http://localhost";
 			$('#bannerWrapper img').first().insertAfter($('#bannerWrapper img').last());
 		});
 	},4000);
-	$('#bannerPoint li').each(function(index){
-		$(this).on('click',function(){
-			$('#bannerPoint li').each(function(index,ele){
-				$(this).removeClass('to_blue');
-			});
-			pointIndex = index;
-			$('#bannerPoint li').eq(pointIndex).addClass('to_blue');
-			$('#bannerWrapper').css('left',-pointIndex*containerWidth+'px');
-		})
-	});
-	
+	// $('#bannerPoint li').each(function(index){
+	// 	$(this).on('click',function(){
+	// 		$('#bannerPoint li').each(function(index,ele){
+	// 			$(this).removeClass('to_blue');
+	// 		});
+	// 		pointIndex = index;
+	// 		$('#bannerPoint li').eq(pointIndex).addClass('to_blue');
+	// 		$('#bannerWrapper').css('left',-pointIndex*containerWidth+'px');
+	// 	})
+	// });
 }());
 
 function getSort(){

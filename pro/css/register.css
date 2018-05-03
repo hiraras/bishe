@@ -48,6 +48,7 @@ html{
 	position: relative;
 	top: -5px;
 	cursor: pointer;
+	padding: 0;
 }
 .container .phone_msg{
 	width: 56%;
@@ -67,6 +68,7 @@ html{
 	display: block;
 	margin-top: 20px;
 	cursor: pointer;
+	padding: 0;
 }
 .container .psw_remind{
 	text-align: left;

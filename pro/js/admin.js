@@ -307,9 +307,11 @@ function createPostMsgTable(headData, data) {
         } else {
             aOption.html('恢复');
         }
-        aOption.click(function () {
-            changePostStatus(data[j].id, data[j].status);
-        });
+        (function(data2){
+            aOption.click(function () {
+                changePostStatus(data2.id, data2.status);
+            });
+        })(data[j]);
         var aOption2 = $('<a></a>');
         aOption2.css({
             'margin-left': '10px',

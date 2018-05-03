@@ -490,6 +490,7 @@ function onSubmitPostMsg() {
 					if (result == 'success') {
 						submitPostMsg();
 					} else {
+						console.log(result);
 						alert('未知错误,图片保存失败!');
 					}
 				},
@@ -636,12 +637,12 @@ function getPostPageMsg(barName, indexNum) {
 		requestData.watchType = 1;
 	}
 	if (pageType == 1 && watchType == 0) {
-		//精品区
+		//精华区
 		fileName = 'getGreatPostMsgInBar';
 		requestData.watchType = 0;
 	}
 	if (pageType == 1 && watchType == 1) {
-		//精品区
+		//精华区
 		fileName = 'getGreatPostMsgInBar';
 		requestData.watchType = 1;
 	}
@@ -718,6 +719,9 @@ function initIndex() {
 	}
 	$('.index_item').removeClass('currIndex');
 
+	$('.index_item').each(function (index) {
+		$(this).css('display','inline-block');
+	});
 	if (totalNum < maxShowIndex) {
 		$('.index_item').each(function (index) {
 			if (index > totalNum) {
@@ -809,20 +813,25 @@ function createPostItem(data) {
 	var $postTitleContainerDiv = $('<div></div>');
 	$postTitleContainerDiv.addClass('post_title_container');
 
-	var $isTopP = $('<p></p>');
-	$isTopP.addClass('is_top');
-	if (data.isTop == '0') {
-		$isTopP.css('display', 'none');
-	} else {
-		$isTopP.html('置顶');
+	if($('#postsContainer').attr('pageType') == 0){
+		var $isTopP = $('<p></p>');
+		$isTopP.addClass('is_top');
+		if (data.isTop == '0') {
+			$isTopP.css('display', 'none');
+		} else {
+			$isTopP.html('置顶');
+		}
+		var $isGreatP = $('<p></p>');
+		$isGreatP.addClass('is_great');
+		if (data.isGreat == '0') {
+			$isGreatP.css('display', 'none');
+		} else {
+			$isGreatP.html('精');
+		}
+		$postTitleContainerDiv.append($isTopP);
+		$postTitleContainerDiv.append($isGreatP);
 	}
-	var $isGreatP = $('<p></p>');
-	$isGreatP.addClass('is_great');
-	if (data.isGreat == '0') {
-		$isGreatP.css('display', 'none');
-	} else {
-		$isGreatP.html('精');
-	}
+
 	var $postTitleTextP = $('<p></p>');
 	$postTitleTextP.addClass('post_title_text');
 	$postTitleTextP.html(data.postName);
@@ -830,8 +839,7 @@ function createPostItem(data) {
 		var postId = $(this).parents('.post').attr('postId');
 		window.location.href = 'http://localhost/pro/page/post.html?' + 'postId=' + postId;
 	});
-	$postTitleContainerDiv.append($isTopP);
-	$postTitleContainerDiv.append($isGreatP);
+	
 	$postTitleContainerDiv.append($postTitleTextP);
 
 	var $postImgContainerDiv = $('<div></div>');

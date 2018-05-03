@@ -259,10 +259,10 @@ function searchPostMsg(postId){
 						$('#toGreatBtn').attr('isGreat','1');
 					}
 					if(Number(data.data.isBelongCompetitive) == 0){
-						$('#addToCompetitiveBtn').html('加入精品区');
+						$('#addToCompetitiveBtn').html('加入精华区');
 						$('#addToCompetitiveBtn').attr('isBelongCompetitive','0');
 					}else{
-						$('#addToCompetitiveBtn').html('从精品区删除');
+						$('#addToCompetitiveBtn').html('从精华区删除');
 						$('#addToCompetitiveBtn').attr('isBelongCompetitive','1');
 					}
 				}else{
@@ -456,10 +456,10 @@ function toCompetitiveBtnPressHandle(){
 			if(result == 'success'){
 				alert('操作成功');
 				if(status == 0){
-					$('#addToCompetitiveBtn').html('从精品区删除');
+					$('#addToCompetitiveBtn').html('从精华区删除');
 					$('#addToCompetitiveBtn').attr('isBelongCompetitive','1');
 				}else{
-					$('#addToCompetitiveBtn').html('加入精品区');
+					$('#addToCompetitiveBtn').html('加入精华区');
 					$('#addToCompetitiveBtn').attr('isBelongCompetitive','0');
 				}
 			}else{

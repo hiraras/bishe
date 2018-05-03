@@ -1,4 +1,5 @@
 var randomNum = -getRandom(100000,999999);
+// var randomNum = 1111;
 //验证码有效时间(倒计时时间)
 var timeNum = 60;
 var domain = "http://localhost";
@@ -69,16 +70,26 @@ var testRegister = function(){
                             success: function(result){
                                 if(result == 'success'){
                                     $('#remind').html('修改成功');
-                                    localStorage.removeItem("user");
-                                    localStorage.removeItem("userLevel");
-                                    localStorage.removeItem("userNickName");
-                                    localStorage.removeItem("headImg");
+                                    // localStorage.removeItem("user");
+                                    // localStorage.removeItem("userLevel");
+                                    // localStorage.removeItem("userNickName");
+                                    // localStorage.removeItem("headImg");
                                     setTimeout(function(){
-                                        window.location.href = 'http://localhost/pro/page/login.html';
+                                        window.location.href = 'http://localhost/pro/index.html';
+                                    },300);
+                                }else if(result == 'repeat'){
+									$('#remind').html('修改成功');
+									// localStorage.removeItem("user");
+                                    // localStorage.removeItem("userLevel");
+                                    // localStorage.removeItem("userNickName");
+                                    // localStorage.removeItem("headImg");
+                                    setTimeout(function(){
+                                        window.location.href = 'http://localhost/pro/index.html';
                                     },300);
                                 }else{
-                                    alert('未知错误');
-                                }
+									console.log(result);
+									alert('未知错误');
+								}
                             },
                             error: function(result){
                                 console.log(result);

@@ -247,12 +247,14 @@ function init() {
 					position: 0,
 					content: msg,
 					reporterId: username,
-					reportederId: userId
+					reportederId: userId,
+					barBelong: ''
 				},
 				success: function (result) {
 					if (result == 'success') {
 						alert('已发送举报信息');
 					} else {
+						console.log(result);
 						alert('未知错误');
 					}
 					window.location.reload();
