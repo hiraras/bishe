@@ -379,6 +379,9 @@
     padding: 10px 8px;
     margin-bottom: 15px;
 }
+.my_informs .inform img{
+    max-height: 100px;
+}
 .my_informs .informer{
     margin-bottom: 10px;
 }
