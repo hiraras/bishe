@@ -250,6 +250,7 @@ function init() {
 		$(this).click(function () {
 			var barName = $('#barName').attr('barname');
 			$('#postsContainer').attr('pageType', index);
+			initIndexItemHtml();
 			getPostPageMsg(barName, 0);
 			$('.page_feature_item').each(function (i) {
 				if (index == i) {
@@ -273,6 +274,12 @@ function init() {
 				}
 			});
 		});
+	});
+}
+
+function initIndexItemHtml(){
+	$('.index .index_item').each(function(i){
+		$(this).html(i+1);
 	});
 }
 
@@ -805,7 +812,7 @@ function lastPage(barName) {
 
 function createPostItem(data) {
 	var maxShowImgNum = 4;
-	var imgReg = /<img\b[^>]*postImg[^>]*>/ig;
+	var imgReg = /<img\b[^>]*(postImg|replyImg)[^>]*>/ig;
 	var $postDiv = $('<div></div>');
 	$postDiv.addClass('post');
 	var $postContentDiv = $('<div></div>');

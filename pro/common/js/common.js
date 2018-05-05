@@ -374,6 +374,8 @@ function getLv(expNum) {
 	var LvArr = getLvArr(15, 0.05, 20);
 	var userLv = 1;
 	expNum = Number(expNum);
+	var obj = {};
+	obj.expNum = expNum;
 	for (var i = 0; i < LvArr.length; i++) {
 		if (expNum > LvArr[i]) {
 			userLv++;
@@ -381,7 +383,9 @@ function getLv(expNum) {
 			break;
 		}
 	}
-	return userLv;
+	obj.userLv = userLv;
+	obj.needExpNum = LvArr[i];
+	return obj;
 }
 //生成等级所需经验数组,第一个参数为起始等级的经验,第二个为增长率,第三个为最高等级
 function getLvArr(firstNum, speed, maxLv) {

@@ -3,7 +3,7 @@ var domain = 'http://localhost';
 var userInfoArr = ['id', '账号', '昵称', '创号时间', '头像', '经验值', '地址', '年龄', '学校', '签到状态', '今日经验', '发帖数', '状态', '操作'];
 var sortBarArr = ['id', '分类名', '状态'];
 var replyToReplyArr = ['id', 'postBelongId', 'position', 'replyTime', 'replyerId', 'replyerNickname', 'replyerHeadImg', 'content', 'status'];
-var postsArr = ['id', '标题', '所属吧', '楼主id', '发帖时间', '置顶', '加精', '精品区', '状态', '内容', '点赞数', '楼主昵称', '吧主', '操作'];
+var postsArr = ['id', '标题', '所属吧', '楼主id', '发帖时间', '置顶', '加精', '精华区', '状态', '内容', '点赞数', '楼主昵称', '吧主', '操作'];
 var postReply = ['id', '所属帖子id', '楼层数', '发布时间', '内容', '发布者id', '状态', '昵称', '操作'];
 var barsArr = ['id', '吧名', '吧主id', '创吧时间', '所属主题', '关注数', '吧描述', '吧头像', '创吧者id', '状态', '帖子数', '操作'];
 var barAttentionArr = ['id', 'userId', 'barId', 'barName', 'attentionTime', 'status'];
@@ -275,7 +275,7 @@ function searchPostMsg() {
                 var table = createPostMsgTable(postsArr, data.data);
                 $('#rightContainer').append(table);
             } else {
-                alert('该帖子不存在');
+                alert('帖子不存在');
             }
         }
     });
@@ -406,7 +406,7 @@ function createPostReplyItem() {
 function searchPostReplyMsg() {
     var postId = $('#inputPostId').val();
     var position = $('#inputPosition').val();
-    if (postId.trim() == '' || position.trim() == '') {
+    if (postId.trim() == '') {
         alert('有未填写的信息');
         return;
     }
@@ -422,6 +422,7 @@ function searchPostReplyMsg() {
             try {
                 var data = JSON.parse(result);
             } catch (e) {
+                console.log(result);
                 console.log(e);
             }
             if (data.result == 'success') {
@@ -436,8 +437,7 @@ function searchPostReplyMsg() {
 }
 
 function createPostReplyMsgTable(headData, data) {
-    delete data.headImg;
-    delete data.creatorNickName;
+    console.log(data);
     var table = $('<table></table>');
     var headTr = $('<tr></tr>');
     for (var i = 0; i < headData.length; i++) {
@@ -446,25 +446,31 @@ function createPostReplyMsgTable(headData, data) {
         headTr.append(headTd);
     }
     table.append(headTr);
-    var tr = $('<tr></tr>');
-    for (var item in data) {
-        var td = $('<td></td>');
-        td.html(data[item]);
-        tr.append(td);
+    for(var k=0;k<data.length;k++){
+        delete data[k].headImg;
+        delete data[k].creatorNickName;
+        var tr = $('<tr></tr>');
+        for (var item in data[k]) {
+            var td = $('<td></td>');
+            td.html(data[k][item]);
+            tr.append(td);
+        }
+        var tdOption = $('<td></td>');
+        var aOption = $('<a></a>');
+        if (data[k].status == 1) {
+            aOption.html('删除');
+        } else {
+            aOption.html('恢复');
+        }
+        (function(dataItem){
+            aOption.click(function () {
+                changePostReplyStatus(dataItem.postBelongId, dataItem.position, dataItem.status);
+            });
+        })(data[k]);
+        tdOption.append(aOption);
+        tr.append(tdOption);
+        table.append(tr);
     }
-    var tdOption = $('<td></td>');
-    var aOption = $('<a></a>');
-    if (data.status == 1) {
-        aOption.html('删除');
-    } else {
-        aOption.html('恢复');
-    }
-    aOption.click(function () {
-        changePostReplyStatus(data.postBelongId, data.position, data.status);
-    });
-    tdOption.append(aOption);
-    tr.append(tdOption);
-    table.append(tr);
     return table;
 }
 

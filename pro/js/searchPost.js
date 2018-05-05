@@ -178,7 +178,7 @@ function lastPage(postTitle) {
 function createPostItem(data) {
 	// console.log(data);
 	var maxShowImgNum = 4;
-	var imgReg = /<img\b[^>]*postImg[^>]*>/ig;
+	var imgReg = /<img\b[^>]*(postImg|replyImg)[^>]*>/ig;
 	var $postDiv = $('<div></div>');
 	$postDiv.addClass('post');
 	var $postContentDiv = $('<div></div>');

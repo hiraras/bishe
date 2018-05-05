@@ -3,8 +3,8 @@ require "connect.php";
 $postId = $_GET['postId'];
 $indexNum = $_GET['indexNum'];
 $position = $_GET['position'];
-//需要和getPostToReplyMsg.php中的$showReplyToReplyNum = 6;相等
-$everyPageItemNum = 6;
+//需要和getPostReplys.php中的$showReplyToReplyNum = 6;相等
+$everyPageItemNum = 2;
 $dataIndex = $indexNum*$everyPageItemNum;
 $sql = "select * from reply_to_reply where postBelongId='$postId' and position = '$position' and status = 1 ORDER BY replyTime ASC limit $dataIndex,$everyPageItemNum";
 $sql2 = "select * from reply_to_reply where postBelongId='$postId' and position = '$position' and status = 1";

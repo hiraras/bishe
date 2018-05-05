@@ -1,8 +1,9 @@
 <?php
 require "connect.php";
-$hotStandrad = 2;
+$hotStandrad = 1;
 $barNum = 21;
-$sql = "select * from bars where status = 1 ORDER BY concernNum DESC limit $barNum";
+$num = 0;
+$sql = "select * from bars where status = 1 ORDER BY concernNum DESC";
 $result = mysql_query($sql);
 //获得的结果数组只能用数字索引，不能用key值
 //$arr = mysql_fetch_row($result);
@@ -23,6 +24,10 @@ while($row = mysql_fetch_assoc($result)){
 	$attentionNum = mysql_num_rows($result4);
 	$row['attentionNum'] = $attentionNum;
 	array_push($arr,$row);
+	$num ++;
+	if($num >= $barNum){
+		break;
+	}
 }
 echo json_encode($arr);
 mysql_close($con);

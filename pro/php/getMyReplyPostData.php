@@ -15,12 +15,12 @@ $replyTotalNum = 0;
 $arr = array();
 while($row = mysql_fetch_assoc($result)){
     $postId = $row['postBelongId'];
-	$sql3 = "select c.barBelong,c.creatorNickName,c.postName from posts as c where id='$postId' and status = 1";
+	$sql3 = "select c.barBelong,c.creatorNickName,c.postName from posts as c where id='$postId'";
 	$result3 = mysql_query($sql3);
 	$row2 = mysql_fetch_assoc($result3);
-	if($row2['postName'] == null){
-		continue;
-	}
+	// if($row2['postName'] == null){
+	// 	continue;
+	// }
     $row['barBelong'] = $row2['barBelong'];
     $row['creatorNickName'] = $row2['creatorNickName'];
     $row['postName'] = $row2['postName'];
@@ -28,12 +28,12 @@ while($row = mysql_fetch_assoc($result)){
 }
 while($row3 = mysql_fetch_assoc($result2)){
     $postId = $row3['postBelongId'];
-	$sql4 = "select c.barBelong,c.creatorNickName,c.postName from posts as c where id='$postId' and status = 1";
+	$sql4 = "select c.barBelong,c.creatorNickName,c.postName from posts as c where id='$postId'";
 	$result4 = mysql_query($sql4);
 	$row4 = mysql_fetch_assoc($result4);
-	if($row4['postName'] == null){
-		continue;
-	}
+	// if($row4['postName'] == null){
+	// 	continue;
+	// }
     $replyTotalNum ++;
 }
 class ResultData{

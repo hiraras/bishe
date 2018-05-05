@@ -344,7 +344,7 @@
 }
 .edit_container{
 	position: relative;
-	margin-top: 70px;
+	margin-top: 40px;
 }
 .send_area .editor_area{
 	min-height: 150px;
@@ -360,7 +360,7 @@
 }
 .history_container{
 	min-height: 100px;
-	max-height: 350px;
+	max-height: 300px;
 	width: 80%;
 	overflow-y: scroll;
 	background: white;

@@ -4,7 +4,7 @@ $postId = $_GET['postId'];
 $indexNum = $_GET['indexNum'];
 $everyPageItemNum = 2;
 //需要和getReplyToReplyMsg.php中的$everyPageItemNum相等
-$showReplyToReplyNum = 6;
+$showReplyToReplyNum = 2;
 $dataIndex = $indexNum*$everyPageItemNum;
 //获得回复
 $sql = "select * from post_reply where postBelongId='$postId' and status = 1 ORDER BY position ASC limit $dataIndex,$everyPageItemNum";

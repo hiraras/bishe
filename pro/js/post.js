@@ -282,7 +282,7 @@ function searchPostMsg(postId){
 				$('#postTitle').attr('barBelong',data.data.barBelong);
 				$('#postTitle').attr('barMaster',data.data.master);
 				$('.master_comment').attr('position',1);
-				$('#userLevel').html('等级:' + getLv(data.data.exp));
+				$('#userLevel').html('等级:' + getLv(data.data.exp).userLv);
 				$('#cancelSubmit2').click(function(){
 					$('#editMask').css('display','none');
 				});
@@ -298,7 +298,8 @@ function searchPostMsg(postId){
 				$('#main').css('display','none');
 				$('#postNotExistTip').css('display','block');
 				setTimeout(function(){
-					alert('帖子不存在');
+					alert('帖子不存在,或已被删除');
+					window.history.back();
 				},300);
 				return ;
 			}
@@ -1362,7 +1363,7 @@ function createCommentItem(data){
 
 	var $userLevelP = $('<p></p>');
 	$userLevelP.addClass('user_level');
-	$userLevelP.html('等级:' + getLv(data.exp));
+	$userLevelP.html('等级:' + getLv(data.exp).userLv);
 	$userMsgDiv.append($userMsgHeadImg);
 	$userMsgDiv.append($userNameP);
 	$userMsgDiv.append($userLevelP);

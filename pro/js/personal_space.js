@@ -317,7 +317,8 @@ function init() {
 	$('#userHeadImg').attr('src', userData.headImg);
 	$('#barAge').html('吧龄:' + barAge(userData.createDate) + '年');
 	$('#myPostNum').html('发帖数:' + userData.postNum);
-	$('#userLv').html('等级:' + getLv(userData.exp));
+	var expData = getLv(userData.exp);
+	$('#userLv').html('等级:' + expData.userLv+'('+expData.expNum+'/'+expData.needExpNum+')');
 	$('#featureList li').each(function (index) {
 		$(this).click(function () {
 			switchContent(index);
@@ -1112,7 +1113,7 @@ function resizeImg() {
 function createPostItem(data) {
 	// console.log(data);
 	var maxShowImgNum = 4;
-	var imgReg = /<img\b[^>]*postImg[^>]*>/ig;
+	var imgReg = /<img\b[^>]*(postImg|replyImg)[^>]*>/ig;
 	var $postDiv = $('<div></div>');
 	$postDiv.addClass('post');
 	var $postContentDiv = $('<div></div>');
@@ -1353,7 +1354,7 @@ function initBtnEvent() {
 
 function createMyReplyPostItem(data) {
 	// console.log(data);
-	var imgReg = /<img\b[^>]*postImg[^>]*>/ig;
+	var imgReg = /<img\b[^>]*(postImg|replyImg)[^>]*>/ig;
 	var $myReplyPostDiv = $('<div></div>');
 	$myReplyPostDiv.addClass('my_reply_post');
 	$myReplyPostDiv.attr('postId', data.postBelongId);
