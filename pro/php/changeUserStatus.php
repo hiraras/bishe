@@ -9,7 +9,7 @@ $num = mysql_affected_rows();
 if($status == 1){
     $informContent = "因为:".$msg."您已解除禁言";
 }else{
-    $informContent = "因为:".$msg.",您已被禁言了";
+    $informContent = "因为:".$msg.",您被禁言了";
 }
 $now = date("Y-m-d H:i:s");
 $informSql = "insert into inform (informer, informederId, informTime, informContent) values (0, '$userId' , '$now', '$informContent')";

@@ -36,7 +36,7 @@ function changePassWordBtnPressHandle(){
             $('#remind').html('旧密码和新密码相同');
         }else{
             if(newPsw != repeatPsw){
-                $('#remind').html('两次密码不相等');
+                $('#remind').html('两次密码不相同');
             }else{
                 if(!checkPswReg.test(newPsw)){
                     $('#remind').html('新密码格式错误');

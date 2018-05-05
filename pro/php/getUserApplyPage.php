@@ -3,7 +3,7 @@ require "connect.php";
 $currIndex = $_GET['currIndex'];
 $everyPageItemNum = 3;
 $dataIndex = $currIndex*$everyPageItemNum;
-$sql = "select * from user_apply ORDER BY status DESC limit $dataIndex,$everyPageItemNum";
+$sql = "select * from user_apply ORDER BY status DESC,applyTime DESC limit $dataIndex,$everyPageItemNum";
 $sql2 = "select * from user_apply";
 $result = mysql_query($sql);
 $result2 = mysql_query($sql2);

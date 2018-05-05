@@ -750,7 +750,7 @@ function searchBarMsg() {
             }
             if (data.result == 'none') {
                 alert('没有该吧');
-                window.location.reload();
+                // window.location.reload();
             } else {
                 $('#rightContainer table').remove();
                 var table = createBarMsgTable(barsArr, data.data);

@@ -1195,6 +1195,10 @@ function createReplysItem(data){
 		//点击回复按钮发布评论
 		$submitReplyBtn.click(function(){
 			var userId = localStorage.getItem('user');
+			if(userId == null){
+				alert('请先登录');
+				return;
+			}
 			var that = this;
 			$.ajax({
 				type: 'get',
@@ -1204,6 +1208,7 @@ function createReplysItem(data){
 					userId: userId
 				},
 				success: function(result){
+					console.log(result);
 					result = JSON.parse(result);
 					if(result){
 						alert('您已被禁言!');

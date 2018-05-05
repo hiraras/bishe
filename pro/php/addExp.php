@@ -1,6 +1,6 @@
 <?php
 require "connect.php";
-$dayMaxExp = 66;
+$dayMaxExp = 30;
 $userId = $_POST['userId'];
 $expNum = $_POST['expNum'];
 $sql = "select * from usermsg where username = '$userId'";

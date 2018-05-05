@@ -281,6 +281,7 @@ $('#myRoom').click(function () {
 
 //将时间转化为具体年数，包括小数点
 function barAge(timeStr) {
+	3
 	var createTime = new Date(timeStr);
 	var now = new Date();
 	var ageMills = now.getTime() - createTime.getTime();
@@ -396,6 +397,7 @@ function getLvArr(firstNum, speed, maxLv) {
 		num = Math.round(num * (2 - i * 0.03)) + Math.round(num * speed);
 		arr.push(num);
 	}
+	//[15, 31, 62, 121, 233, 443, 828, 1523, 2756, 4906, 8585, 14766, 24954, 41424, 67521, 108034, 169614, 261206, 394421, 583743]
 	return arr;
 }
 function getStrToParams(paramsStr) {
