@@ -85,6 +85,9 @@ function init(){
 		for(var i=0;i<fileDataArr.length;i++){
 			removeNotNeedImg(fileDataArr[i]);
 		}
+		for(var k=0;k<fileDataArr2.length;k++){
+			removeNotNeedImg(fileDataArr2[k]);
+		}
 	}
 	
 	//测试页面刷新或关闭，删除掉已经保存到本地的图片文件
