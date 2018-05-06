@@ -477,6 +477,11 @@ function removeNotNeedImg(imgPath) {
 		},
 		success: function (result) {
 			console.log('remove ' + result);
+			for(var i=0;i<fileDataArr.length;i++){
+				if(fileDataArr[i] == imgPath){
+					fileDataArr.splice(i, 1);
+				}
+			}
 		}
 	});
 }
@@ -494,6 +499,7 @@ function onSubmitPostMsg() {
 					imgsData: fileDataArr
 				},
 				success: function (result) {
+					console.log(result);
 					if (result == 'success') {
 						submitPostMsg();
 					} else {

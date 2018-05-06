@@ -55,6 +55,11 @@ function removeNotNeedImg(imgPath) {
 		},
 		success: function (result) {
 			console.log('remove ' + result);
+			for(var i=0;i<fileDataArr.length;i++){
+				if(fileDataArr[i] == imgPath){
+					fileDataArr.splice(i, 1);
+				}
+			}
 		}
 	});
 }

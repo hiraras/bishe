@@ -74,6 +74,7 @@ function initBtnClick(){
 	});
 	$('#cancelSubmit').click(function () {
 		$('#sendContainer').css('display', 'none');
+		window.location.reload();
 	});
 }
 
@@ -561,6 +562,24 @@ function imgChange(e) {
 	}
 }
 
+function removeNotNeedImg(imgPath) {
+	$.ajax({
+		type: 'get',
+		url: domain + "/pro/php/removeTempImg.php",
+		async: true,
+		data: {
+			imgPath: imgPath
+		},
+		success: function (result) {
+			console.log('remove ' + result);
+			for(var i=0;i<fileDataArr.length;i++){
+				if(fileDataArr[i] == imgPath){
+					fileDataArr.splice(i, 1);
+				}
+			}
+		}
+	});
+}
 function isEditorAreaBlur() {
 	var sel, range, checkNode;
 	if (window.getSelection) {
