@@ -664,6 +664,11 @@ function removeNotNeedImg(imgPath) {
 					fileDataArr.splice(i, 1);
 				}
 			}
+			for(var j=0;j<fileDataArr2.length;j++){
+				if(fileDataArr2[j] == imgPath){
+					fileDataArr2.splice(j, 1);
+				}
+			}
 		}
 	});
 }
