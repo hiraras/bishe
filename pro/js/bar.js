@@ -379,6 +379,7 @@ function getTopAndGreatPostMsg(barName) {
 				console.log('当前还没有置顶、加精帖');
 			} else {
 				// console.log(data);
+				$('#noPostTip').css('display','none');
 				for (var i = 0; i < data.value.length; i++) {
 					var $item = createPostItem(data.value[i]);
 					$('#topAndGreatPostContainer').append($item);
